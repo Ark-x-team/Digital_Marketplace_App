@@ -1,1 +1,1 @@
-# FullStack Marketplace Web App
+# FullStack E-Commerce Web App
