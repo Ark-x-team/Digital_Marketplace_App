@@ -3,23 +3,36 @@ const mongoose = require('mongoose')
 const productSchema = new mongoose.Schema({
     sku: {
         type: String,
+        required: true,
         unique: true,
+        trim: true
     },
     product_name: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true
     },
     product_images: {
         type: Array,
     },
     price: {
-        type: mongoose.Schema.Types.Decimal128,
-        required: true
+        type: Number,
+        required: true,
+        set: num => Number(num).toFixed(2),
     },
-    discount_price: {type: mongoose.Schema.Types.Decimal128},
-    short_description: {type: String},
-    long_description: {type: String},
+    discount_price: {
+        type: Number,
+        set: num => Number(num).toFixed(2),
+    },
+    short_description: {
+        type: String,
+        trim: true
+    },
+    long_description: {
+        type: String,
+        trim: true
+    },
     options: {type: Array},
     active: {
         type: Boolean,
