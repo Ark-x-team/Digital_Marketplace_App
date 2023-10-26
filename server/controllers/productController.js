@@ -50,6 +50,30 @@ const getProducts = async (req, res) => {
 
 };
 
+// **************************** Search for a product *********************************
+const searchProduct = async (req, res) => {
+    try {
+        // Get pagination items query or set default values
+        const page = req.query.page *1 || 1
+        const limit = req.query.limit *1 || 10
+        const skip = (page -1) * limit
+        // Get search query and add regex
+        const searchQuery = req.query.search_query;
+        const searchQueryRegex = new RegExp(searchQuery, 'i')
+        // Get matching products with limit number per page and sort them by name.
+        const matchingProduct = await Product.find(
+            {$or: [{product_name: searchQueryRegex}, {short_description: searchQueryRegex},{long_description: searchQueryRegex }]}
+        ).limit(limit).skip(skip).sort({'product_name' : -1});
+        res.status(200).json({
+            "count": matchingProduct.length, "page": page,
+            "limit": limit, "data": matchingProduct
+        })
+    } catch (error) {
+        res.status(400).json("Failed to get product")
+        console.log(error);
+    }
+};
+
 // ******************************* Get one product ***********************************
 const getProduct = async (req, res) => {
     try {
@@ -59,7 +83,7 @@ const getProduct = async (req, res) => {
         const product = await Product.findById(productId);
         res.status(200).json(product)
     } catch (error) {
-        res.status(400).json("Failed to get product")
+        res.status(400).json("Product not found")
     }
 };
 
@@ -76,4 +100,4 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-module.exports = {createProduct, getProducts, getProduct, deleteProduct};
+module.exports = {createProduct, getProducts, searchProduct, getProduct, deleteProduct};
