@@ -51,7 +51,7 @@ app.use(cookieParser());
 // Enable Parsing Request Data
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Middlewares
 app.use(express.static('public'))

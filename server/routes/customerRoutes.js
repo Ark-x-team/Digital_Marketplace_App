@@ -1,21 +1,29 @@
 const { Router } = require('express') 
-const router = Router() // Create instance of router
+
+// Create instance of router
+const router = Router() 
+
+// User controllers (CRUD & auth)
 const customerController = require('../controllers/customerController')
 const customerAuthController = require('../controllers/auth/customerAuthController')
-const { validationRules, validationMiddleware }  = require('../middlewares/formValidation')
-const authMiddleware = require('../middlewares/auth')
+const mailController = require('../controllers/mail/mailVerification')
+
+// Middlewares (data validation & roles)
+const { validationRules, passwordValidationRules, newDataValidationRules, dataValidation }  = require('../middlewares/validation')
+const { customerRole, adminRole, userRole } = require('../middlewares/auth')
 
 // Auth routes
-router.post('/customers/signup', validationRules(), validationMiddleware, customerAuthController.customerSignup)
+router.post('/customers/signup', validationRules(), dataValidation, customerAuthController.customerSignup)
+router.get('/customers/email-verify', mailController.accountVerification) 
 router.post('/customers/login', customerAuthController.customerLogin)
-router.get('/customers/check-auth', authMiddleware, customerAuthController.checkAuth)
-router.get('/customers/logout', customerAuthController.customerLogout)
+router.post('/customers/reset-password-verify', customerAuthController.resetPasswordVerify)
+router.post('/customers/reset-password', passwordValidationRules(), dataValidation, mailController.customerResetPassword)
 
-// Routes
-router.get('/customers', customerController.getCustomers)
-router.get('/customers/search', customerController.searchCustomer)
-router.get('/customers/:id', customerController.getCustomer)
-router.put('/customers/:id', customerController.updateCustomer)
-router.delete('/customers/:id', customerController.deleteCustomer)
+// CRUD routes
+router.get('/customers', userRole, customerController.getCustomers)
+router.get('/customers/search', userRole, customerController.searchCustomer)
+router.get('/customers/:id', userRole, customerController.getCustomer)
+router.put('/customers/:id', userRole, newDataValidationRules(), dataValidation, customerController.updateCustomer)
+router.delete('/customers/:id', customerRole, customerController.deleteCustomer)
 
 module.exports = router

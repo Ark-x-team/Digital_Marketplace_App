@@ -1,6 +1,7 @@
-const User = require("../models/User"); // Import user Model
+const User = require("../models/User"); 
 const bcrypt = require('bcrypt') 
-const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const MailGen = require('mailgen');
 
 // ******************************* Add user ************************************
 const addUser = async (req, res) => {
@@ -20,10 +21,74 @@ const addUser = async (req, res) => {
             const salt = await bcrypt.genSalt();
             const hashedPassword = bcrypt.hashSync(password, salt)
 
-            // Post user data
-            const user = await User.create({ username, email, password: hashedPassword, role })
-            res.status(200).json({ status: 200, message: "user added successfully" })
-        }
+            // Set transporter configuration
+            const transporterConfig = {
+                service: 'gmail',
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.PASS,
+                },
+            }
+            const transporter = nodemailer.createTransport(transporterConfig);
+
+            // Create instance of MailGen
+            const MailGenerator = new MailGen({
+                theme: "default",
+                product: {
+                    name: "Markstone",
+                    link: "https://mailgen.js/"
+                }
+            })
+
+            // Set mail message properties
+            const messageTemplate = {
+                body: {
+                    name: username,
+                    logo: 'https://mailgen.js/img/logo.png',
+                    link: 'https://mailgen.js/',
+                    intro: `You are now a Markstone website ${role === "admin" ? "admin" : "manager"}`,
+                    table: {
+                        data: [
+                            {
+                                Email: email,
+                                Password: password
+                            }
+                        ]
+                    },
+                    action: {
+                        instructions: 'To update your credentials, please click here',
+                        button: {
+                            color: '#22BC66',
+                            text: 'Update your credentials',
+                            link: `${process.env.DEPLOYMENT_CLIENT_URI}/dashboard/account`
+                        }
+                    },
+                    outro: "This email is automatically generated. Please do not answer it."
+                }
+            } 
+            // Generate the email
+            const mail = MailGenerator.generate(messageTemplate)
+
+            // Set mail config
+            const mailConfig = {
+                from: process.env.EMAIL,
+                to: email,
+                subject: 'Markstone website users',
+                html: mail
+            }
+
+            // Send the email
+            try {
+                await transporter.sendMail(mailConfig);
+                await User.create({ username, email, password: hashedPassword, role });
+                res.status(201).json({
+                    status: 201,
+                    msg: "A notification email is sent to the user with his credentials"
+                })
+            } catch (error) {
+                return res.status(500).json({ error: error.message });
+            }
+        }   
     } catch (error) {
         res.status(400).json({ status: 400, message: "Failed to add user" })
         console.log(error);
@@ -107,8 +172,11 @@ const updateUser = async (req, res) => {
             })
         } else {
             // Get user data
-            const { username, email, password, role } = req.body;
-            
+            const { username, email, role, active, valid_account, last_login } = req.body;
+
+            // Get Password
+            let password = req.body.password 
+
             // Check if the new username and email are already exists except for the updated one
             const dataExist = await User.findOne(
                 {
@@ -124,21 +192,28 @@ const updateUser = async (req, res) => {
                     message: "Username or email already exists"
                 })
             } else {
-                // Password hashing
-                const salt = await bcrypt.genSalt();
-                const hashedPassword = bcrypt.hashSync(password, salt)
+                if (password) {
+                    // Password hashing
+                    const salt = await bcrypt.genSalt();
+                    const hashedPassword = bcrypt.hashSync(password, salt)
+                    password = hashedPassword
+                } else password = userExist.password 
                 
                 // Set current date to update_at
                 const updatedAt = Date.now();
              
                 // Find user by it's Id and update it
                 await User.findByIdAndUpdate(userId,
-                    { username, email, password: hashedPassword, role, updated_at: updatedAt })
+                    {
+                        username, email, password, role, updated_at: updatedAt,
+                        active, valid_account, last_login
+                    })
                 res.status(200).json({ status: 200, message: "User updated successfully" })
             }
         }
     } catch (error) {
         res.status(400).json({ status: 400, message: "Failed to update user" })
+        console.log(error);
     }   
 }
 
@@ -164,3 +239,6 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {addUser, getUsers, getUser, searchUser, updateUser, deleteUser};
+
+
+

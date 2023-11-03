@@ -1,5 +1,43 @@
 const Customer = require("../models/Customer"); // Import customer Model
 const bcrypt = require('bcrypt') 
+const xss = require('xss');
+
+// *********************************** Add user ***************************************
+const addUser = async (req, res) => {
+    // Get user data
+    const { username, email, password, role } = req.body;
+
+    // Sanitize the user input
+    const sanitizedData = {
+        username: xss(username),
+        email: xss(email),
+        password: xss(password),
+      };
+    try {
+        const userExist = await User.findOne({ $or: [{ email }, { username }] });
+        if (userExist) {
+            return res.status(400).json({
+                status: 400,
+                message: "User already exists, check your email or username"
+            })
+        } else {
+                const salt = await bcrypt.genSalt();
+                const hashedPassword = bcrypt.hashSync(sanitizedData.password, salt)
+                // Post user data
+            const user = await User.create(
+                {
+                    username: sanitizedData.username,
+                    email: sanitizedData.email,
+                    password: hashedPassword,
+                    role
+                })
+                res.status(200).json({ status: 200, message: "User Added successfully" })
+        }
+    }catch(error){
+        console.log(error);
+        res.status(400).json({status: 400, message: "Failed to add user"})
+    }
+}
 
 // ****************************** List all customers **********************************
 const getCustomers = async (req, res) => {
@@ -137,7 +175,7 @@ const deleteCustomer = async (req, res) => {
         } else {
             // Find customer by it's Id and delete it
             await Customer.findByIdAndDelete(customerId);
-            res.status(200).json({ status: 200, message: "Customer deleted successfully" });
+            res.status(200).json({ status: 200, message: "Your account deleted successfully" });
         }
     } catch (error) {
         res.status(400).json({ status: 400, message: "Failed to delete customer" })
@@ -145,5 +183,5 @@ const deleteCustomer = async (req, res) => {
 };
 
 module.exports = {
-    getCustomers, getCustomer, searchCustomer, updateCustomer, deleteCustomer
+    addUser, getCustomers, getCustomer, searchCustomer, updateCustomer, deleteCustomer
 };

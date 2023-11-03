@@ -1,5 +1,6 @@
 const { Router } = require('express') 
-const router = Router() // Create instance of router
+const router = Router() 
+
 const productController = require('../controllers/productController')
 const uploadMiddleware = require('../middlewares/filesUpload')
 

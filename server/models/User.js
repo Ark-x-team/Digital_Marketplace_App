@@ -6,14 +6,12 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
         trim: true,
-        set: str => str.toLowerCase(),
     },
     email: {
         type: String,
         required: true,
         unique: true,
         index: true,
-        validate : /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     },
     password: {
         type: String,
@@ -24,12 +22,16 @@ const userSchema = new mongoose.Schema({
         enum: ['admin', 'manager'],
         required: true,
     },
+    password: {
+        type: String,
+        required: true,
+    },
     active: {
         type: Boolean,
-        default: true
+        default: true,
     },
     last_login: {
-        type: Number,
+        type: Date,
     },
     created_at: {
         type: Date,
