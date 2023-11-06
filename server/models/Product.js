@@ -45,7 +45,10 @@ const productSchema = new mongoose.Schema({
     updated_at: {
         type: Date,
     },
-    // subcategory_id: { type: mongoose.Schema.Types.ObjectId, ref: 'subcategory' },
+    subcategory_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'subcategories'
+    },
 })
 
 const Product = mongoose.model('products', productSchema)

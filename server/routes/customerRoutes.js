@@ -8,7 +8,7 @@ const customerController = require('../controllers/customerController')
 const customerAuthController = require('../controllers/auth/customerAuthController')
 const mailController = require('../controllers/mail/mailVerification')
 
-// Middlewares (data validation & roles)
+// Middlewares (data validation & authorization)
 const { validationRules, passwordValidationRules, newDataValidationRules, dataValidation }  = require('../middlewares/validation')
 const { customerRole, adminRole, userRole } = require('../middlewares/auth')
 
@@ -22,8 +22,8 @@ router.post('/customers/reset-password', passwordValidationRules(), dataValidati
 // CRUD routes
 router.get('/customers', userRole, customerController.getCustomers)
 router.get('/customers/search', userRole, customerController.searchCustomer)
-router.get('/customers/:id', userRole, customerController.getCustomer)
-router.put('/customers/:id', userRole, newDataValidationRules(), dataValidation, customerController.updateCustomer)
+router.get('/customers/:id', customerController.getCustomer)
+router.put('/customers/:id', newDataValidationRules(), dataValidation, customerController.updateCustomer)
 router.delete('/customers/:id', customerRole, customerController.deleteCustomer)
 
 module.exports = router

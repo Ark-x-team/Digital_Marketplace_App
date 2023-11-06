@@ -1,13 +1,30 @@
+// Models & utils 
 const User = require("../models/User"); 
+const mail = require('../utils/mail/mail') 
+const template = require('../utils/mail/templates')
+const token = require('../utils/token') 
+
+// Modules
 const bcrypt = require('bcrypt') 
-const nodemailer = require('nodemailer');
-const MailGen = require('mailgen');
+const xss = require('xss'); 
 
 // ******************************* Add user ************************************
 const addUser = async (req, res) => {
     try {
-        // Get user data
-        const { username, email, password, role } = req.body; 
+        // Get user input data
+        const usernameInput = req.body.username ;
+        const emailInput = req.body.email ;
+        const passwordInput = req.body.password ;
+        const roleInput = req.body.role ;
+       
+        // Sanitize the user input
+        const sanitizedData = {
+            username: xss(usernameInput),
+            email: xss(emailInput),
+            password: xss(passwordInput),
+            role: xss(roleInput),
+        };
+        const {username, email, password, role} = sanitizedData
 
         // Check user existence using email
         const userExist = await User.findOne({$or: [{email}, {username}]});
@@ -21,67 +38,20 @@ const addUser = async (req, res) => {
             const salt = await bcrypt.genSalt();
             const hashedPassword = bcrypt.hashSync(password, salt)
 
-            // Set transporter configuration
-            const transporterConfig = {
-                service: 'gmail',
-                auth: {
-                    user: process.env.EMAIL,
-                    pass: process.env.PASS,
-                },
-            }
-            const transporter = nodemailer.createTransport(transporterConfig);
+            // Post user data
+            await User.create({ username, email, password: hashedPassword, role }); 
+            const user = await User.findOne({ email }); 
 
-            // Create instance of MailGen
-            const MailGenerator = new MailGen({
-                theme: "default",
-                product: {
-                    name: "Markstone",
-                    link: "https://mailgen.js/"
-                }
-            })
+            // Generate verification token
+            const verificationToken = await token.verificationToken(user.id)
 
-            // Set mail message properties
-            const messageTemplate = {
-                body: {
-                    name: username,
-                    logo: 'https://mailgen.js/img/logo.png',
-                    link: 'https://mailgen.js/',
-                    intro: `You are now a Markstone website ${role === "admin" ? "admin" : "manager"}`,
-                    table: {
-                        data: [
-                            {
-                                Email: email,
-                                Password: password
-                            }
-                        ]
-                    },
-                    action: {
-                        instructions: 'To update your credentials, please click here',
-                        button: {
-                            color: '#22BC66',
-                            text: 'Update your credentials',
-                            link: `${process.env.DEPLOYMENT_CLIENT_URI}/dashboard/account`
-                        }
-                    },
-                    outro: "This email is automatically generated. Please do not answer it."
-                }
-            } 
-            // Generate the email
-            const mail = MailGenerator.generate(messageTemplate)
+            // Set message template for the mail verification
+            const messageTemplate = await template.userCredentials(username, role, email, password, verificationToken)
 
-            // Set mail config
-            const mailConfig = {
-                from: process.env.EMAIL,
-                to: email,
-                subject: 'Markstone website users',
-                html: mail
-            }
-
-            // Send the email
-            try {
-                await transporter.sendMail(mailConfig);
-                await User.create({ username, email, password: hashedPassword, role });
-                res.status(201).json({
+            // Send mail
+            try {   
+                await mail.sendMail(email, messageTemplate)
+                return res.status(201).json({
                     status: 201,
                     msg: "A notification email is sent to the user with his credentials"
                 })
@@ -91,7 +61,6 @@ const addUser = async (req, res) => {
         }   
     } catch (error) {
         res.status(400).json({ status: 400, message: "Failed to add user" })
-        console.log(error);
     }   
 }
 
@@ -139,7 +108,8 @@ const searchUser = async (req, res) => {
         const skip = (page - 1) * limit
         
         // Get search query and add regex
-        const searchQuery = req.query.search_query; 
+        const searchQueryInput = req.query.search_query; 
+        const searchQuery =  xss(searchQueryInput)
         const searchQueryRegex = new RegExp(searchQuery, 'i')
 
         // Get matching users by username with limit number per page and sort them by username.
@@ -172,7 +142,7 @@ const updateUser = async (req, res) => {
             })
         } else {
             // Get user data
-            const { username, email, role, active, valid_account, last_login } = req.body;
+            const { username, email, role } = req.body;
 
             // Get Password
             let password = req.body.password 
@@ -204,16 +174,12 @@ const updateUser = async (req, res) => {
              
                 // Find user by it's Id and update it
                 await User.findByIdAndUpdate(userId,
-                    {
-                        username, email, password, role, updated_at: updatedAt,
-                        active, valid_account, last_login
-                    })
+                    { username, email, role, password, updated_at: updatedAt })
                 res.status(200).json({ status: 200, message: "User updated successfully" })
             }
         }
     } catch (error) {
         res.status(400).json({ status: 400, message: "Failed to update user" })
-        console.log(error);
     }   
 }
 

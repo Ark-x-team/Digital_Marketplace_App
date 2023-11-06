@@ -2,7 +2,7 @@ const Customer = require("../models/Customer"); // Import customer Model
 const bcrypt = require('bcrypt') 
 const xss = require('xss');
 
-// *********************************** Add user ***************************************
+// ****************************** Add user *********************************
 const addUser = async (req, res) => {
     // Get user data
     const { username, email, password, role } = req.body;
@@ -116,7 +116,7 @@ const updateCustomer = async (req, res) => {
             })
         } else {
             // Get customer data
-            const { username, email, role, active, valid_account, last_login } = req.body;
+            const { username, email, role, valid_account } = req.body;
 
             // Get Password
             let password = req.body.password 
@@ -148,16 +148,12 @@ const updateCustomer = async (req, res) => {
              
                 // Find customer by it's Id and update it
                 await Customer.findByIdAndUpdate(customerId,
-                    {
-                        username, email, password, role, updated_at: updatedAt,
-                        active, valid_account, last_login
-                    })
+                    { username, email, password, role, updated_at: updatedAt, valid_account })
                 res.status(200).json({ status: 200, message: "Customer updated successfully" })
             }
         }
     } catch (error) {
         res.status(400).json({ status: 400, message: "Failed to update customer" })
-        console.log(error);
     }   
 }
 
@@ -175,7 +171,7 @@ const deleteCustomer = async (req, res) => {
         } else {
             // Find customer by it's Id and delete it
             await Customer.findByIdAndDelete(customerId);
-            res.status(200).json({ status: 200, message: "Your account deleted successfully" });
+            res.status(200).json({ status: 200, message: "Customer deleted successfully" });
         }
     } catch (error) {
         res.status(400).json({ status: 400, message: "Failed to delete customer" })

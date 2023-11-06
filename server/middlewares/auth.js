@@ -9,7 +9,7 @@ const adminRole = async (req, res, next) => {
 
         // Decode the access token
         const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
-
+        
         // Find user and check role
         const user = await User.findById(decoded.id)
         if (user && decoded.role === "admin") {
@@ -74,5 +74,7 @@ const customerRole = async (req, res, next) => {
         res.status(400).json({ status: 400, message: "Bad request" })
     }
 }
+
+// assistantRole
 
 module.exports = { adminRole, userRole, customerRole }

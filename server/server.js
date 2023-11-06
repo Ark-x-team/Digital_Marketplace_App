@@ -61,9 +61,13 @@ app.use(express.json())
 const productRoutes = require('./routes/productRoutes')
 const userRoutes = require('./routes/userRoutes')
 const customerRoutes = require('./routes/customerRoutes')
+const categoryRoutes = require('./routes/categoryRoutes')
+const subcategoryRoutes = require('./routes/subcategoryRoutes')
 app.use(productRoutes)
 app.use(userRoutes)
 app.use(customerRoutes)
+app.use(categoryRoutes)
+app.use(subcategoryRoutes)
 
 // Run App
 app.listen(process.env.PORT, _ => console.log(`App is running on http://localhost:${process.env.PORT}`))

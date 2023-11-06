@@ -57,12 +57,39 @@ const getProducts = async (req, res) => {
         const skip = (page - 1) * limit
         
         // Get all products with limit number per page and sort them by creation date.
-        const products = await Product.find().limit(limit).skip(skip).sort({ 'created_at': -1 });
+        const products = await Product.aggregate([
+            {
+              $lookup: {
+                from: "subcategories",
+                localField: "subcategory_id",
+                foreignField: "_id",
+                as: "subcategory",
+              },
+            },
+            {
+              $unwind: "$subcategory",
+            },
+            {
+              $project: {
+                _id: 1,
+                product_name: 1,
+                subcategory_id:"$subcategory._id",
+                subcategory_name: "$subcategory.subcategory_name",
+                product_images: 1,
+                short_description: 1,
+                long_description: 1,
+                price: 1,
+                discount_price: 1,
+                active: 1,
+              },
+            },
+          ])
+            .limit(limit).skip(skip).sort({ 'created_at': -1 });
         const count = products.length
 
         // Check the existence of products for each page
         if (count < 1) {
-            res.status(404).json({ status: 404, message: "There is no product here" })
+            res.status(404).json({ status: 404, data: [] })
         } else res.status(200).json({status: 200, count, page, limit, data: products})
     } catch (error) {
         res.status(400).json({status: 400, message: "Failed to get products"})
@@ -74,9 +101,52 @@ const getProduct = async (req, res) => {
     try {
         // Get product id from request params
         const productId = req.params.id; 
+
+        // Get product by its ID
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            res.status(404).json({ status: 404, message: "Product not found" });
+        } else {
+
+            // Get subcategory name using aggregation
+            const productWithSubcategory = await Product.aggregate([
+                {
+                    $match: { _id: product._id },
+                },
+                {
+                    $lookup: {
+                        from: "subcategories", 
+                        localField: "subcategory_id",
+                        foreignField: "_id",
+                        as: "subcategory",
+                    },
+                },
+                {
+                    $unwind: "$subcategory",
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        product_name: 1,
+                        subcategory_id:"$subcategory._id",
+                        subcategory_name: "$subcategory.subcategory_name",
+                        product_images: 1,
+                        short_description: 1,
+                        long_description: 1,
+                        price: 1,
+                        discount_price: 1,
+                        active: 1,
+                    },
+                },
+            ]);
+            if (!productWithSubcategory || productWithSubcategory.length === 0) {
+                res.status(500).json({ status: 500, error: "Failed to retrieve subcategory name" });
+            } else {
+                res.status(200).json({ status: 200, data: productWithSubcategory });
+            }
+        }
         
-        // Find product by it's id
-        const product = await Product.findById(productId); 
         res.status(200).json({status: 200, data : product})
     } catch (error) {
         res.status(404).json({status: 404, message: "Product not found"})
@@ -96,12 +166,42 @@ const searchProduct = async (req, res) => {
         const searchQueryRegex = new RegExp(searchQuery, 'i')
 
         // Get matching products by name or descriptions with limit number per page and sort them by name.
-        const matchingProduct = await Product.find(
-            {$or: [{product_name: searchQueryRegex}, 
-                { short_description: searchQueryRegex },
-                { long_description: searchQueryRegex }]
-            }
-        ).limit(limit).skip(skip).sort({ 'product_name': -1 });
+        const matchingProduct = await Product.aggregate([
+            {
+                $lookup: {
+                  from: "subcategories", 
+                  localField: "subcategory_id",
+                  foreignField: "_id",
+                  as: "subcategory",
+                },
+            },
+            {
+                $unwind: "$subcategory",
+            },
+            {
+                $match: {
+                    $or: [
+                        { product_name: searchQueryRegex }, 
+                        { short_description: searchQueryRegex },
+                        { long_description: searchQueryRegex }
+                    ],
+                },
+              },
+              {
+                $project: {
+                    _id: 1,
+                    product_name: 1,
+                    subcategory_id:"$subcategory._id",
+                    subcategory_name: "$subcategory.subcategory_name",
+                    product_images: 1,
+                    short_description: 1,
+                    long_description: 1,
+                    price: 1,
+                    discount_price: 1,
+                    active: 1,
+                },
+              },
+            ]).limit(limit).skip(skip).sort({ 'product_name': -1 });
         const count = matchingProduct.length
 
         // Check product existence by it's Id

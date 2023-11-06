@@ -8,7 +8,7 @@ const userController = require('../controllers/userController')
 const userAuthController = require('../controllers/auth/userAuthController')
 const mailController = require('../controllers/mail/mailVerification')
 
-// Middlewares (data validation & roles)
+// Middlewares (data validation & authorization)
 const { validationRules, passwordValidationRules, newDataValidationRules, dataValidation }  = require('../middlewares/validation')
 const { adminRole, userRole } = require('../middlewares/auth')
 

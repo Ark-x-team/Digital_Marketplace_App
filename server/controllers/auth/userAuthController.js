@@ -1,14 +1,26 @@
+// Models & utils 
 const User = require("../../models/User"); 
+const mail = require('../../utils/mail/mail') 
+const template = require('../../utils/mail/templates')
+const token = require('../../utils/token') 
+
+// Modules
 const bcrypt = require('bcrypt') 
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const MailGen = require('mailgen');
+const xss = require('xss'); 
 
 // ****************************** Login ************************************
 const userLogin = async (req, res) => {
     try {
-        // Get user data
-        const { email, password } = req.body;
+        // Get user input data
+        const emailInput = req.body.email ;
+        const passwordInput = req.body.password ;
+
+        // Sanitize the user input
+        const sanitizedData = {
+            email: xss(emailInput),
+            password: xss(passwordInput),
+        };
+        const { email, password} = sanitizedData
         
         // Check user existence and account validity
         const user = await User.findOne({ email })
@@ -18,40 +30,22 @@ const userLogin = async (req, res) => {
                 const passwordMatch = bcrypt.compareSync(password, user.password);
                 if (passwordMatch) {
     
-                    // Set hash algorithm 
-                    const header = { algorithm: process.env.ALG }
-                  
-                    // Access token expiration : 15 min
-                    const accessTokenExp = 1000 * 60 * 15 ;
+                     // Access token expiration : 15 min
+                     const accessTokenExp = 1000 * 60 * 15 ;
                     
-                    // Generate access token
-                    const accessToken = await jwt.sign({
-                        // Payload
-                        id: user._id,
-                        role: user.role,
-                        exp: Date.now() + accessTokenExp
-                    },
-                        process.env.ACCESS_TOKEN_SECRET, header)
-    
-                    // Refresh token expiration : 30 days
-                    const refreshTokenExp = 30 * 24 * 60 * 60 * 1000 ;
-                    
-                    // Generate refresh token
-                    const refreshToken = await jwt.sign({
-                        // Payload
-                        id: user._id,
-                        role: user.role,
-                        exp: Date.now() + refreshTokenExp
-                    },
-                        process.env.REFRESH_TOKEN_SECRET, header)
-    
-                    // Pass data in http headers
-                    res.set({
-                        "access_token": accessToken,
-                        "token_type": "Bearer",
-                        "expires_in": accessTokenExp,
-                        "refresh_token": refreshToken
-                    })
+                     // Generate access token
+                     const accessToken = await token.accessToken(user.id, user.username, user.role)
+     
+                     // Generate refresh token
+                     const refreshToken = await token.refreshToken(user.id, user.username, user.role)
+     
+                     // Pass data in http headers
+                     res.set({
+                         "access_token": accessToken,
+                         "token_type": "Bearer",
+                         "expires_in": accessTokenExp,
+                         "refresh_token": refreshToken
+                     })
     
                     // Set current date to last_login
                     const lastLogin = Date.now();
@@ -64,94 +58,41 @@ const userLogin = async (req, res) => {
         } else res.status(401).json({ status: 401, message: "Invalid email address" })
     } catch(error){
         res.status(400).json({ status: 400, message: "Failed to login" })
-        console.log(error);
     }
 }
 
+// ************************* Reset password ********************************
 const resetPasswordVerify = async (req, res) => {
     try {
-        // Get user data
-        const { email } = req.body;
+        // Get user input data
+        const emailInput = req.body.email ;
+
+        // Sanitize the user input
+        const email = xss(emailInput)
         
         // Check user existence and account validity 
         const user = await User.findOne({ email })
         if (user) {
-            // Set hash algorithm
-            const header = { algorithm: process.env.ALG }
-                              
-            // Verification token expiration : 10 min
-            const verificationTokenExp = 1000 * 60 * 10 ;
-                
-            // Generate access token
-            const verificationToken = await jwt.sign({
-                // Payload
-                id: user.id,
-                exp: Date.now() + verificationTokenExp
-            },
-            process.env.ACCESS_TOKEN_SECRET, header)
-                
-            // Set transporter configuration
-            const transporterConfig = {
-                service: 'gmail',
-                auth: {
-                    user: process.env.EMAIL,
-                    pass: process.env.PASS,
-                },
-            }
-            const transporter = nodemailer.createTransport(transporterConfig);
-        
-            // Create instance of MailGen
-            const MailGenerator = new MailGen({
-                theme: "default",
-                product: {
-                    name: "Markstone",
-                    link: "https://mailgen.js/"
-                }
-            })
-        
-            // Set mail message properties
-            const messageTemplate = {
-                body: {
-                    name: user.username,
-                    logo: 'https://mailgen.js/img/logo.png',
-                    link: 'https://mailgen.js/',
-                    intro: `Password reset`,
-                    action: {
-                        instructions: 'To reset your password, please click here',
-                        button: {
-                            color: '#22BC66',
-                            text: 'Reset password',
-                            link: `http://localhost:${process.env.PORT}/users/reset-password?token=${verificationToken}`
-                        }
-                    },
-                    outro: "This email is automatically generated. Please do not answer it."
-                }
-            } 
-            // Generate the email
-            const mail = MailGenerator.generate(messageTemplate)
-        
-            // Set mail config
-            const mailConfig = {
-                from: process.env.EMAIL,
-                to: email,
-                subject: 'Markstone website users',
-                html: mail
-            }
-        
-            // Send the email
-            try {
-                await transporter.sendMail(mailConfig);
-                res.status(201).json({
+            // Generate verification token
+            const verificationToken = await token.verificationToken(user.id)
+
+            // Set message template for the mail verification
+            const messageTemplate = await template.resetPassword(user.username, verificationToken)
+ 
+            // Send mail
+            try {   
+                await mail.sendMail(email, messageTemplate)
+                return res.status(201).json({
                     status: 201,
                     msg: "Check your email to reset your password"
                 })
             } catch (error) {
                 return res.status(500).json({ error: error.message });
             }
+            
         } else res.status(404).json({ status: 404, message: "customer does not exist" })
     } catch (error) {
         res.status(400).json({ status: 400, message: "Failed to reset password" })
-        console.log(error)
     }
 }
 
