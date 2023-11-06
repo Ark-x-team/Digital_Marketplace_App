@@ -29,6 +29,8 @@ const limiter = rateLimit({
 })
 app.use(limiter)
 
+// ********************************* App config ********************************
+
 // Database connection
 const dbConnect = require('./config/database')
 dbConnect()
@@ -57,17 +59,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'))
 app.use(express.json())
 
-// Routing
+// ********************************* App routing ********************************
+
 const productRoutes = require('./routes/productRoutes')
 const userRoutes = require('./routes/userRoutes')
 const customerRoutes = require('./routes/customerRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
 const subcategoryRoutes = require('./routes/subcategoryRoutes')
+const orderRoutes = require('./routes/orderRoutes')
 app.use(productRoutes)
 app.use(userRoutes)
 app.use(customerRoutes)
 app.use(categoryRoutes)
 app.use(subcategoryRoutes)
+app.use(orderRoutes)
 
 // Run App
 app.listen(process.env.PORT, _ => console.log(`App is running on http://localhost:${process.env.PORT}`))

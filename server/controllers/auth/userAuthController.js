@@ -77,7 +77,7 @@ const resetPasswordVerify = async (req, res) => {
             const verificationToken = await token.verificationToken(user.id)
 
             // Set message template for the mail verification
-            const messageTemplate = await template.resetPassword(user.username, verificationToken)
+            const messageTemplate = await template.resetPassword(user.username, verificationToken, "users")
  
             // Send mail
             try {   

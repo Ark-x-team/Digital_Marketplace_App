@@ -18,7 +18,7 @@ const verifyEmail = (username, verificationToken) => {
     };
 }
 
-const resetPassword = (username, verificationToken) => {
+const resetPassword = (username, verificationToken, path) => {
     return {
         body: {
             name: username,
@@ -30,7 +30,7 @@ const resetPassword = (username, verificationToken) => {
                 button: {
                     color: '#22BC66',
                     text: 'Reset password',
-                    link: `http://localhost:${process.env.PORT}/customers/reset-password?token=${verificationToken}`
+                    link: `http://localhost:${process.env.PORT}/${path}/reset-password?token=${verificationToken}`
                 }
             },
             outro: "This email is automatically generated. Please do not answer it."

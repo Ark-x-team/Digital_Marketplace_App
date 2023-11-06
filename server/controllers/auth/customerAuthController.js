@@ -50,7 +50,7 @@ const customerSignup = async (req, res) => {
                 const verificationToken = await token.verificationToken(customer.id)
 
                 // Set message template for the mail verification
-                const messageTemplate = await template.verifyEmail(username, verificationToken)
+                const messageTemplate = await template.verifyEmail(username, verificationToken, "customers")
 
                 // Send mail
                 try {   

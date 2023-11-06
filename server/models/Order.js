@@ -33,6 +33,6 @@ const orderSchema = new mongoose.Schema({
     },
 })
 
-const Product = mongoose.model('products', orderSchema)
+const Order = mongoose.model('orders', orderSchema)
 
-module.exports = Product
+module.exports = Order

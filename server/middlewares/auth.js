@@ -22,7 +22,7 @@ const adminRole = async (req, res, next) => {
             res.status(403).json({ status: 403, message: "You don't have enough privilege" })
         }
     } catch(error) {
-        res.status(400).json({ status: 400, message: "Bad request" })
+        res.status(400).json({ status: 400, message: "You must to be connected" })
     }
 }
 
@@ -46,7 +46,7 @@ const userRole = async (req, res, next) => {
             res.status(403).json({ status: 403, message: "You don't have enough privilege" })
         }
     } catch(error) {
-        res.status(400).json({ status: 400, message: "Bad request" })
+        res.status(400).json({ status: 400, message: "You must to be connected" })
         console.log(error) 
     }
 }
@@ -71,7 +71,7 @@ const customerRole = async (req, res, next) => {
             res.status(403).json({ status: 403, message: "You don't have enough privilege" })
         }
     } catch(error) {
-        res.status(400).json({ status: 400, message: "Bad request" })
+        res.status(400).json({ status: 400, message: "You must to be connected" })
     }
 }
 
