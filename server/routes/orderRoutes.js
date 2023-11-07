@@ -12,9 +12,15 @@ const { userRole, customerRole } = require('../middlewares/auth')
 // Account middleware
 const { validAccount } = require('../middlewares/account')
 
-// Product Routes
+// ******************************** Order Routes *******************************
+
+// Back office
+router.get('/orders', userRole, orderController.getOrders)
+
+// Client
 router.post('/orders', customerRole, validAccount, orderController.createOrder)
-// router.get('/orders', orderController.getOrders)
+router.get('/customer-orders', customerRole, validAccount, orderController.getCustomerOrders)
+
 // router.get('/orders/:id', orderController.getOrder)
 // router.put('/orders/:id', orderController.updateOrder)
 // router.delete('/orders/:id', userRole, orderController.deleteOrder)

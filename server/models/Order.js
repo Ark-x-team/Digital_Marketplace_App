@@ -6,21 +6,14 @@ const orderSchema = new mongoose.Schema({
         ref: 'customers',
         required: true,
     },
-    order_items: [
-        {
-            product: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'products',
-                required: true,
-            },
-            quantity: {
-                type: Number,
-                required: true,
-            },
-        },
-    ],
-    order_date: {
-        type: Date
+    order_items: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'order-items',
+        required: true,
+    }],
+    created_at: {
+        type: Date,
+        default: Date.now
     },
     cart_total_price: {
         type: Number,
@@ -28,8 +21,8 @@ const orderSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['open', 'archived', 'canceled'],
-        default: 'open',
+        enum: ['pending', 'delivered', 'canceled'],
+        default: 'pending',
     },
 })
 

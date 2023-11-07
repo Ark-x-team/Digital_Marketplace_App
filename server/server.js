@@ -66,12 +66,14 @@ const userRoutes = require('./routes/userRoutes')
 const customerRoutes = require('./routes/customerRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
 const subcategoryRoutes = require('./routes/subcategoryRoutes')
+
 const orderRoutes = require('./routes/orderRoutes')
 app.use(productRoutes)
 app.use(userRoutes)
 app.use(customerRoutes)
 app.use(categoryRoutes)
 app.use(subcategoryRoutes)
+
 app.use(orderRoutes)
 
 // Run App
