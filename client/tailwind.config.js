@@ -1,27 +1,32 @@
+// Importing NextUI configuration from the "@nextui-org/react" package
+import { nextui } from "@nextui-org/react";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
   ],
   darkMode : 'class',
   theme: {
     extend: {
       fontFamily: {
-        main: ['Barlow', 'sans-serif'],
+        main: ['Montserrat', 'sans-serif'],
+        title: ['Dela Gothic One', 'cursive']
       },
       colors: {
-        'main': '#001C30',
-        'sec': '#60f8ee',
-        'mainLight' : '#003053',
-        'mainDark': '#00192b'
+        'primary': '#5a2ce2',
+        'secondary': "#5a2ce26c",
+        'light': '#cbd5e1',
+        'dark': '#0f1115'
       },
     },
     screens: {
-      mobile: "320px",
-      tablet: "640px",
-      laptop: "1024px",
-      desktop: "1440px",
+      sm: "320px",
+      md: "640px",
+      lg: "1024px",
+      xl: "1280px",
     },
   },
-  plugins: [],
+  plugins: [nextui()]
 }

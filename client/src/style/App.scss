@@ -1,0 +1,142 @@
+// Circular text animation
+.animation {
+	@apply absolute text-xs lg:text-sm text-center w-28 md:w-32 lg:w-40 h-28 md:h-32 lg:h-40 ;
+	top: 83%;
+	left: 80%;
+	border-radius: 50%;
+	animation: spinZ 20s linear infinite;
+
+	@media (min-width: 640px) {
+		top: 70%;
+		left: 85%;
+	}
+	@media (min-width: 1024px) {
+		top: 60%;
+		left: 90%;
+	}
+	
+	span {
+		position: absolute;
+		display: inline-block;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		text-transform: uppercase;
+		transition: all .5s cubic-bezier(0,0,0,1);
+	}
+	
+	@keyframes spinZ {
+		0% {
+			transform: rotateZ(360deg);
+		}
+		100% {
+			transform: rotateZ(0deg);
+		}
+	}
+}
+
+// Scroll text animation
+.scroll-text {
+	@apply overflow-x-hidden absolute -bottom-20 md:-bottom-0 lg:bottom-24 xl:bottom-28  left-1/2 -translate-x-1/2 rotate-2 z-10;
+
+	width: 480vw;
+	
+	@media (min-width: 1280px) {
+		width: 280vw
+	}
+}
+
+// Error animation
+$color: #5a2ce2;
+
+  @mixin sm {
+	  @media screen and (max-width: 640px) {
+		  @content;
+		}
+	}
+	
+	@mixin height {
+		@media screen and (max-height:660px) {
+			@content;
+	 }
+  }
+  
+  .p404 {
+	  margin: 0;
+	}
+  
+  .error-wrapper {
+	 display: grid;
+	 grid-template-columns: 1fr;
+	 justify-content: center;
+	 align-items: center;
+	 height: 100vh;
+	 overflow-x: hidden;
+  
+	 .container {
+		 margin: 0 auto;
+		 transition: all 0.4s ease;
+		 display: flex;
+		 justify-content: center;
+		 align-items: center;
+		 position: relative;
+  
+		 .scene {
+			 position: absolute;
+			 width: 100vw;
+			 height: 100vh;
+			 vertical-align: middle;
+		 }
+  
+		 .p404 {
+			 top: 35% !important;
+			 left: 50% !important;
+			 transform: translate(-50%, -50%);
+		 }
+  
+		 .p404 {
+			 font-size: 200px;
+			 font-weight: 700;
+			 letter-spacing: 4px;
+			 color: $color;
+			 display: flex !important;
+			 justify-content: center;
+			 align-items: center;
+			 position: absolute;
+			 z-index: 2;
+			 animation: anime404 0.6s cubic-bezier(0.1, 0.8, 1, 1.05) both;
+  
+			 @include sm {
+				 font-size: 150px;
+			 }
+  
+			 @keyframes anime404 {
+				 0% {
+					 opacity: 0;
+					 transform: scale(10) skew(20deg, 20deg);
+				 }
+			 }
+  
+			 &:nth-of-type(2) {
+				 z-index: 1;
+				 animation-delay: .1s;
+				 filter: blur(20px);
+				 opacity: 0.4;
+			 }
+		 }
+		 .error-article{
+		  transform: translateY(30px);
+		  opacity: 0;
+		  animation: anime_article .5s .5s ease-out forwards;
+		 }
+		 @keyframes anime_article {
+		  100%{
+			transform: translateY(0px);
+			opacity: 1;
+		  }
+		 }
+	 }
+  }
+  
+  

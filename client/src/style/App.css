@@ -1,0 +1,192 @@
+:root {
+  /* fonts family */
+  --font-main: 'Montserrat', sans-serif;
+  --font-title: "Dela Gothic One", cursive;
+
+  /* font weight */
+  --font-light: 300;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-black: 900;
+
+  /* Colors */
+  --primary: #5a2ce2; 
+  --secondary: #5a2ce26c;
+
+  /* Dark color */
+  --dark: #0f1115;
+
+  /* Light color */
+  --light: #cbd5e1;
+
+  /* Media */
+  --mobile: "min-width: 320px";
+  --tablet: "min-width: 640px";
+  --laptop: "min-width: 1024px";
+  --desktop: "min-width: 1280px";
+}
+* {
+  margin: 0;
+  padding: 0%;
+  box-sizing: border-box;
+}
+ body {
+  overflow-x: hidden !important;
+  font-family: var(--font-main) !important;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  line-height: 1.625 !important;
+}
+
+::selection{
+  @apply bg-gray-600 text-white
+}
+img::selection{
+  background-color: none;
+}
+
+.blur-shape{
+  @apply absolute z-10 opacity-70 dark:opacity-90
+}
+
+.overflow-hidden{
+  overflow: hidden !important;
+}
+
+button, div[data-slot="input-wrapper"] {
+  transition: none !important;
+}
+
+/**************************** Responsive design ****************************/
+
+.main-container {
+  width: 100%;
+  margin: 0% auto;
+}
+
+@media (min-width: 768px) {
+  .main-container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+  .main-container {
+    max-width: 924px;
+  }
+}
+@media (min-width: 1280px) {
+  .main-container {
+    max-width: 1224px;
+  }
+}
+
+/********************************** Navbar ***********************************/
+
+.nav-menu a {
+  transition-property: opacity;
+  @apply duration-300
+}
+
+.nav-menu:hover > :not(:hover) {
+  @apply opacity-50
+}
+
+.nav-icon {
+  width: 40px;
+  height: 26px;
+  position: relative;
+  transform: rotate(0deg);
+  transition: .5s ease-in-out;
+  cursor: pointer;
+}
+
+.nav-icon span {
+  @apply bg-primary dark:bg-white;
+  display: block;
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: 150ms ease-out;
+}
+
+.nav-icon span:nth-child(1) {
+  top: 8px;
+  transform-origin: left center;
+}
+
+.nav-icon span:nth-child(2) {
+  top: 15px;
+  transform-origin: left center;
+}
+
+.nav-icon.open span:nth-child(1) {
+  transform: rotate(35.5deg);
+  width:45px ;
+  top: 0px;
+  left: 0px;
+}
+
+.nav-icon.open span:nth-child(2) {
+ transform: rotate(-35.5deg);
+  width:45px ;
+  top: 26px;
+  left: 0px;
+}
+
+.nav-open{
+  height: 62px ;
+}
+
+@media (min-width: 1024px) {
+  .nav-h{
+    height: 72px !important;
+  }
+}
+
+/*********************************** Header ***********************************/
+
+@media (min-width: 1024px) {
+  .header {
+    padding-bottom: 32rem !important;
+  }
+}
+@media (min-width: 1440px) {
+  .header {
+    padding-bottom: 16rem !important;
+  }
+}
+
+.search-button{
+  @apply w-full md:w-fit py-6 md:pr-28 bg-white dark:bg-dark bg-opacity-60 dark:bg-opacity-50 backdrop-blur-xl capitalize text-dark dark:text-white cursor-pointer z-10 !important;
+}
+
+/******************************** Quick Links *********************************/
+
+.quick-links{
+  @apply bg-white dark:bg-dark text-primary dark:text-white !important;
+}
+
+/********************************** Overview **********************************/
+
+.overview-image{
+  @apply rounded-xl md:rounded-2xl lg:rounded-3xl 
+}
+
+/********************************** Reviews ***********************************/
+.review-avatar {
+  background-color: transparent !important;
+  border: none !important
+}
+/********************************** Dropdown **********************************/
+.dropdown{
+  @apply min-w-fit !important;
+}
+
+
+

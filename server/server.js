@@ -38,8 +38,7 @@ dbConnect()
 // Enable cross origin 
 const cors = require("cors");
 app.use(cors({
-    // origin: process.env.DEPLOYMENT_CLIENT_URI,
-    origin: process.env.LOCAL_CLIENT_URI,
+    origin: "http://localhost:5173",
     credentials: true
   }));
 
