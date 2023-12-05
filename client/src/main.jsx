@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 import { NextUIProvider } from "@nextui-org/react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 // Disable React Dev Tools
 disableReactDevTools();
@@ -19,10 +20,12 @@ axios.defaults.withCredentials = true;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <NextUIProvider>
-        <App />
-      </NextUIProvider>
-    </BrowserRouter>
+    <GoogleOAuthProvider clientId="301326894496-q2m380rscft5agqbsf89l3hpgi21ri2t.apps.googleusercontent.com">
+      <BrowserRouter>
+        <NextUIProvider>
+          <App />
+        </NextUIProvider>
+      </BrowserRouter>
+    </GoogleOAuthProvider>
   </React.StrictMode>
 );

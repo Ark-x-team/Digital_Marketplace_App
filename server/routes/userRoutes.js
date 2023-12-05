@@ -15,6 +15,7 @@ const { adminRole, userRole } = require('../middlewares/auth')
 router.post('/users/login', userAuthController.userLogin)
 router.post('/users/reset-password-verify', userAuthController.resetPasswordVerify)
 router.post('/users/reset-password', passwordValidationRules(), dataValidation, userAuthController.userResetPassword)
+router.get('/users/get-refresh-token', userAuthController.handleRefreshToken)
 
 // CRUD routes
 router.post('/users',  validationRules(), dataValidation, userController.addUser)

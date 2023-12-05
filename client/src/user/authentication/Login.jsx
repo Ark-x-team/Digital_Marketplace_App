@@ -1,26 +1,79 @@
-import { Input, Button } from "@nextui-org/react";
-import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
+import Navbar from "../../components/navbar/Navbar";
+import { Input, Button, Progress, Textarea } from "@nextui-org/react";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import Navbar from "../../useless/navbar/Navbar";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import userAuthStore from "../../store/authentication/UserAuthStore";
 
-export default function UserLogin() {
+function UserLogin() {
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const [loading, setLoading] = useState(false);
+
+  const {
+    login,
+    loginForm,
+    updateLoginForm,
+    loginValidation,
+    loginError,
+    setRecaptchaValue,
+  } = userAuthStore();
+
+  const navigate = useNavigate();
+
+  const recaptchaRef = useRef(null);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const captchaToken = await recaptchaRef.current.executeAsync();
+    recaptchaRef.current.reset();
+    setRecaptchaValue(captchaToken);
+
+    setLoading(true);
+
+    try {
+      await login();
+      setLoading(false);
+      navigate("/dashboard");
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  const errorMessage = (
+    <Textarea readOnly color="danger" minRows={1} placeholder={loginError} />
+  );
 
   return (
     <>
+      {loading ? (
+        <Progress
+          style={{ zIndex: "9999" }}
+          size="sm"
+          isIndeterminate
+          aria-label="Loading..."
+          className="absolute top-0 left-0 w-full"
+        />
+      ) : (
+        ""
+      )}
       <Navbar />
       <div className="h-screen main-container px-3 flex w-full justify-center items-center">
-        <div className="flex flex-col gap-5 w-full max-w-md md:w-2/4">
+        <form
+          onSubmit={handleLogin}
+          className="flex flex-col gap-5 w-full max-w-md md:w-2/4"
+        >
           <h1 className="font-title capitalize text-center text-3xl lg:text-4xl text-primary  dark:text-white dark:lg:text-primary mb-6 md:mb-8 lg:mb-10">
             login
           </h1>
           <Input
+            name="email"
+            value={loginForm.email}
+            onChange={updateLoginForm}
             type="email"
             placeholder="Email"
             startContent={
@@ -29,6 +82,9 @@ export default function UserLogin() {
           />
 
           <Input
+            name="password"
+            value={loginForm.password}
+            onChange={updateLoginForm}
             type={isVisible ? "text" : "password"}
             placeholder="Password"
             startContent={
@@ -51,8 +107,15 @@ export default function UserLogin() {
           >
             forgot password ?
           </Link>
-
+          {loginError && errorMessage}
+          <ReCAPTCHA
+            sitekey={import.meta.env.VITE_SITE_KEY}
+            size="invisible"
+            ref={recaptchaRef}
+          />
           <Button
+            type="submit"
+            isDisabled={!loginValidation}
             color="primary"
             variant="solid"
             endContent={<LoginRoundedIcon />}
@@ -60,8 +123,9 @@ export default function UserLogin() {
           >
             login
           </Button>
-        </div>
+        </form>
       </div>
     </>
   );
 }
+export default UserLogin;

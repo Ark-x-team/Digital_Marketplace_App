@@ -20,7 +20,7 @@ const mainStore = create((set) => ({
 
   // ************************** Dark & Light Mode **************************
   mode: Cookies.get("appearance") || "dark",
-  cookieExpiration: { expires: 365 }, // One year
+  cookieExpiration: { expires: 365 },
   handleSwitchMode: () => {
     const { mode, cookieExpiration } = mainStore.getState();
     // Set the appearance mode in the cookie

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
-export default function ScrollText() {
+function ScrollText() {
   const wrapperRef = useRef(null);
 
   useEffect(() => {
@@ -67,3 +67,4 @@ export default function ScrollText() {
     </div>
   );
 }
+export default ScrollText;

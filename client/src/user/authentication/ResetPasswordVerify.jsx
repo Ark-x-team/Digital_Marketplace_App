@@ -5,9 +5,9 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import MarkEmailReadRoundedIcon from "@mui/icons-material/MarkEmailReadRounded";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Navbar from "../../useless/navbar/Navbar";
+import Navbar from "../../components/navbar/Navbar";
 
-export default function UserResetPasswordVerify() {
+function UserResetPasswordVerify() {
   const [resetLink, setResetLink] = useState(false);
 
   const resetPasswordForm = (
@@ -68,3 +68,4 @@ export default function UserResetPasswordVerify() {
     </>
   );
 }
+export default UserResetPasswordVerify;

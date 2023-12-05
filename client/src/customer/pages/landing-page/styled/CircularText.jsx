@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, Children } from "react";
+import { useEffect, useRef, useState, memo, Children } from "react";
+import PropTypes from "prop-types";
 
-const CircularText = ({ children }) => {
+function CircularText({ children }) {
   const emblemRef = useRef(null);
   const [textElements, setTextElements] = useState([]);
 
@@ -12,7 +13,7 @@ const CircularText = ({ children }) => {
         return;
       }
 
-      const text = Children.toArray(children).join(""); // Concatenate all child text
+      const text = Children.toArray(children).join("");
       emblemElement.innerHTML = "";
 
       const elements = [];
@@ -51,6 +52,10 @@ const CircularText = ({ children }) => {
       {textElements}
     </div>
   );
+}
+CircularText.propTypes = {
+  children: PropTypes.node,
 };
 
-export default CircularText;
+const MemoizedCircularText = memo(CircularText);
+export default MemoizedCircularText;

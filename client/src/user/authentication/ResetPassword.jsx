@@ -7,9 +7,9 @@ import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Navbar from "../../useless/navbar/Navbar";
+import Navbar from "../../components/navbar/Navbar";
 
-export default function UserResetPassword() {
+function UserResetPassword() {
   const [passwordUpdated, setPasswordUpdated] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -133,3 +133,4 @@ export default function UserResetPassword() {
     </>
   );
 }
+export default UserResetPassword;

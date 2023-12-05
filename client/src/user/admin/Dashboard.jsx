@@ -1,3 +1,4 @@
-export default function AdminDashboard() {
+function AdminDashboardHome() {
   return <div>Admin Dashboard</div>;
 }
+export default AdminDashboardHome;

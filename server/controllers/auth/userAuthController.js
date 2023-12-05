@@ -5,6 +5,7 @@ const template = require('../../utils/mail/templates')
 const token = require('../../utils/token') 
 
 // Modules
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt') 
 const xss = require('xss'); 
 
@@ -39,12 +40,13 @@ const userLogin = async (req, res) => {
                 res.set({
                     "token_type": "Bearer",
                     "access_token": accessToken,
-                    "refresh_token": refreshToken
+                    "refresh_token": refreshToken,
+                    "Access-Control-Expose-Headers": "access_token, refresh_token, token_type"
                 })
     
                 // Set current date to last_login
                 const lastLogin = Date.now();
-                await User.findByIdAndUpdate(user._id, { last_login: lastLogin })
+                await User.findByIdAndUpdate(user._id, { last_login: lastLogin, refresh_token: refreshToken })
                 res.status(200).json({ status: 200, message: "login success", user })
     
             } else res.status(401).json({ status: 401, message: "Invalid Password" })
@@ -56,60 +58,6 @@ const userLogin = async (req, res) => {
     }
 }
 
-// ****************************** Login ************************************
-// const customerLogin = async (req, res) => {
-//     try {
-//         // Get customer input data
-//         const emailInput = req.body.email ;
-//         const passwordInput = req.body.password;
-//         const captchaToken = req.body.recaptchaValue;
-
-//         const recaptchaRes = await axios.post(
-//         `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${captchaToken}`
-//         );
-//         if (recaptchaRes) {
-//              // Sanitize the user input
-//             const sanitizedData = {
-//                 email: xss(emailInput),
-//                 password: xss(passwordInput),
-//             };
-//             const {email, password} = sanitizedData
-       
-//             // Check customer existence and account validity 
-//             const customer = await Customer.findOne({ email })
-//             if (customer && customer.valid_account) {
-
-//                 // Compare password
-//                 const passwordMatch = bcrypt.compareSync(password, customer.password);
-//                 if (passwordMatch) {
-
-//                     // Generate access token
-//                     const mainToken = await token.mainToken(customer.id, customer.username,
-//                     "customer")
-   
-//                     // Pass data in http headers
-//                     res.set({
-//                         "token_type": "Bearer",
-//                         "access_token": mainToken,
-//                         "Access-Control-Expose-Headers": "access_token, token_type, expires_in"
-//                     })
-
-//                     // Set current date to last_login
-//                     const lastLogin = Date.now();
-
-//                     await Customer.findByIdAndUpdate(customer._id, { last_login: lastLogin })
-//                         res.status(200).json({
-//                         status: 200, message: "login success", customer
-//                     })
-   
-//                 } else res.status(401).json({ status: 401, message: "Invalid Password" })
-//             } else res.status(401).json({ status: 401, message: "Invalid email address" })
-//         } else res.status(403).json({ status: 400, message: "Bots are not allowed!" })
-//     } catch(error){
-//         res.status(400).json({ status: 400, message: "Failed to login" })
-//         console.log(error);
-//     }
-// }
 // ************************* Reset password ********************************
 const resetPasswordVerify = async (req, res) => {
     try {
@@ -186,36 +134,36 @@ const userResetPassword = async (req, res) => {
 }
 
 // *********************** Get new access token ****************************
-// const handleRefreshToken = async (req, res) => {
-//     try {
-//         // Retrieve the cookie
-//         const cookieToken = req.cookies.token
+const handleRefreshToken = async (req, res) => {
+    try {
+        // Retrieve the cookie
+        const refreshToken = req.body.token
         
-//         // Check occurrence of the token cookie.
-//         if (!cookieToken) {
-//             res.status(401).json({ status: 401, message: "You must to be connected" })
-//         } else {
-//             const customer = await Customer.findOne({ refresh_token: cookieToken })
-//             if (!customer) {
-//                 res.status(403).json({ status: 403, message: "You don't have enough privilege" })
-//             } else {
-//                 jwt.verify(cookieToken, process.env.REFRESH_TOKEN_SECRET,
-//                     async (error, decoded) => {
-//                         if (error || customer.id !== decoded.id) {
-//                             res.status(403).json({ status: 401, message: "Invalid or expired token" })
-//                         } else {
-//                             const accessToken = await token.accessToken(decoded.id, decoded.username, decoded.role)
-//                             res.status(200).json({ accessToken })
-//                         }
-//                     }
-//                 )
-//             }
+        // Check occurrence of the token cookie.
+        if (!refreshToken) {
+            res.status(401).json({ status: 401, message: "You must to be connected" })
+        } else {
+            const user = await User.findOne({ refresh_token: refreshToken })
+            if (!user) {
+                res.status(403).json({ status: 403, message: "You don't have enough privilege" })
+            } else {
+                jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,
+                    async (error, decoded) => {
+                        if (error || user.id !== decoded.id) {
+                            res.status(403).json({ status: 401, message: "Invalid or expired token" })
+                        } else {
+                            const accessToken = await token.accessToken(decoded.id, decoded.username, decoded.role)
+                            res.status(200).json({ accessToken })
+                        }
+                    }
+                )
+            }
             
-//         }
-//     } catch (error) {
-//         console.log(error);
-//         res.status(400).json({ status: 400, message: "Failed to generate new access token" })
-//     }
-// }
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ status: 400, message: "Failed to generate new access token" })
+    }
+}
 
-module.exports = { userLogin, resetPasswordVerify, userResetPassword };
+module.exports = { userLogin, resetPasswordVerify, userResetPassword, handleRefreshToken };

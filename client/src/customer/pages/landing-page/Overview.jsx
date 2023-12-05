@@ -1,16 +1,28 @@
-export default function Overview() {
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { For } from "million/react";
+
+function Overview() {
   const iconsData = ["design.svg", "code.svg", "image.svg", "music.svg"];
+
   const icons = (
     <ul className="flex gap-4">
-      {iconsData.map((item, index) => (
-        <li key={index}>
-          <img src={`/icons/${item}`} alt="icon" className="h-6 md:h-8" />
-        </li>
-      ))}
+      <For each={iconsData} memo>
+        {(item, index) => (
+          <img
+            key={index}
+            src={`/icons/${item}`}
+            alt="icon"
+            className="h-6 md:h-8"
+          />
+        )}
+      </For>
     </ul>
   );
   return (
-    <div className="w-full relative after:absolute after:w-full after:h-2/4 after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:bottom-full">
+    <div
+      id="overview"
+      className="w-full relative after:absolute after:w-full after:h-2/4 after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:bottom-full overflow-hidden"
+    >
       <div className="main-container relative py-10 md:py-14 lg:py-20 flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-12">
         <div
           data-aos="zoom-out-up"
@@ -31,19 +43,21 @@ export default function Overview() {
           </p>
         </div>
         <div className="p-1 flex flex-wrap justify-center relative after:absolute after:w-full after:h-full after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0 -rotate-3 max-w-sm md:max-w-full lg:max-w-md xl:max-w-xl">
-          <img
+          <LazyLoadImage
             src="https://images.pexels.com/photos/326503/pexels-photo-326503.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt="photography"
+            alt="photography image"
             className="overview-image h-44 md:h-56 lg:h-64 xl:h-68 p-1 md:p-2"
           />
-          <img
+          <LazyLoadImage
             src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt="coding"
+            alt="coding image"
+            loading="lazy"
             className="overview-image h-fit w-48 xl:w-64 p-1 md:p-2"
           />
-          <img
+          <LazyLoadImage
             src="https://images.pexels.com/photos/1054715/pexels-photo-1054715.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt="design"
+            alt="design image"
+            loading="lazy"
             className="overview-image h-fit w-40 xl:w-48 p-1 md:p-2 md:hidden lg:block"
           />
         </div>
@@ -56,3 +70,4 @@ export default function Overview() {
     </div>
   );
 }
+export default Overview;

@@ -1,17 +1,22 @@
-import { Input, Button, Tooltip } from "@nextui-org/react";
+import { Input, Button, Tooltip, Textarea, Progress } from "@nextui-org/react";
 import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import customerAuthStore from "../../../store/authentication/Customer";
+import { useState, useRef } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import customerAuthStore from "../../../store/authentication/customerAuthStore";
 
-export default function SignUp() {
+function SignUp() {
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  const [verificationLink, setVerificationLink] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     signUpForm,
@@ -21,9 +26,46 @@ export default function SignUp() {
     passwordValidation,
     signUpValidation,
     generatePassword,
+    signUpError,
+    signUp,
+    signUpSuccess,
+    setRecaptchaValue,
   } = customerAuthStore();
-  const signUp = (
-    <div className="flex flex-col gap-5 lg:w-10/12 xl:w-8/12">
+
+  const recaptchaRef = useRef(null);
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    const captchaToken = await recaptchaRef.current.executeAsync();
+    recaptchaRef.current.reset();
+    setRecaptchaValue(captchaToken);
+
+    setLoading(true);
+
+    try {
+      await signUp();
+      setVerificationLink(true);
+      setLoading(false);
+    } catch (error) {
+      setVerificationLink(false);
+      setLoading(false);
+    }
+  };
+
+  const errorMessage = (
+    <Textarea readOnly color="danger" minRows={1} placeholder={signUpError} />
+  );
+  const successMessage = (
+    <Textarea
+      readOnly
+      color="success"
+      minRows={1}
+      placeholder={signUpSuccess}
+    />
+  );
+
+  const signUpInputs = (
+    <form onSubmit={handleSignUp} className="flex flex-col gap-5 lg:w-1/2">
       <Input
         name="username"
         value={signUpForm.username}
@@ -87,8 +129,16 @@ export default function SignUp() {
           </Tooltip>
         }
       />
+      {signUpError && errorMessage}
+      {verificationLink && !loading && successMessage}
+      <ReCAPTCHA
+        sitekey={import.meta.env.VITE_SITE_KEY}
+        size="invisible"
+        ref={recaptchaRef}
+      />
       <div className="mt-2 flex flex-col lg:flex-row-reverse gap-4">
         <Button
+          type="submit"
           isDisabled={!signUpValidation}
           color="primary"
           variant="solid"
@@ -108,32 +158,47 @@ export default function SignUp() {
           login
         </Button>
       </div>
-    </div>
+    </form>
   );
 
   const coverImage =
     "https://images.pexels.com/photos/4048595/pexels-photo-4048595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
   return (
-    <div
-      className="h-screen relative after:absolute after:w-full after:h-full after:bg-gradient-to-r after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0 
-    "
-    >
-      <div className="h-full w-full relative after:absolute after:w-full after:h-full after:bg-gradient-to-r after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
-        <img
-          style={{ filter: "grayscale(30%)" }}
-          src={coverImage}
-          alt="login cover image"
-          className="absolute h-full w-full object-cover lg:object-center"
+    <>
+      {loading ? (
+        <Progress
+          style={{ zIndex: "9999" }}
+          size="sm"
+          isIndeterminate
+          aria-label="Loading..."
+          className="absolute top-0 left-0 w-full"
         />
-        <div className="relative main-container px-3 pt-56 flex w-full justify-center">
-          <div className="w-11/12 md:w-8/12 lg:w-6/12 mx-auto lg:mr-auto lg:ml-0 z-10">
-            <h1 className="font-title capitalize text-4xl lg:text-5xl text-primary  dark:text-white dark:lg:text-primary text-center lg:text-start mb-8 md:mb-10 lg:mb-12">
-              sign up
-            </h1>
-            {signUp}
+      ) : (
+        ""
+      )}
+      <div
+        className="h-screen relative after:absolute after:w-full after:h-full after:bg-gradient-to-r after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0 
+    "
+      >
+        <div className="h-full w-full relative after:absolute after:w-full after:h-full after:bg-gradient-to-r after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
+          <LazyLoadImage
+            style={{ filter: "grayscale(30%)" }}
+            src={coverImage}
+            loading="lazy"
+            alt="login cover image"
+            className="absolute h-full w-full object-cover lg:object-center"
+          />
+          <div className="relative main-container px-3 pt-56 flex w-full justify-center">
+            <div className="w-11/12 md:w-8/12 mx-auto lg:mr-auto lg:ml-0 z-10">
+              <h1 className="font-title capitalize text-4xl lg:text-5xl text-primary  dark:text-white dark:lg:text-primary text-center lg:text-start mb-8 md:mb-10 lg:mb-12">
+                sign up
+              </h1>
+              {signUpInputs}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
+export default SignUp;

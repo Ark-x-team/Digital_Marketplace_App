@@ -1,20 +1,71 @@
-import { Input, Button, Textarea, Tooltip } from "@nextui-org/react";
+import { Input, Button, Textarea, Progress } from "@nextui-org/react";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import ForwardToInboxRoundedIcon from "@mui/icons-material/ForwardToInboxRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
-import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import customerAuthStore from "../../../store/authentication/customerAuthStore";
 
-export default function ResetPassword() {
-  const [passwordUpdated, setPasswordUpdated] = useState(false);
+function ResetPassword() {
   const [isVisible, setIsVisible] = useState(true);
   const toggleVisibility = () => setIsVisible(!isVisible);
-  const resetPasswordForm = (
-    <div className="flex flex-col gap-5 lg:w-10/12 xl:w-8/12">
+
+  const [passwordUpdated, setPasswordUpdated] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const {
+    resetPassword,
+    resetPasswordForm,
+    updateResetPasswordForm,
+    passwordValidation,
+    confirmPasswordValidation,
+    resetPasswordValidation,
+    resetPasswordError,
+  } = customerAuthStore();
+
+  const handleResetPassword = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    try {
+      await resetPassword();
+      setPasswordUpdated(true);
+      setLoading(false);
+    } catch (error) {
+      setPasswordUpdated(false);
+      setLoading(false);
+    }
+  };
+
+  const successMessage = (
+    <Textarea
+      readOnly
+      color="success"
+      defaultValue="Your password has been updated successfully"
+      startContent={<DoneRoundedIcon className="mr-4" />}
+      className="max-w-xs "
+    />
+  );
+  const errorMessage = (
+    <Textarea
+      readOnly
+      color="danger"
+      minRows={1}
+      placeholder={resetPasswordError}
+    />
+  );
+  const resetPasswordInputs = (
+    <form
+      onSubmit={handleResetPassword}
+      className="flex flex-col gap-5 w-full lg:w-1/2"
+    >
       <Input
+        name="password"
+        value={resetPasswordForm.password}
+        onChange={updateResetPasswordForm}
+        errorMessage={!passwordValidation.state && passwordValidation.message}
         type={isVisible ? "text" : "password"}
         placeholder="New Password"
         startContent={
@@ -30,30 +81,14 @@ export default function ResetPassword() {
             )}
           </button>
         }
-        endContent={
-          <Tooltip
-            showArrow
-            placement="top"
-            content="Generate password"
-            classNames={{
-              base: ["before:bg-white dark:before:bg-dark "],
-              content: [
-                "py-2 px-4 shadow-xl capitalize",
-                "text-black dark:text-white bg-gradient-to-r from-gray-50 dark:from-neutral-900 to-gray-200 dark:to-black",
-              ],
-            }}
-          >
-            <button
-              className="focus:outline-none "
-              type="button"
-              // onClick={toggleVisibility}
-            >
-              <AutorenewRoundedIcon className="text-2xl text-default-400 pointer-events-none" />
-            </button>
-          </Tooltip>
-        }
       />
       <Input
+        name="confirmPassword"
+        value={resetPasswordForm.confirmPassword}
+        onChange={updateResetPasswordForm}
+        errorMessage={
+          !confirmPasswordValidation.state && confirmPasswordValidation.message
+        }
         type={isVisible ? "text" : "password"}
         placeholder="Confirm Password"
         startContent={
@@ -70,14 +105,19 @@ export default function ResetPassword() {
           </button>
         }
       />
+      {resetPasswordError && !loading && errorMessage}
+      {passwordUpdated && !loading && successMessage}
+
       <div className="mt-2 flex flex-col lg:flex-row-reverse gap-4">
         <Button
+          type="submit"
+          isDisabled={!resetPasswordValidation}
           color="primary"
           variant="solid"
           endContent={<ForwardToInboxRoundedIcon />}
           className="capitalize grow"
         >
-          Get link
+          update
         </Button>
         <Button
           as={Link}
@@ -90,53 +130,47 @@ export default function ResetPassword() {
           back to login
         </Button>
       </div>
-    </div>
+    </form>
   );
-  const successMessage = (
-    <div className="flex flex-col gap-2 md:gap-4 lg:gap-6">
-      <Textarea
-        readOnly
-        color="success"
-        defaultValue="Your password has been updated successfully"
-        startContent={<DoneRoundedIcon className="mr-4" />}
-        className="max-w-xs "
-      />
-      <Button
-        as={Link}
-        to="/login"
-        color="primary"
-        variant="solid"
-        startContent={<ArrowBackRoundedIcon />}
-        className="capitalize w-fit"
-      >
-        back to login
-      </Button>
-    </div>
-  );
+
   const coverImage =
     "https://images.pexels.com/photos/4048595/pexels-photo-4048595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
   return (
-    <div
-      className="h-screen relative after:absolute after:w-full after:h-full after:bg-gradient-to-r after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0 
-    "
-    >
-      <div className="h-full w-full relative after:absolute after:w-full after:h-full after:bg-gradient-to-r after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
-        <img
-          style={{ filter: "grayscale(30%)" }}
-          src={coverImage}
-          alt="login cover image"
-          className="absolute h-full w-full object-cover lg:object-center"
+    <>
+      {loading ? (
+        <Progress
+          style={{ zIndex: "9999" }}
+          size="sm"
+          isIndeterminate
+          aria-label="Loading..."
+          className="absolute top-0 left-0 w-full"
         />
-        <div className="relative main-container px-3 pt-56 flex w-full justify-center">
-          <div className="w-11/12 md:w-8/12 lg:w-6/12 mx-auto lg:mr-auto lg:ml-0 z-10">
-            <h1 className="font-title capitalize text-4xl lg:text-5xl text-primary  dark:text-white dark:lg:text-primary text-center lg:text-start mb-8 md:mb-10 lg:mb-12">
-              update password
-            </h1>
-
-            {passwordUpdated ? successMessage : resetPasswordForm}
+      ) : (
+        ""
+      )}
+      <div
+        className="h-screen relative after:absolute after:w-full after:h-full after:bg-gradient-to-r after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0 
+    "
+      >
+        <div className="h-full w-full relative after:absolute after:w-full after:h-full after:bg-gradient-to-r after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
+          <LazyLoadImage
+            style={{ filter: "grayscale(30%)" }}
+            src={coverImage}
+            loading="lazy"
+            alt="login cover image"
+            className="absolute h-full w-full object-cover lg:object-center"
+          />
+          <div className="relative main-container px-3 pt-56 flex w-full justify-center">
+            <div className="w-11/12 md:w-8/12 mx-auto lg:mr-auto lg:ml-0 z-10 flex flex-col items-center lg:items-start ">
+              <h1 className="font-title capitalize text-4xl lg:text-5xl text-primary  dark:text-white dark:lg:text-primary text-center lg:text-start mb-8 md:mb-10 lg:mb-12">
+                update password
+              </h1>
+              {resetPasswordInputs}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
+export default ResetPassword;

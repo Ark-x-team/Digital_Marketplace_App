@@ -2,7 +2,7 @@ import Footer from "../components/Footer";
 import { Input, Textarea, Button } from "@nextui-org/react";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 
-export default function ContactUs() {
+function ContactUs() {
   const messageForm = (
     <div className="flex flex-col gap-4 w-full md:w-1/2 xl:w-1/4">
       <Input key="inside 1" type="text" label="Subject" />
@@ -34,7 +34,8 @@ export default function ContactUs() {
         <div className="h-64 md:h-80 lg:h-96 w-full relative after:absolute after:w-full after:h-full after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
           <img
             src={coverImage}
-            alt="contact-us image"
+            alt="cover image"
+            loading="lazy"
             className="absolute h-full w-full object-cover lg:object-center"
           />
         </div>
@@ -52,3 +53,4 @@ export default function ContactUs() {
     </>
   );
 }
+export default ContactUs;

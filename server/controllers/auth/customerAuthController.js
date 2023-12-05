@@ -114,7 +114,7 @@ const customerLogin = async (req, res) => {
                     res.set({
                         "access_token": mainToken,
                         "token_type": "Bearer",
-                        "Access-Control-Expose-Headers": "access_token, token_type, expires_in"
+                        "Access-Control-Expose-Headers": "access_token, token_type"
                     })
 
                     // Set current date to last_login

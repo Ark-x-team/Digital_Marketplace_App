@@ -1,6 +1,7 @@
 import Footer from "../components/Footer";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
-const AboutUs = () => {
+function AboutUs() {
   const coverImage =
     "https://images.pexels.com/photos/3184302/pexels-photo-3184302.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
   const teamImage =
@@ -14,7 +15,8 @@ const AboutUs = () => {
         <div className="h-64 md:h-80 lg:h-96 w-full relative after:absolute after:w-full after:h-full after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
           <img
             src={coverImage}
-            alt=""
+            alt="cover image"
+            loading="lazy"
             className="absolute h-full w-full object-cover lg:object-center"
           />
         </div>
@@ -36,9 +38,10 @@ const AboutUs = () => {
             </p>
           </span>
           <div className="h-fit relative -rotate-3 after:absolute after:w-full after:h-full after:bg-gradient-to-tr after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
-            <img
+            <LazyLoadImage
               src={teamImage}
-              alt="design"
+              alt="team image"
+              loading="lazy"
               className="w-80 md:w-96 lg:w-80 h-60 md:h-72 lg:h-60 rounded-3xl object-cover"
             />
           </div>
@@ -47,6 +50,6 @@ const AboutUs = () => {
       <Footer />
     </>
   );
-};
+}
 
 export default AboutUs;

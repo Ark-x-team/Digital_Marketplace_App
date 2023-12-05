@@ -42,11 +42,11 @@ const addUser = async (req, res) => {
             await User.create({ username, email, password: hashedPassword, role }); 
             const user = await User.findOne({ email }); 
 
-            // Generate verification token
-            const verificationToken = await token.verificationToken(user.id)
+            // Generate access token
+            const accessToken = await token.accessToken(user.id)
 
             // Set message template for the mail verification
-            const messageTemplate = await template.userCredentials(username, role, email, password, verificationToken)
+            const messageTemplate = await template.userCredentials(username, role, email, password, accessToken)
 
             // Send mail
             try {   
@@ -61,6 +61,7 @@ const addUser = async (req, res) => {
         }   
     } catch (error) {
         res.status(400).json({ status: 400, message: "Failed to add user" })
+        console.log(error)
     }   
 }
 

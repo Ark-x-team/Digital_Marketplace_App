@@ -1,14 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Footer from "../../components/Footer";
-import Features from "./Features";
-import Header from "./Header";
-import Reviews from "./Reviews";
+import Features from "./features/Features";
+import Header from "./header/Header";
+import Reviews from "./reviews/Reviews";
 import Overview from "./Overview";
 import QuickLinks from "../../components/quick-links/QuickLinks";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const LandingPage = () => {
+function LandingPage() {
   useEffect(() => {
     AOS.init({
       once: true,
@@ -18,7 +18,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="overflow-hidden">
+    <>
       <div className="flex">
         <QuickLinks />
         <div className="bg-gradient from-white dark:from-black to-light dark:tog-dark w-full flex flex-col">
@@ -28,10 +28,9 @@ const LandingPage = () => {
           <Overview />
         </div>
       </div>
-      <p></p>
       <Footer />
-    </div>
+    </>
   );
-};
+}
 
 export default LandingPage;
