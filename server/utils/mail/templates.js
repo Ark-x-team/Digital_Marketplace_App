@@ -8,9 +8,9 @@ const verifyEmail = (username, verificationToken) => {
             action: {
                 instructions: 'To verify your email address, please click here',
                 button: {
-                    color: '#22BC66',
+                    color: '#5a2ce2',
                     text: 'Verify',
-                    link: `http://localhost:${process.env.PORT}/customers/email-verify?token=${verificationToken}`
+                    link: `http://localhost:5173/email-verification?token=${verificationToken}`
                 }
             },
             outro: "This email is automatically generated. Please do not answer it."
@@ -18,7 +18,7 @@ const verifyEmail = (username, verificationToken) => {
     };
 }
 
-const resetPassword = (username, verificationToken, path) => {
+const resetPassword = (username, verificationToken) => {
     return {
         body: {
             name: username,
@@ -28,14 +28,14 @@ const resetPassword = (username, verificationToken, path) => {
             action: {
                 instructions: 'To reset your password, please click here',
                 button: {
-                    color: '#22BC66',
+                    color: '#5a2ce2',
                     text: 'Reset password',
-                    link: `http://localhost:${process.env.PORT}/${path}/reset-password?token=${verificationToken}`
+                    link: `http://localhost:5173/reset-password?token=${verificationToken}`
                 }
             },
             outro: "This email is automatically generated. Please do not answer it."
         }
-    };
+    }
 }
 
 const userCredentials = (username, role, email, password, verificationToken) => {
@@ -56,7 +56,7 @@ const userCredentials = (username, role, email, password, verificationToken) => 
             action: {
                 instructions: 'To update your credentials, please click here',
                 button: {
-                    color: '#22BC66',
+                    color: '#5a2ce2',
                     text: 'Update your credentials',
                     // link: `${process.env.DEPLOYMENT_CLIENT_URI}/dashboard/account`
                     link: `http://localhost:${process.env.PORT}/users/reset-password?token=${verificationToken}`

@@ -39,6 +39,9 @@ const userSchema = new mongoose.Schema({
     },
     updated_at: {
         type: Date,
+    },
+    refresh_token: {
+        type: String
     }
 })
 
