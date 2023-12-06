@@ -5,9 +5,9 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import userAuthStore from "../../store/authentication/UserAuthStore";
+import userAuthStore from "../../store/authentication/userAuthStore";
 
 function UserLogin() {
   const [isVisible, setIsVisible] = useState(false);
@@ -21,11 +21,12 @@ function UserLogin() {
     loginValidation,
     loginError,
     setRecaptchaValue,
+    accessToken,
   } = userAuthStore();
 
+  const recaptchaRef = useRef(null);
   const navigate = useNavigate();
 
-  const recaptchaRef = useRef(null);
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -37,8 +38,9 @@ function UserLogin() {
 
     try {
       await login();
+      const { role } = userAuthStore.getState();
+      navigate(`/${role}`);
       setLoading(false);
-      navigate("/dashboard");
     } catch (error) {
       setLoading(false);
     }
@@ -68,8 +70,9 @@ function UserLogin() {
           className="flex flex-col gap-5 w-full max-w-md md:w-2/4"
         >
           <h1 className="font-title capitalize text-center text-3xl lg:text-4xl text-primary  dark:text-white dark:lg:text-primary mb-6 md:mb-8 lg:mb-10">
-            login
+            Login{" "}
           </h1>
+
           <Input
             name="email"
             value={loginForm.email}

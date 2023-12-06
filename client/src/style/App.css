@@ -43,7 +43,7 @@
   }
   
   ::selection{
-    @apply bg-gray-600 text-white
+    @apply bg-primary text-white
   }
   img::selection{
     background-color: none;

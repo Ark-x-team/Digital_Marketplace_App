@@ -18,6 +18,7 @@ function RequireAuth(props) {
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
+        navigate("/login");
       }
     };
 
@@ -32,14 +33,9 @@ function RequireAuth(props) {
     return <Progress />;
   }
 
-  if (loggedIn === false) {
-    navigate("/login");
-  }
-
   return <div>{props.children}</div>;
 }
 
-// Add PropTypes validation for children
 RequireAuth.propTypes = {
   children: PropTypes.node.isRequired,
 };

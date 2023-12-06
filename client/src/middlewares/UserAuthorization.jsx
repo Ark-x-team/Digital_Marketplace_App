@@ -1,31 +1,45 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import Cookies from "js-cookie";
 import Progress from "../components/Progress";
-import AdminRoutes from "../routes/user/AdminRoutes";
-import ManagerRoutes from "../routes/user/ManagerRoutes";
-import AssistantRoutes from "../routes/user/AssistantRoutes";
-import userAuthStore from "../store/authentication/UserAuthStore";
+import userAuthStore from "../store/authentication/userAuthStore";
 import { useNavigate } from "react-router-dom";
 
-function RequireAuth(props) {
-  const { loggedIn, role } = userAuthStore();
+function UserAuthorization(props) {
+  const { accessToken, getAccessToken } = userAuthStore();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  if (loggedIn && role == "admin") {
-    return <AdminRoutes />;
-  } else if (loggedIn && role == "manager") {
-    return <ManagerRoutes />;
-  } else if (loggedIn && role == "assistant") {
-    return <AssistantRoutes />;
-  } else navigate("/login");
+  useEffect(() => {
+    const checkAuth = async () => {
+      setLoading(true);
+      let { role } = userAuthStore.getState();
+      if (accessToken) {
+        setLoading(false);
+        navigate(`/${role}`);
+      } else {
+        try {
+          await getAccessToken();
+          let { role } = userAuthStore.getState();
+          setLoading(false);
+          navigate(`/${role}`);
+        } catch (error) {
+          setLoading(false);
+          navigate("/user/login");
+        }
+      }
+    };
+    checkAuth();
+  }, []);
+
+  if (loading === null) {
+    return <Progress />;
+  }
 
   return <div>{props.children}</div>;
 }
 
-// Add PropTypes validation for children
-RequireAuth.propTypes = {
+UserAuthorization.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default RequireAuth;
+export default UserAuthorization;

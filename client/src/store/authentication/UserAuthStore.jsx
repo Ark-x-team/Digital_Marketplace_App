@@ -40,19 +40,13 @@ const userAuthStore = create((set) => ({
   },
 
   // ? Login
-  loggedIn: null,
-  setLoggedIn: (isLogin) => {
-    set({
-      loggedIn: isLogin,
-    });
-  },
+  accessToken: false,
   role: null,
   login: async () => {
     const { recaptchaValue } = userAuthStore.getState();
     try {
       const {
         loginForm: { email, password },
-        setLoggedIn,
       } = userAuthStore.getState();
       const response = await axios.post(
         "http://localhost:8081/users/login",
@@ -66,12 +60,11 @@ const userAuthStore = create((set) => ({
           withCredentials: true,
         }
       );
-      const accessToken = response.headers["access_token"];
-      setLoggedIn(accessToken);
       const refreshToken = response.headers["refresh_token"];
       Cookies.set("refresh_token", refreshToken, { expires: 30 });
-      setLoggedIn(true);
       set({
+        accessToken: response.data.accessToken,
+        role: response.data.user.role,
         loginError: false,
         loginValidation: false,
         loginForm: {
@@ -79,11 +72,9 @@ const userAuthStore = create((set) => ({
           password: "",
         },
       });
-      console.log(response.data.user.role);
+      console.log(Cookies.get("refresh_token"));
     } catch (error) {
       console.log(error);
-      const { setLoggedIn } = userAuthStore.getState();
-      setLoggedIn(false);
       if (error.response) {
         set({ loginError: error.response.data.message });
       } else
@@ -94,6 +85,27 @@ const userAuthStore = create((set) => ({
     }
   },
 
+  // ***************************** Get access token *****************************
+  getAccessToken: async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8081/users/get-access-token",
+        {
+          refreshToken: Cookies.get("refresh_token"),
+        },
+        {
+          headers: { "content-type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      set({
+        accessToken: response.data.accessToken,
+        role: response.data.role,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
   // ********************************** Logout **********************************
   // ? Logout
   logout: async () => {

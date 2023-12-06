@@ -6,9 +6,7 @@ import Progress from "./components/Progress";
 
 // Middlewares
 import RequireAuth from "./middlewares/requireAuth";
-import AdminRoutes from "./routes/user/AdminRoutes";
-import ManagerRoutes from "./routes/user/ManagerRoutes";
-import AssistantRoutes from "./routes/user/AssistantRoutes";
+import UserAuthorization from "./middlewares/UserAuthorization";
 
 // Client
 const ClientRoutes = lazy(() => import("./routes/ClientRoutes"));
@@ -18,6 +16,15 @@ const CustomerRoutes = lazy(() => import("./routes/customer/CustomerRoutes"));
 
 // User Auth
 const UserAuthRoutes = lazy(() => import("./routes/user/UserAuthRoutes"));
+
+// Admin
+const AdminRoutes = lazy(() => import("./routes/user/AdminRoutes"));
+
+// Manager
+const ManagerRoutes = lazy(() => import("./routes/user/ManagerRoutes"));
+
+// Assistant
+const AssistantRoutes = lazy(() => import("./routes/user/AssistantRoutes"));
 
 function App() {
   const { pathname } = useLocation();
@@ -64,7 +71,9 @@ function App() {
         path="admin/*"
         element={
           <Suspense fallback={<Progress />}>
-            <AdminRoutes />
+            <UserAuthorization>
+              <AdminRoutes />
+            </UserAuthorization>
           </Suspense>
         }
       />
@@ -74,7 +83,9 @@ function App() {
         path="manager/*"
         element={
           <Suspense fallback={<Progress />}>
-            <ManagerRoutes />
+            <UserAuthorization>
+              <ManagerRoutes />
+            </UserAuthorization>
           </Suspense>
         }
       />
@@ -82,7 +93,9 @@ function App() {
         path="assistant/*"
         element={
           <Suspense fallback={<Progress />}>
-            <AssistantRoutes />
+            <UserAuthorization>
+              <AssistantRoutes />
+            </UserAuthorization>
           </Suspense>
         }
       />

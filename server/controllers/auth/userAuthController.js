@@ -39,7 +39,6 @@ const userLogin = async (req, res) => {
                 // Pass data in http headers
                 res.set({
                     "token_type": "Bearer",
-                    "access_token": accessToken,
                     "refresh_token": refreshToken,
                     "Access-Control-Expose-Headers": "access_token, refresh_token, token_type"
                 })
@@ -47,7 +46,7 @@ const userLogin = async (req, res) => {
                 // Set current date to last_login
                 const lastLogin = Date.now();
                 await User.findByIdAndUpdate(user._id, { last_login: lastLogin, refresh_token: refreshToken })
-                res.status(200).json({ status: 200, message: "login success", user })
+                res.status(200).json({ status: 200, message: "login success", accessToken, user })
     
             } else res.status(401).json({ status: 401, message: "Invalid Password" })
         } else res.status(401).json({ status: 401, message: "Invalid email address" })
@@ -134,10 +133,10 @@ const userResetPassword = async (req, res) => {
 }
 
 // *********************** Get new access token ****************************
-const handleRefreshToken = async (req, res) => {
+const getAccessToken = async (req, res) => {
     try {
-        // Retrieve the cookie
-        const refreshToken = req.body.token
+        // Retrieve refresh token from client
+        const refreshToken = req.body.refreshToken
         
         // Check occurrence of the token cookie.
         if (!refreshToken) {
@@ -153,7 +152,7 @@ const handleRefreshToken = async (req, res) => {
                             res.status(403).json({ status: 401, message: "Invalid or expired token" })
                         } else {
                             const accessToken = await token.accessToken(decoded.id, decoded.username, decoded.role)
-                            res.status(200).json({ accessToken })
+                            res.status(200).json({ accessToken, role: decoded.role })
                         }
                     }
                 )
@@ -166,4 +165,4 @@ const handleRefreshToken = async (req, res) => {
     }
 }
 
-module.exports = { userLogin, resetPasswordVerify, userResetPassword, handleRefreshToken };
+module.exports = { userLogin, resetPasswordVerify, userResetPassword, getAccessToken };
