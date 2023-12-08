@@ -26,44 +26,61 @@ const createSubcategory = async (req, res) => {
 // ***************************** List all subcategory *********************************
 const getSubcategories = async (req, res) => {
     try {
-        // Get pagination items query or set default values
-        const page = req.query.page *1 || 1
-        const limit = req.query.limit *1 || 10
-        const skip = (page - 1) * limit
-        
-        // Get all subcategories with limit number per page and sort them by name.
-        const subcategories = await Subcategory.aggregate([
+        const categoryName = req.query.categoryName.replace("/store/", "")
+            .replace(/-/g, " ");
+
+        // Define the pipeline stages
+        const pipeline = [
             {
-              $lookup: {
-                from: "categories",
-                localField: "category_id",
-                foreignField: "_id",
-                as: "category",
-              },
+                $lookup: {
+                    from: "categories",
+                    localField: "category_id",
+                    foreignField: "_id",
+                    as: "category",
+                },
             },
             {
-              $unwind: "$category",
+                $unwind: "$category",
             },
             {
-              $project: {
-                _id: 1,
-                subcategory_name: 1,
-                category_name: "$category.category_name",
-                active: 1,
-              },
+                $project: {
+                    _id: 1,
+                    subcategory_name: 1,
+                    category_name: "$category.category_name",
+                    active: 1,
+                },
             },
-          ])
-            .limit(limit).skip(skip).sort({ 'subcategory_name': -1 });
-        const count = subcategories.length
+        ];
+
+        // Add $match stage if categoryName is provided
+        if (categoryName) {
+            pipeline.push({
+                $match: {
+                    category_name: categoryName,
+                },
+            });
+        }
+
+        // Add the sort stage
+        pipeline.push({
+            $sort: { subcategory_name: -1 },
+        });
+
+        // Execute the aggregation pipeline
+        const subcategories = await Subcategory.aggregate(pipeline);
+        const count = subcategories.length;
 
         // Check the existence of subcategories for each page
         if (count < 1) {
-            res.status(404).json({ status: 404, data: [] })
-        } else res.status(200).json({status: 200, count, page, limit, data: subcategories})
+            res.status(404).json({ status: 404, subcategories: [] });
+        } else {
+            res.status(200).json({ status: 200, count, subcategories });
+        }
     } catch (error) {
-        res.status(400).json({status: 400, message: "Failed to get subcategories"})
+        res.status(400).json({ status: 400, message: "Failed to get subcategories" });
     }
 };
+
 
 // ****************************** Get one subcategory *********************************
 const getSubcategory = async (req, res) => {
@@ -105,7 +122,7 @@ const getSubcategory = async (req, res) => {
             if (!subcategoryWithCategory || subcategoryWithCategory.length === 0) {
                 res.status(500).json({ status: 500, error: "Failed to retrieve category name" });
             } else {
-                res.status(200).json({ status: 200, data: subcategoryWithCategory });
+                res.status(200).json({ status: 200, subcategories: subcategoryWithCategory });
             } 
         }
     } catch (error) {
