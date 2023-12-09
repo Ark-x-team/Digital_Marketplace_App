@@ -31,10 +31,12 @@ function AboutUs() {
               Lorem ipsum dolor sit.
             </h1>
             <p className="dark:text-light">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
-              aliquid, corporis enim laudantium accusamus fugit sequi,
-              laboriosam eum velit odio earum odit modi facere sed atque minima
-              consequuntur numquam unde.
+              In our digital haven, creativity knows no bounds. Our diverse team
+              passionately transforms this vision into reality, curating a
+              marketplace that delivers exceptional digital products. Committed
+              to fostering innovation, our collective expertise cultivates a
+              community of creators, redefining possibilities in our
+              ever-evolving digital universe.
             </p>
           </span>
           <div className="h-fit relative -rotate-3 after:absolute after:w-full after:h-full after:bg-gradient-to-tr after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">

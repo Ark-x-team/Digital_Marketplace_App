@@ -6,7 +6,7 @@ import CustomerRoutes from "../routes/customer/CustomerRoutes";
 import customerAuthStore from "../store/authentication/customerAuthStore";
 import { useNavigate } from "react-router-dom";
 
-function RequireAuth(props) {
+function CustomerAuthorization(props) {
   const { loggedIn, setLoggedIn } = customerAuthStore();
   const navigate = useNavigate();
 
@@ -36,8 +36,8 @@ function RequireAuth(props) {
   return <div>{props.children}</div>;
 }
 
-RequireAuth.propTypes = {
+CustomerAuthorization.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default RequireAuth;
+export default CustomerAuthorization;

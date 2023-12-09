@@ -24,7 +24,7 @@ const howItWorksData = [
   {
     title: "create account",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas non vel nobis soluta porro itaque, velit ullam tenetur veniam voluptatibus neque sit voluptatum sint saepe temporibus velit ullam tenetur veniam voluptatibus neque sit voluptatum sint saepe temporibus",
+      "Start your digital journey by effortlessly creating your account. Join our vibrant community, and access exclusive features designed to enhance your experience.",
     link: <Btn link="/sign-up" btnText="Create account" />,
     image:
       "https://images.pexels.com/photos/7242888/pexels-photo-7242888.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
@@ -33,7 +33,7 @@ const howItWorksData = [
   {
     title: "choose the perfect product",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas non vel nobis soluta porro itaque, velit ullam tenetur veniam velit ullam tenetur veniam",
+      "Dive into our extensive catalog showcasing top-tier digital products. Whether it's captivating designs, stunning photography, or powerful programming resources, discover the ideal solution for your needs.",
     link: <Btn link="/store" btnText="Discover store" />,
     image:
       "https://images.pexels.com/photos/1251844/pexels-photo-1251844.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
@@ -42,7 +42,7 @@ const howItWorksData = [
   {
     title: "pay when you're satisfied",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas non vel nobis soluta porro itaque, velit ullam tenetur veniam voluptatibus neque sit voluptatum sint saepe temporibus debitis cumque aliquid unde. velit ullam tenetur veniam voluptatibus neque sit voluptatum sint saepe temporibus debitis cumque aliquid unde.",
+      "Enjoy peace of mind with our satisfaction guarantee. Only pay when you're completely satisfied with your chosen product, ensuring a risk-free and delightful shopping experience on our platform.",
     image:
       "https://images.pexels.com/photos/50987/money-card-business-credit-card-50987.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     alt: "Payment image",

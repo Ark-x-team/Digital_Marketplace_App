@@ -1,12 +1,14 @@
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { Modal, Button, useDisclosure } from "@nextui-org/react";
-import CircularText from "../styled/CircularText";
-import ScrollText from "../styled/ScrollText";
-import QuickSearch from "../quick-search/QuickSearch";
+import CircularText from "../../../components/styled/CircularText";
+import ScrollText from "../../../components/styled/ScrollText";
+import QuickSearch from "./QuickSearch";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/opacity.css";
 import { For } from "million/react";
 import PropTypes from "prop-types";
 import statisticData from "./StatisticData";
+import { useEffect, useMemo, useState } from "react";
 
 function Header() {
   const StatisticItem = (props) => (
@@ -33,32 +35,58 @@ function Header() {
     </ul>
   );
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const searchModal = (
-    <Modal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      size="3xl"
-      backdrop="blur"
-      radius="3xl"
-    >
-      <QuickSearch />
-    </Modal>
+  const searchModal = useMemo(
+    () => (
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size="3xl"
+        backdrop="blur"
+        radius="3xl"
+      >
+        <QuickSearch />
+      </Modal>
+    ),
+    [isOpen, onOpenChange]
   );
-  const coverImage =
-    "https://images.pexels.com/photos/3184611/pexels-photo-3184611.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+
+  const coverImages = [
+    "https://images.pexels.com/photos/3760280/pexels-photo-3760280.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "https://images.pexels.com/photos/3184611/pexels-photo-3184611.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "https://images.pexels.com/photos/6214920/pexels-photo-6214920.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % coverImages.length);
+  };
+  useEffect(() => {
+    const intervalId = setInterval(nextImage, 4000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <div
       className="relative after:absolute after:w-full after:h-full after:bg-gradient-to-tr after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0 
       overflow-hidden"
     >
       <div className="h-full w-full relative after:absolute after:w-full after:h-full after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
-        <LazyLoadImage
-          style={{ filter: "grayscale(30%)" }}
-          src={coverImage}
-          alt="cover image"
-          loading="lazy"
-          className="absolute h-full w-full object-cover lg:object-center"
-        />
+        {coverImages.map((image, index) => (
+          <LazyLoadImage
+            key={index}
+            style={{
+              filter: "grayscale(30%)",
+              opacity: index === currentImageIndex ? 1 : 0,
+              transition: "opacity 1.5s ease-in-out",
+            }}
+            src={image}
+            alt="cover image"
+            loading="lazy"
+            className="absolute h-full w-full object-cover lg:object-center"
+          />
+        ))}
         <div className="header relative main-container px-3 pt-56 pb-28 md:pt-64 md:pb-56 lg:pl-8  flex w-full justify-start">
           <img
             src="/shapes/blur.svg"

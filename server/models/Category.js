@@ -7,6 +7,9 @@ const categorySchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
+    cover_image: {
+        type: String,
+    },
     active: {
         type: Boolean,
         default: false

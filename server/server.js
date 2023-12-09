@@ -22,8 +22,8 @@ app.use(mongoSanitize());
 // Limit repeated requests to public APIs
 const rateLimit = require('express-rate-limit')
 const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	windowMs: 1000 * 60, // 1 minute
+	limit: 150, // Limit each IP to 100 requests per `window` (here, per 1 minute).
 	standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
 })
@@ -40,7 +40,7 @@ const cors = require("cors");
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
-  }));
+}));
 
 // Load the environment variables
 require('dotenv').config()
@@ -56,6 +56,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Middlewares
 app.use(express.static('public'))
+app.use('/uploads', express.static('uploads'));
 app.use(express.json())
 
 // ********************************* App routing ********************************
@@ -72,7 +73,6 @@ app.use(userRoutes)
 app.use(customerRoutes)
 app.use(categoryRoutes)
 app.use(subcategoryRoutes)
-
 app.use(orderRoutes)
 
 // Run App

@@ -39,14 +39,15 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
-    line-height: 1.625 !important;
+    line-height: 1.7 !important;
   }
   
-  ::selection{
+  ::selection:not(img){
     @apply bg-primary text-white
   }
-  img::selection{
-    background-color: none;
+
+  img{
+    user-select: none;
   }
   
   .blur-shape{
@@ -63,7 +64,7 @@
   
   /**************************** Responsive design ****************************/
   
-  .main-container {
+  .main-container, .store-container {
     width: 100%;
     margin: 0% auto;
   }
@@ -75,12 +76,12 @@
   }
   @media (min-width: 1024px) {
     .main-container {
-      max-width: var(--lg);
+      max-width: var(--lg) 
     }
   }
   @media (min-width: 1280px) {
     .main-container {
-      max-width: var(--xl);
+      max-width: var(--xl)
     }
   }
   

@@ -5,11 +5,14 @@ import { lazy, Suspense, useEffect } from "react";
 import Progress from "./components/Progress";
 
 // Middlewares
-import RequireAuth from "./middlewares/requireAuth";
+import CustomerAuthorization from "./middlewares/CustomerAuthorization";
 import UserAuthorization from "./middlewares/UserAuthorization";
 
 // Client
-const ClientRoutes = lazy(() => import("./routes/ClientRoutes"));
+const ClientRoutes = lazy(() => import("./routes/client/ClientRoutes"));
+
+// Store
+const StoreRoutes = lazy(() => import("./routes/client/StoreRoutes"));
 
 // Customer
 const CustomerRoutes = lazy(() => import("./routes/customer/CustomerRoutes"));
@@ -43,14 +46,23 @@ function App() {
           </Suspense>
         }
       />
+      {/* Store */}
+      <Route
+        path="store/*"
+        element={
+          <Suspense fallback={<Progress />}>
+            <StoreRoutes />
+          </Suspense>
+        }
+      />
       {/**********************  Customer  **********************/}
       <Route
         path="account/*"
         element={
           <Suspense fallback={<Progress />}>
-            <RequireAuth>
+            <CustomerAuthorization>
               <CustomerRoutes />
-            </RequireAuth>
+            </CustomerAuthorization>
           </Suspense>
         }
       />

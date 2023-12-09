@@ -6,7 +6,7 @@ const createProduct = async (req, res) => {
     try {
         // Get product data
         const { sku, product_name, price, discount_price, short_description, long_description,
-            options, active, subcategory_id } = req.body; 
+             active, subcategory_id, hide } = req.body; 
         
         // Get images files
         const files = req.files; 
@@ -37,14 +37,15 @@ const createProduct = async (req, res) => {
             } 
 
             // Post product data
-            const product = await Product.create({
+            await Product.create({
                 sku, product_name, product_images, price, discount_price,
-                short_description, long_description, options, active, subcategory_id
+                short_description, long_description,  active, subcategory_id
             })
             res.status(200).json({ status: 200, message: "product created successfully" })
         }
     } catch (error) {
-        res.status(400).json({status: 400, message: "Failed to create product"})
+        res.status(400).json({ status: 400, message: "Failed to create product" })
+        console.log(error)
     }   
 }
 
@@ -52,50 +53,69 @@ const createProduct = async (req, res) => {
 const getProducts = async (req, res) => {
     try {
         // Get pagination items query or set default values
-        const page = req.query.page *1 || 1
-        const limit = req.query.limit *1 || 10
-        const skip = (page - 1) * limit
-        
+        const page = req.query.page * 1 || 1;
+        const limit = req.query.limit * 1 || 10;
+        const skip = (page - 1) * limit;
+        const subcategoryName = req.query.subcategory_name || null;
+        const active = req.query.active;
+
+        // Define the match object for aggregation pipeline based on the active query
+        const match = active === 'true' ? { active: true } : active === 'false' ? { active: false } : {};
+
         // Get all products with limit number per page and sort them by creation date.
         const products = await Product.aggregate([
             {
-              $lookup: {
-                from: "subcategories",
-                localField: "subcategory_id",
-                foreignField: "_id",
-                as: "subcategory",
-              },
+                $lookup: {
+                    from: "subcategories",
+                    localField: "subcategory_id",
+                    foreignField: "_id",
+                    as: "subcategory",
+                },
             },
             {
-              $unwind: "$subcategory",
+                $unwind: "$subcategory",
             },
             {
-              $project: {
-                _id: 1,
-                product_name: 1,
-                subcategory_id:"$subcategory._id",
-                subcategory_name: "$subcategory.subcategory_name",
-                product_images: 1,
-                short_description: 1,
-                long_description: 1,
-                price: 1,
-                discount_price: 1,
-                active: 1,
-              },
+                $project: {
+                    _id: 1,
+                    product_name: 1,
+                    subcategory_id: "$subcategory._id",
+                    subcategory_name: "$subcategory.subcategory_name",
+                    product_images: { $arrayElemAt: ["$product_images", 0] },
+                    price: 1,
+                    active: 1,
+                },
             },
-          ])
+            {
+                $match: match, // Add the match stage to filter based on active status
+            },
+        ])
             .limit(limit).skip(skip).sort({ 'created_at': -1 });
-        const count = products.length
+
+        let count = products.length;
 
         // Check the existence of products for each page
         if (count < 1) {
             res.status(404).json({ status: 404, data: [] })
-        } else res.status(200).json({status: 200, count, page, limit, data: products})
+        } else {
+            let result = [];
+
+            // Filter by subcategoryName if provided
+            if (subcategoryName) {
+                result = products.filter(product => product.subcategory_name === subcategoryName);
+                count = result.length;
+            } else {
+                result = products;
+            }
+
+            res.status(200).json({ status: 200, count, page, limit, products: result });
+        }
     } catch (error) {
-        res.status(400).json({status: 400, message: "Failed to get products"})
+        res.status(400).json({ status: 400, message: "Failed to get products" });
     }
 };
 
+  
 // ******************************* Get one product ***********************************
 const getProduct = async (req, res) => {
     try {
@@ -229,7 +249,7 @@ const updateProduct = async (req, res) => {
         } else {
             // Get product data
             const { sku, product_name, short_description, long_description,
-                options, active, subcategory_id } = req.body;
+                 active, subcategory_id } = req.body;
             
             // Get images files
             const files = req.files;
@@ -275,7 +295,7 @@ const updateProduct = async (req, res) => {
                 // Find product by it's Id and update it
                 await Product.findByIdAndUpdate(productId, {
                      sku, product_name, product_images, price, discount_price, short_description,
-                     long_description, options, active, updated_at: updatedAt, subcategory_id
+                     long_description,  active, updated_at: updatedAt, subcategory_id
                 })
                 res.status(200).json({ status: 200, message: "Product updated successfully" })
             }

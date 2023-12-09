@@ -24,6 +24,7 @@ const productSchema = new mongoose.Schema({
     discount_price: {
         type: Number,
         set: num => Number(num).toFixed(2),
+        default: 0
     },
     short_description: {
         type: String,
@@ -33,10 +34,13 @@ const productSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    options: {type: Array},
     active: {
         type: Boolean,
         default: false
+    },
+    hide: {
+        type: Boolean,
+        default: true
     },
     created_at: {
         type: Date,

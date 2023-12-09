@@ -13,7 +13,7 @@ const uploadMiddleware = require('../middlewares/filesUpload')
 const { userRole } = require('../middlewares/auth')
 
 // Product Routes
-router.post('/products', userRole, uploadMiddleware, productController.createProduct)
+router.post('/products',  uploadMiddleware, productController.createProduct)
 router.get('/products', productController.getProducts)
 router.get('/products/search', productController.searchProduct)
 router.get('/products/:id', productController.getProduct)

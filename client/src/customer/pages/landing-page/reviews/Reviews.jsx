@@ -10,7 +10,7 @@ function Reviews() {
     <li
       data-aos="zoom-out"
       data-aos-delay={props.delay * 100}
-      className="flex flex-col gap-2 max-w-lg bg-white dark:bg-dark bg-opacity-60 dark:bg-opacity-70 backdrop-blur-xl p-4 lg:p-6 rounded-3xl"
+      className="flex flex-col gap-4 max-w-lg bg-white dark:bg-dark bg-opacity-60 dark:bg-opacity-70 backdrop-blur-xl p-4 lg:p-6 rounded-3xl"
     >
       <div className="w-full flex justify-between">
         <span className="flex gap-3">

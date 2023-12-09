@@ -4,7 +4,7 @@ import Progress from "../components/Progress";
 import userAuthStore from "../store/authentication/userAuthStore";
 import { useNavigate } from "react-router-dom";
 
-function UserAuthorization(props) {
+function ManagerAuthorization(props) {
   const { accessToken, getAccessToken } = userAuthStore();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -15,8 +15,17 @@ function UserAuthorization(props) {
       let { role } = userAuthStore.getState();
       if (accessToken) {
         setLoading(false);
-
-        navigate("/admin");
+        navigate(`/${role == "manager" ? role : "user/login"}`);
+      } else {
+        try {
+          await getAccessToken();
+          let { role } = userAuthStore.getState();
+          setLoading(false);
+          navigate(`/${role ? role : "user/login"}`);
+        } catch (error) {
+          setLoading(false);
+          navigate("/user/login");
+        }
       }
     };
     checkAuth();
@@ -29,8 +38,8 @@ function UserAuthorization(props) {
   return <div>{props.children}</div>;
 }
 
-UserAuthorization.propTypes = {
+ManagerAuthorization.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default UserAuthorization;
+export default ManagerAuthorization;
