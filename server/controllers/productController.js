@@ -6,7 +6,7 @@ const createProduct = async (req, res) => {
     try {
         // Get product data
         const { sku, product_name, price, discount_price, short_description, long_description,
-             active, subcategory_id, hide } = req.body; 
+             active, subcategory_id, hide, product_type } = req.body; 
         
         // Get images files
         const files = req.files; 
@@ -39,7 +39,7 @@ const createProduct = async (req, res) => {
             // Post product data
             await Product.create({
                 sku, product_name, product_images, price, discount_price,
-                short_description, long_description,  active, subcategory_id
+                short_description, long_description,  active, subcategory_id, hide, product_type
             })
             res.status(200).json({ status: 200, message: "product created successfully" })
         }
@@ -49,21 +49,20 @@ const createProduct = async (req, res) => {
     }   
 }
 
-// ****************************** List all products **********************************
-const getProducts = async (req, res) => {
+// ************************** List products by category ******************************
+const getProductsByCategory = async (req, res) => {
     try {
         // Get pagination items query or set default values
         const page = req.query.page * 1 || 1;
-        const limit = req.query.limit * 1 || 10;
+        const limit = req.query.limit * 1 || 12;
         const skip = (page - 1) * limit;
-        const subcategoryName = req.query.subcategory_name || null;
+        const categoryName = req.query.category_name.replace(/-/g, " ");
         const active = req.query.active;
 
         // Define the match object for aggregation pipeline based on the active query
         const match = active === 'true' ? { active: true } : active === 'false' ? { active: false } : {};
 
-        // Get all products with limit number per page and sort them by creation date.
-        const products = await Product.aggregate([
+        const pipeline = [
             {
                 $lookup: {
                     from: "subcategories",
@@ -76,46 +75,147 @@ const getProducts = async (req, res) => {
                 $unwind: "$subcategory",
             },
             {
-                $project: {
-                    _id: 1,
-                    product_name: 1,
-                    subcategory_id: "$subcategory._id",
-                    subcategory_name: "$subcategory.subcategory_name",
-                    product_images: { $arrayElemAt: ["$product_images", 0] },
-                    price: 1,
-                    active: 1,
+                $lookup: {
+                    from: "categories",
+                    localField: "subcategory.category_id",
+                    foreignField: "_id",
+                    as: "category",
                 },
             },
             {
-                $match: match, // Add the match stage to filter based on active status
+                $unwind: "$category",
             },
-        ])
-            .limit(limit).skip(skip).sort({ 'created_at': -1 });
+            {
+                $project: {
+                    _id: 1,
+                    product_name: 1,
+                    product_type: 1,
+                    price: 1,
+                    active: 1,
+                    category_name: "$category.category_name",
+                    subcategory_name: "$subcategory.subcategory_name",
+                    product_images: "$product_images",
+                    created_at: { $toDate: "$created_at" }
+                },
+            },
+            {
+                $match: match,
+            },
+            {
+                $match: categoryName ? { category_name: categoryName } : {},
+            },
+            {
+                $facet: {
+                    // Pagination pipeline
+                    products: [
+                        { $sort: { 'created_at': -1 } },
+                        { $skip: skip },
+                        { $limit: limit },
+                    ],
+                    // Count pipeline
+                    count: [
+                        { $count: "value" },
+                    ],
+                },
+            },
+        ];
 
-        let count = products.length;
+        const result = await Product.aggregate(pipeline);
+        const products = result[0].products;
+        const count = result[0].count.length > 0 ? result[0].count[0].value : 0;
 
-        // Check the existence of products for each page
-        if (count < 1) {
-            res.status(404).json({ status: 404, data: [] })
+        if (count < 1 || skip >= count) {
+            res.status(404).json({ status: 404, data: [] });
         } else {
-            let result = [];
-
-            // Filter by subcategoryName if provided
-            if (subcategoryName) {
-                result = products.filter(product => product.subcategory_name === subcategoryName);
-                count = result.length;
-            } else {
-                result = products;
-            }
-
-            res.status(200).json({ status: 200, count, page, limit, products: result });
+            res.status(200).json({ status: 200, count, page, limit, products });
         }
+
     } catch (error) {
         res.status(400).json({ status: 400, message: "Failed to get products" });
+        console.log(error);
     }
 };
 
-  
+// ************************* List products by subcategory ****************************
+const getProductsBySubcategory = async (req, res) => {
+    try {
+        // Get pagination items query or set default values
+        const page = req.query.page * 1 || 1;
+        const limit = req.query.limit * 1 || 12;
+        const skip = (page - 1) * limit;
+        const subcategoryName = req.query.subcategory_name.replace("-", " ");
+        const active = req.query.active;
+
+        // Define the match object for aggregation pipeline based on the active query
+        const match = active === 'true' ? { active: true } : active === 'false' ? { active: false } : {};
+
+        const pipeline = [
+            {
+                $lookup: {
+                    from: "subcategories",
+                    localField: "subcategory_id",
+                    foreignField: "_id",
+                    as: "subcategory",
+                },
+            },
+            {
+                $unwind: "$subcategory",
+            },
+            {
+                $lookup: {
+                    from: "categories",
+                    localField: "subcategory.category_id",
+                    foreignField: "_id",
+                    as: "category",
+                },
+            },
+            {
+                $unwind: "$category",
+            },
+            {
+                $project: {
+                    _id: 1,
+                    product_name: 1,
+                    product_type: 1,
+                    price: 1,
+                    active: 1,
+                    category_name: "$category.category_name",
+                    subcategory_name: "$subcategory.subcategory_name",
+                    product_images: "$product_images",
+                    created_at: { $toDate: "$created_at" }
+                },
+            },
+            {
+                $match: match,
+            },
+            {
+                $match: subcategoryName ? { subcategory_name: subcategoryName } : {},
+            },
+            {
+                $sort: { 'created_at': -1 },
+            },
+            {
+                $skip: skip,
+            },
+            {
+                $limit: limit,
+            },
+        ];
+
+        const products = await Product.aggregate(pipeline);
+        const count = await Product.countDocuments(match);
+
+        if (count < 1 || skip >= count) {
+            res.status(404).json({ status: 404, data: [] });
+        } else {
+            res.status(200).json({ status: 200, count, page, limit, products });
+        }
+    } catch (error) {
+        res.status(400).json({ status: 400, message: "Failed to get products" });
+        console.log(error);
+    }
+};
+
 // ******************************* Get one product ***********************************
 const getProduct = async (req, res) => {
     try {
@@ -227,7 +327,7 @@ const searchProduct = async (req, res) => {
         // Check product existence by it's Id
         if (count < 1) {
             return res.status(404).json({status: 404, message: "Product not found"})
-        } else res.status(200).json({ status: 200, count, page, limit, data: matchingProduct })
+        } else res.status(200).json({ status: 200, count, page, limit, products: matchingProduct })
     } catch (error) {
         res.status(400).json({status: 400, message: "Failed to get product"})
     }
@@ -327,4 +427,4 @@ const deleteProduct = async (req, res) => {
 };
 
 
-module.exports = {createProduct, getProducts, searchProduct, getProduct, updateProduct, deleteProduct};
+module.exports = {createProduct, getProductsByCategory, getProductsBySubcategory, searchProduct, getProduct, updateProduct, deleteProduct};

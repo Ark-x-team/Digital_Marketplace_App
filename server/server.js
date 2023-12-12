@@ -2,33 +2,6 @@
 const express = require('express')
 const app = express()
 
-// ******************************** App security ********************************
-
-// Protect from some well-known web vulnerabilities
-const helmet = require('helmet')
-app.use(helmet())
-
-// Disable that the application is powered by Express js
-app.disable('x-powered-by')
-
-// Protect from HTTP Parameter Pollution attacks
-const hpp = require('hpp')
-app.use(hpp())
-
-// Remove any keys in request object that begin with a '$' or contain '.'
-const mongoSanitize = require('express-mongo-sanitize');
-app.use(mongoSanitize());
-
-// Limit repeated requests to public APIs
-const rateLimit = require('express-rate-limit')
-const limiter = rateLimit({
-	windowMs: 1000 * 60, // 1 minute
-	limit: 150, // Limit each IP to 100 requests per `window` (here, per 1 minute).
-	standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
-})
-app.use(limiter)
-
 // ********************************* App config ********************************
 
 // Database connection
@@ -75,7 +48,34 @@ app.use(categoryRoutes)
 app.use(subcategoryRoutes)
 app.use(orderRoutes)
 
-// Run App
-app.listen(process.env.PORT, _ => console.log(`App is running on http://localhost:${process.env.PORT}`))
+// ******************************** App security ********************************
 
+// Protect from some well-known web vulnerabilities
+const helmet = require('helmet')
+app.use(helmet())
+
+// Disable that the application is powered by Express js
+app.disable('x-powered-by')
+
+// Protect from HTTP Parameter Pollution attacks
+const hpp = require('hpp')
+app.use(hpp())
+
+// Remove any keys in request object that begin with a '$' or contain '.'
+const mongoSanitize = require('express-mongo-sanitize');
+app.use(mongoSanitize());
+
+// Limit repeated requests to public APIs
+const rateLimit = require('express-rate-limit')
+const limiter = rateLimit({
+	windowMs: 1000 * 60, // 1 minute
+	limit: 150, // Limit each IP to 100 requests per `window` (here, per 1 minute).
+	standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+})
+app.use(limiter)
+
+// *********************************** Run App *********************************
+
+app.listen(process.env.PORT, _ => console.log(`App is running on http://localhost:${process.env.PORT}`))
 

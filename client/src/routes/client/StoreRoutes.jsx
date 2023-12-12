@@ -1,40 +1,51 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { lazy } from "react";
 import Categories from "../../customer/pages/store/Categories";
 import SubCategories from "../../customer/pages/store/SubCategories";
 import Footer from "../../customer/components/Footer";
-import ProductsList from "../../customer/pages/store/Products";
-import Searchbar from "../../customer/pages/store/Searchbar";
-import Filter from "../../customer/pages/store/Filter";
+import ProductsList from "../../customer/pages/store/ProductsList";
+import PaginationCursor from "../../customer/pages/store/Pagination";
+import { Progress } from "@nextui-org/react";
+import productStore from "../../store/products/ProductStore";
 
 const ClientNavbar = lazy(() =>
   import("../../customer/components/navbar/Navbar")
 );
 
-const Products = () => (
+const StorePage = () => (
   <>
     <ul className="flex flex-col gap-5">
       <Categories />
-      <span className="w-full flex justify-between items-center ">
-        <SubCategories />
-        <ul className="flex gap-4">
-          <Searchbar />
-          <Filter />
-        </ul>
-      </span>
+      <SubCategories />
     </ul>
     <ProductsList />
+    <PaginationCursor />
   </>
 );
 function StoreRoutes() {
+  const { loading } = productStore();
   return (
     <>
+      {loading ? (
+        <Progress
+          style={{ zIndex: "9999" }}
+          size="sm"
+          isIndeterminate
+          aria-label="Loading..."
+          className="absolute top-0 left-0 w-full"
+        />
+      ) : (
+        ""
+      )}
       <ClientNavbar />
-      <div className="pt-24 main-container px-4">
+      <div className="pt-24 store-container px-4">
         <Routes>
           <Route path="/" element={<Categories />} />
-          <Route path="/:category" element={<Products />}>
-            <Route path=":subcategory" element={<Products />} />
+          <Route path="/" element={<Navigate to="all" replace />} />
+          <Route path="all" element={<ProductsList />} />
+          <Route path="/:category" element={<StorePage />}>
+            <Route path=":subcategory" element={<StorePage />} />
+            <Route path="all" element={<ProductsList />} />
           </Route>
         </Routes>
         <Footer />

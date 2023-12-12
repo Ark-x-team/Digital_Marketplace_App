@@ -9,7 +9,7 @@ import {
 
 const Filter = () => {
   return (
-    <Dropdown placement="bottom-end" className="dropdown">
+    <Dropdown placement="bottom-start" className="dropdown">
       <DropdownTrigger>
         <Button variant="flat" isIconOnly color="primary" aria-label="filter">
           <FilterListRoundedIcon />

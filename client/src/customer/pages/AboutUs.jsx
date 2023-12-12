@@ -28,7 +28,7 @@ function AboutUs() {
         <div className="flex flex-col lg:flex-row lg:justify-evenly items-center gap-8 md:gap-14 lg:gap-28">
           <span className="flex flex-col gap-4 lg:max-w-xl">
             <h1 className="text-2xl md:text-3xl lg:text-4xl capitalize">
-              Lorem ipsum dolor sit.
+              Crafting Dreams, Inspiring Realities
             </h1>
             <p className="dark:text-light">
               In our digital haven, creativity knows no bounds. Our diverse team

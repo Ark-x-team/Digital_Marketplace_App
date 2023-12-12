@@ -14,7 +14,8 @@ const { userRole } = require('../middlewares/auth')
 
 // Product Routes
 router.post('/products',  uploadMiddleware, productController.createProduct)
-router.get('/products', productController.getProducts)
+router.get('/products-category', productController.getProductsByCategory)
+router.get('/products-subcategory', productController.getProductsBySubcategory)
 router.get('/products/search', productController.searchProduct)
 router.get('/products/:id', productController.getProduct)
 router.put('/products/:id', userRole, uploadMiddleware, productController.updateProduct)

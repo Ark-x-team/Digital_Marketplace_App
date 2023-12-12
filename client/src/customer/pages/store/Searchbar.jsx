@@ -1,9 +1,13 @@
 import { Input } from "@nextui-org/react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import productStore from "../../../store/products/ProductStore";
 const Searchbar = () => {
+  const { searchValue, updateSearchValue } = productStore();
   return (
     <Input
       name="searchbar"
+      value={searchValue}
+      onChange={updateSearchValue}
       type="text"
       placeholder="Search"
       size="xs"

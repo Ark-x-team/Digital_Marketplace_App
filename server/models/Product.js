@@ -13,6 +13,11 @@ const productSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
+    product_type: {
+        type: String,
+        enum: ['image', 'audio', 'video', 'pdf', 'font', 'text'],
+        required: true,
+    },
     product_images: {
         type: Array,
     },
@@ -36,7 +41,7 @@ const productSchema = new mongoose.Schema({
     },
     active: {
         type: Boolean,
-        default: false
+        default: true
     },
     hide: {
         type: Boolean,

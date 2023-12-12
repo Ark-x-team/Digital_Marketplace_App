@@ -70,18 +70,28 @@
   }
   
   @media (min-width: 768px) {
-    .main-container {
+    .main-container, .store-container {
       max-width: var(--md);
     }
   }
   @media (min-width: 1024px) {
-    .main-container {
+    .main-container, .store-container {
       max-width: var(--lg) 
     }
   }
   @media (min-width: 1280px) {
     .main-container {
       max-width: var(--xl)
+    }
+  }
+  @media (min-width: 1024px) {
+    .store-container {
+      max-width: var(--lg) 
+    }
+  }
+  @media (min-width: 1280px) {
+    .store-container {
+      max-width: 1380px
     }
   }
   
@@ -188,9 +198,54 @@
     border: none !important
   }
   /********************************** Dropdown **********************************/
-
+  
   .dropdown{
     @apply min-w-fit !important;
   }
   
-  
+  /******************************** Music player *******************************/
+  .rhap_progress-section {
+    @apply gap-2
+  }
+.rhap_container{
+  @apply bg-transparent p-4 shadow-none absolute w-full bottom-0 !important;
+}
+.rhap_main{
+  @apply flex-none !important;
+}
+.rhap_time{
+  @apply text-primary !important;
+}
+.rhap_progress-bar, .rhap_progress-bar, .rhap_download-progress, .rhap_volume-bar, .rhap_volume-bar {
+  @apply h-[3px] bg-violet-300 !important
+}
+
+.rhap_progress-indicator, .rhap_volume-indicator{
+  @apply bg-primary w-3 h-3 -top-[5px] !important
+}
+.rhap_progress-filled, .rhap_volume-filled{
+  @apply bg-primary !important
+}
+.rhap_additional-controls{
+  @apply hidden !important
+}
+.rhap_main-controls {
+  position: absolute;
+    top: -40% !important;
+    left: 45% !important;
+  }
+.rhap_volume-controls{
+  @apply justify-start !important;
+}
+.hide-controls .rhap_progress-section, .hide-controls .rhap_volume-controls{
+  opacity: 0;
+}
+.show-controls .rhap_progress-section, .show-controls .rhap_volume-controls{
+  opacity: 1;
+}
+
+/******************************** Video player *******************************/
+.video-player video{
+  height: 100% !important;
+  object-fit: cover !important;
+}

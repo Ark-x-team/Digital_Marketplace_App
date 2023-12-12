@@ -50,7 +50,7 @@ const createCategory = async (req, res) => {
 const getCategories = async (req, res) => {
     try {
         // Get all categories with limit number per page and sort them by creation date.
-        const categories = await Category.find().sort({ 'category_name': -1 });
+        const categories = await Category.find();
         const count = categories.length
 
         // Check the existence of categories for each page
