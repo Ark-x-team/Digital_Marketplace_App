@@ -18,7 +18,7 @@ const productStore = create((set) => ({
       const { page, limit } = productStore.getState();
       const response = await axios.get(
         `http://localhost:8081/products-category?page=${page}&limit=${limit}&active=true&category_name=${
-          category !== "all" ? category : ""
+          category && category !== "all" ? category : ""
         }`,
         { withCredentials: true }
       );
