@@ -216,6 +216,94 @@ const getProductsBySubcategory = async (req, res) => {
     }
 };
 
+// ************************* List products by filter ****************************
+const getProductsByFilter = async (req, res) => {
+    try {
+        const page = req.query.page * 1 || 1;
+        const limit = req.query.limit * 1 || 12;
+        const skip = (page - 1) * limit;
+        const filter = req.query.filter;
+        const active = req.query.active;
+
+        const match = active === 'true' ? { active: true } : active === 'false' ? { active: false } : {};
+
+        const sort = filter === 'low' ? { price: 1 } : filter === 'high' ? { price: -1 } : { created_at: -1 };
+
+        const pipeline = [
+            {
+                $lookup: {
+                    from: "subcategories",
+                    localField: "subcategory_id",
+                    foreignField: "_id",
+                    as: "subcategory",
+                },
+            },
+            {
+                $unwind: "$subcategory",
+            },
+            {
+                $lookup: {
+                    from: "categories",
+                    localField: "subcategory.category_id",
+                    foreignField: "_id",
+                    as: "category",
+                },
+            },
+            {
+                $unwind: "$category",
+            },
+            {
+                $project: {
+                    _id: 1,
+                    product_name: 1,
+                    product_type: 1,
+                    price: 1,
+                    active: 1,
+                    category_name: "$category.category_name",
+                    subcategory_name: "$subcategory.subcategory_name",
+                    product_images: "$product_images",
+                    created_at: { $toDate: "$created_at" },
+                },
+            },
+            {
+                $match: {
+                    $and: [
+                        match,
+                        filter === 'low' ? { price: { $exists: true } } : filter === 'high' ? { price: { $exists: true, $ne: null } } : { category_name: filter },
+                    ],
+                },
+            },
+            {
+                $facet: {
+                    products: [
+                        { $sort: sort },
+                        { $skip: skip },
+                        { $limit: limit },
+                    ],
+                    count: [
+                        { $count: "value" },
+                    ],
+                },
+            },
+        ];
+
+        const result = await Product.aggregate(pipeline);
+        const products = result[0].products;
+        const count = result[0].count.length > 0 ? result[0].count[0].value : 0;
+
+        if (count < 1 || skip >= count) {
+            res.status(404).json({ status: 404, data: [] });
+        } else {
+            res.status(200).json({ status: 200, count, page, limit, products });
+        }
+
+    } catch (error) {
+        res.status(400).json({ status: 400, message: "Failed to get products" });
+        console.log(error);
+    }
+};
+
+
 // ******************************* Get one product ***********************************
 const getProduct = async (req, res) => {
     try {
@@ -427,4 +515,4 @@ const deleteProduct = async (req, res) => {
 };
 
 
-module.exports = {createProduct, getProductsByCategory, getProductsBySubcategory, searchProduct, getProduct, updateProduct, deleteProduct};
+module.exports = {createProduct, getProductsByCategory, getProductsBySubcategory, getProductsByFilter, searchProduct, getProduct, updateProduct, deleteProduct};

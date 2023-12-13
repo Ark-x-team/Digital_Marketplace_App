@@ -1,7 +1,9 @@
+import { Button } from "@nextui-org/react";
 import PropTypes from "prop-types";
 import { useRef, useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
 function Audio(props) {
   const { name, images, audio, price, play } = props;
@@ -52,8 +54,20 @@ function Audio(props) {
           />
         </span>
       </div>
-      <h3 className="mt-4 text-sm text-gray-700">{name}</h3>
-      <p className="mt-1 text-lg font-medium text-gray-900">{price} MAD</p>
+      <ul className="flex justify-between items-end">
+        <li>
+          <h3 className="mt-4 text-sm text-gray-700">{name}</h3>
+          <p className="mt-1 text-lg font-medium text-gray-900">{price} MAD</p>
+        </li>
+        <Button
+          color="primary"
+          variant="light"
+          className="w-fit dark:text-white capitalize"
+          endContent={<AddRoundedIcon />}
+        >
+          add
+        </Button>
+      </ul>
     </div>
   );
 }

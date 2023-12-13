@@ -91,6 +91,31 @@ const productStore = create((set) => ({
       return Promise.reject(error);
     }
   },
+
+  // **************************** Filter products ****************************
+  // filterValue: "",
+  // updateFilterValue: (value) => {
+  //   set({ searchValue: value });
+  // },
+  getProductsByFilter: async (filterValue) => {
+    try {
+      set({ loading: true, productList: [] });
+      const { page, limit } = productStore.getState();
+      const response = await axios.get(
+        `http://localhost:8081/products-by-filter?page=${page}&limit=${limit}&filter=${filterValue}`,
+        { withCredentials: true }
+      );
+      set({
+        productList: response.data.products,
+        loading: false,
+        productError: false,
+      });
+      console.log(response);
+    } catch (error) {
+      set({ loading: false });
+      return Promise.reject(error);
+    }
+  },
 }));
 
 export default productStore;

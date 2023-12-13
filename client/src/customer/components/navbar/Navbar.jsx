@@ -23,7 +23,7 @@ function ClientNavbar() {
       onClick={closeNav}
       color="primary"
       variant={item.url === currentPathname ? "flat" : "light"}
-      className="w-fit dark:text-white"
+      className="w-fit dark:text-white capitalize"
     >
       {item.title}
     </Button>
@@ -35,7 +35,7 @@ function ClientNavbar() {
       onClick={closeNav}
       color="primary"
       variant="solid"
-      className="w-fit dark:text-white"
+      className="w-fit dark:text-white capitalize"
       endContent={<LoginRoundedIcon />}
     >
       account

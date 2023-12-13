@@ -6,8 +6,10 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
+import productStore from "../../../store/products/ProductStore";
 
 const Filter = () => {
+  const { getProductsByFilter } = productStore();
   return (
     <Dropdown placement="bottom-start" className="dropdown">
       <DropdownTrigger>
@@ -16,8 +18,17 @@ const Filter = () => {
         </Button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
-        <DropdownItem className="capitalize py-2 px-4 md:px-6 ">
-          my account
+        <DropdownItem
+          className="capitalize py-2 px-4 md:px-6 "
+          onClick={() => getProductsByFilter("low")}
+        >
+          Price: low to high
+        </DropdownItem>
+        <DropdownItem
+          className="capitalize py-2 px-4 md:px-6 "
+          onClick={() => getProductsByFilter("high")}
+        >
+          Price: high to low
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

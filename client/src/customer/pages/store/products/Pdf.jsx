@@ -1,3 +1,5 @@
+import { Button } from "@nextui-org/react";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import PropTypes from "prop-types";
 
 function Pdf(props) {
@@ -12,8 +14,20 @@ function Pdf(props) {
           className="h-48 w-full object-cover object-center hover:opacity-75 duration-200"
         />
       </div>
-      <h3 className="mt-4 text-sm text-gray-700">{name}</h3>
-      <p className="mt-1 text-lg font-medium text-gray-900">{price} MAD</p>
+      <ul className="flex justify-between items-end">
+        <li>
+          <h3 className="mt-4 text-sm text-gray-700">{name}</h3>
+          <p className="mt-1 text-lg font-medium text-gray-900">{price} MAD</p>
+        </li>
+        <Button
+          color="primary"
+          variant="light"
+          className="w-fit dark:text-white capitalize"
+          endContent={<AddRoundedIcon />}
+        >
+          add
+        </Button>
+      </ul>
     </div>
   );
 }
