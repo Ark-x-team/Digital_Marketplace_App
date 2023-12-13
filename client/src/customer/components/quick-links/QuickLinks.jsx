@@ -2,8 +2,10 @@ import { Tooltip, Button } from "@nextui-org/react";
 import { For } from "million/react";
 import PropTypes from "prop-types";
 import quickLinksData from "./QuickLinksData";
+import { useTranslation } from "react-i18next";
 
 function QuickLinks() {
+  const { t } = useTranslation(); // Initialize the useTranslation hook
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -19,7 +21,7 @@ function QuickLinks() {
       <Tooltip
         showArrow
         placement="right"
-        content={props.title}
+        content={t(props.title)}
         classNames={{
           base: ["before:bg-gray-200 dark:before:bg-dark "],
           content: [
@@ -51,7 +53,7 @@ function QuickLinks() {
         {(item, index) => (
           <QuickLink
             key={index}
-            title={item.title}
+            title={t(item.title)}
             icon={item.icon}
             sectionId={item.title}
           />

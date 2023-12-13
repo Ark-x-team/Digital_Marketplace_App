@@ -41,8 +41,6 @@ function StoreRoutes() {
       <div className="pt-24 store-container px-4">
         <Routes>
           <Route path="/" element={<StorePage />} />
-          {/* <Route path="/" element={<Navigate to="all" replace />} />
-          <Route path="all" element={<ProductsList />} /> */}
           <Route path="/:category" element={<StorePage />}>
             <Route path=":subcategory" element={<StorePage />} />
             <Route path="all" element={<ProductsList />} />

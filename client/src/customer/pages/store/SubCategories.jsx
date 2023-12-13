@@ -25,7 +25,7 @@ function SubCategory() {
       orientation="horizontal"
       className="w-full flex flex-wrap gap-4 overflow-x-scroll scrollbar-hide"
     >
-      {category !== "all" ? (
+      {category && category !== "all" ? (
         <Tabs size="lg" variant="underlined" aria-label="Tabs variants">
           <Tab
             as={Link}
