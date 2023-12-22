@@ -17,11 +17,6 @@ const accountMenuData = [
     icon: <ShoppingCartRoundedIcon />,
   },
   {
-    title: "favorite",
-    url: "favorite",
-    icon: <FavoriteRoundedIcon />,
-  },
-  {
     title: "inbox",
     url: "inbox",
     icon: <ForumRoundedIcon />,
@@ -30,12 +25,6 @@ const accountMenuData = [
     title: "orders",
     url: "orders",
     icon: <InventoryRoundedIcon />,
-  },
-  {
-    title: "settings",
-    url: "settings",
-    icon: <SettingsRoundedIcon />,
-    priority: true,
   },
 ];
 

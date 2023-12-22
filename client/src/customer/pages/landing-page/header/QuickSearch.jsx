@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import categoriesStore from "../../../../store/categoriesStore";
+import { useTranslation } from "react-i18next";
 
 function QuickSearch() {
   const { getCategories, categoriesError, categoriesList } = categoriesStore();
@@ -22,6 +23,8 @@ function QuickSearch() {
       console.error(error);
     }
   }, []);
+
+  const { t } = useTranslation();
 
   const errorMessage = (
     <Textarea readOnly minRows={1} placeholder={categoriesError} />
@@ -66,14 +69,14 @@ function QuickSearch() {
       {() => (
         <>
           <ModalHeader className="flex flex-col gap-1 capitalize">
-            quick search
+            {t("quick search")}
           </ModalHeader>
           <ModalBody>
             <Input
               isClearable
               radius="lg"
               classNames="search-input bg-white"
-              placeholder="Type for search"
+              placeholder={t("type for search")}
               startContent={<SearchRoundedIcon className="" />}
             />
             <ScrollShadow

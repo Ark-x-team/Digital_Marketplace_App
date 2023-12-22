@@ -1,8 +1,10 @@
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Footer from "../../components/Footer";
 import howItWorksData from "./HowItWorksData";
+import { useTranslation } from "react-i18next";
 
 function HowItWorks() {
+  const { t } = useTranslation();
   const steps = (
     <ul className="flex flex-col gap-20 lg:gap-24">
       {howItWorksData.map((item, index) => (
@@ -24,9 +26,9 @@ function HowItWorks() {
 
           <span className="flex flex-col gap-4 lg:max-w-xl">
             <h1 className="text-2xl md:text-3xl lg:text-4xl capitalize">
-              {item.title}
+              {t(item.title)}
             </h1>
-            <p className="dark:text-light">{item.description}</p>
+            <p className="dark:text-light">{t(item.description)}</p>
             {item.link && item.link}
           </span>
         </li>
@@ -49,8 +51,8 @@ function HowItWorks() {
             className="absolute h-full w-full object-cover object-bottom lg:object-center"
           />
         </div>
-        <h1 className="w-full absolute top-3/4 left-2/4 -translate-x-2/4 -translate-y-2/4 z-10 font-title capitalize text-center text-3xl md:text-4xl lg:text-5xl text-primary ">
-          How it works ?
+        <h1 className="w-full absolute top-3/4 left-2/4 -translate-x-2/4 -translate-y-2/4 z-10 font-title text-center text-3xl md:text-4xl lg:text-5xl text-primary capitalize">
+          {t("how it works")} ?
         </h1>
       </div>
       <div className="main-container px-4 lg:px-4 my-12 md:my-16 lg:my-20">

@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import customerAuthStore from "../../../store/authentication/customerAuthStore";
+import { useTranslation } from "react-i18next";
 
 function SignUp() {
   const [isVisible, setIsVisible] = useState(false);
@@ -52,6 +53,8 @@ function SignUp() {
     }
   };
 
+  const { t } = useTranslation();
+
   const errorMessage = (
     <Textarea readOnly color="danger" minRows={1} placeholder={signUpError} />
   );
@@ -72,7 +75,7 @@ function SignUp() {
         onChange={updateSignUpForm}
         errorMessage={!usernameValidation.state && usernameValidation.message}
         type="username"
-        label="Username"
+        label={t("username")}
       />
       <Input
         name="email"
@@ -92,7 +95,7 @@ function SignUp() {
         onChange={updateSignUpForm}
         errorMessage={!passwordValidation.state && passwordValidation.message}
         type={isVisible ? "text" : "password"}
-        placeholder="Password"
+        placeholder={t("password")}
         startContent={
           <button
             className="focus:outline-none"
@@ -110,7 +113,7 @@ function SignUp() {
           <Tooltip
             showArrow
             placement="top"
-            content="Generate password"
+            content={t("generate password")}
             classNames={{
               base: ["before:bg-white dark:before:bg-dark "],
               content: [
@@ -145,7 +148,7 @@ function SignUp() {
           endContent={<PersonAddRoundedIcon />}
           className="capitalize grow"
         >
-          sign up
+          {t("sign up")}
         </Button>
         <Button
           as={Link}
@@ -155,7 +158,7 @@ function SignUp() {
           endContent={<LoginRoundedIcon />}
           className="capitalize grow"
         >
-          login
+          {t("login")}
         </Button>
       </div>
     </form>
@@ -170,7 +173,7 @@ function SignUp() {
           style={{ zIndex: "9999" }}
           size="sm"
           isIndeterminate
-          aria-label="Loading..."
+          aria-label="loading..."
           className="absolute top-0 left-0 w-full"
         />
       ) : (
@@ -191,7 +194,7 @@ function SignUp() {
           <div className="relative main-container px-3 pt-56 flex w-full justify-center">
             <div className="w-11/12 md:w-8/12 mx-auto lg:mr-auto lg:ml-0 z-10">
               <h1 className="font-title capitalize text-4xl lg:text-5xl text-primary  dark:text-white dark:lg:text-primary text-center lg:text-start mb-8 md:mb-10 lg:mb-12">
-                sign up
+                {t("sign up")}
               </h1>
               {signUpInputs}
             </div>

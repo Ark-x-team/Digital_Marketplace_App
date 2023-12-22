@@ -9,8 +9,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import customerAuthStore from "../../../store/authentication/customerAuthStore";
-
 import { GoogleLogin } from "@react-oauth/google";
+import { useTranslation } from "react-i18next";
 
 function Login() {
   const [isVisible, setIsVisible] = useState(false);
@@ -59,6 +59,8 @@ function Login() {
     }
   };
 
+  const { t } = useTranslation();
+
   const errorMessage = (
     <Textarea readOnly color="danger" minRows={1} placeholder={loginError} />
   );
@@ -70,7 +72,7 @@ function Login() {
         value={loginForm.email}
         onChange={updateLoginForm}
         type="email"
-        placeholder="Email"
+        placeholder="email"
         startContent={
           <EmailRoundedIcon className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
         }
@@ -80,7 +82,7 @@ function Login() {
         value={loginForm.password}
         onChange={updateLoginForm}
         type={isVisible ? "text" : "password"}
-        placeholder="Password"
+        placeholder={t("password")}
         startContent={
           <button
             className="focus:outline-none"
@@ -99,7 +101,7 @@ function Login() {
         to="/reset-password-verify"
         className="capitalize text-primary hover:brightness-125 duration-500 w-fit"
       >
-        forgot password ?
+        {t("forgot password ?")}
       </Link>
       {loginError && errorMessage}
       <ReCAPTCHA
@@ -136,7 +138,7 @@ function Login() {
           endContent={<LoginRoundedIcon />}
           className="capitalize grow"
         >
-          login
+          {t("login")}
         </Button>
         <Button
           as={Link}
@@ -146,7 +148,7 @@ function Login() {
           endContent={<PersonAddRoundedIcon />}
           className="capitalize grow"
         >
-          sign up
+          {t("sign up")}
         </Button>
       </div>
     </form>
@@ -160,7 +162,7 @@ function Login() {
           style={{ zIndex: "9999" }}
           size="sm"
           isIndeterminate
-          aria-label="Loading..."
+          aria-label="loading"
           className="absolute top-0 left-0 w-full"
         />
       ) : (
@@ -181,7 +183,7 @@ function Login() {
           <div className="relative main-container px-3 pt-48 flex w-full justify-center">
             <div className="w-11/12 md:w-8/12 mx-auto lg:mr-auto lg:ml-0 z-10">
               <h1 className="font-title capitalize text-4xl lg:text-5xl text-primary  dark:text-white dark:lg:text-primary text-center lg:text-start mb-8 md:mb-10 lg:mb-12">
-                welcome back
+                {t("welcome back")}
               </h1>
               {loginInputs}
             </div>

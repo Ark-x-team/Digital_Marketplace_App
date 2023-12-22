@@ -2,6 +2,7 @@ import { Spinner, Textarea } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import customerAuthStore from "../../../store/authentication/customerAuthStore";
+import { useTranslation } from "react-i18next";
 
 function EmailVerification() {
   const { AccountVerification } = customerAuthStore();
@@ -18,12 +19,14 @@ function EmailVerification() {
     }
   }, []);
 
+  const { t } = useTranslation();
+
   const errorMessage = (
     <Textarea
       readOnly
       color="danger"
       maxRows={1}
-      placeholder="Can't verify your account"
+      placeholder={t("can't verify your account")}
       className="max-w-xs"
     />
   );

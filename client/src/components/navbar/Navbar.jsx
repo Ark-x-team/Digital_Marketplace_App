@@ -8,7 +8,7 @@ import customerAuthStore from "../../store/authentication/customerAuthStore";
 
 import PropTypes from "prop-types";
 import { memo } from "react";
-import Cookies from "js-cookie";
+import CartDropdown from "./CartDropdown";
 
 function Navbar({ menuItems, endButton }) {
   const { navOpen, handleNav, handleNavButton } = mainStore();
@@ -29,7 +29,13 @@ function Navbar({ menuItems, endButton }) {
       <ul className="flex flex-wrap lg:flex-nowrap justify-center items-center gap-8 lg:gap-4 px-32 lg:px-0">
         <SwitchMode />
         <SwitchLang />
-        {loggedIn ? <AccountDropdown /> : endButton}
+        {loggedIn ? (
+          <>
+            <CartDropdown /> <AccountDropdown />
+          </>
+        ) : (
+          endButton
+        )}
       </ul>
     </>
   );

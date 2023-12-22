@@ -3,6 +3,7 @@ import { ScrollShadow, Tabs, Tab } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { block } from "million/react";
+import { useTranslation } from "react-i18next";
 
 const AccountMenu = block(() => {
   const location = useLocation();
@@ -15,6 +16,8 @@ const AccountMenu = block(() => {
     );
   }, [location.pathname]);
 
+  const { t } = useTranslation();
+
   const menuItems = (
     <Tabs
       selectedKey={currentItem.toString()}
@@ -22,7 +25,7 @@ const AccountMenu = block(() => {
       color="primary"
       variant="solid"
       aria-label="Tabs variants"
-      className="tabs "
+      className="account-menu"
     >
       {accountMenuData
         .filter((item) => !item.replace)
@@ -34,7 +37,7 @@ const AccountMenu = block(() => {
             title={
               <div className="flex items-center space-x-2 ">
                 {item.icon}
-                <span>{item.title}</span>
+                <span>{t(item.title)}</span>
               </div>
             }
             className="justify-start"
@@ -47,7 +50,7 @@ const AccountMenu = block(() => {
       isEnabled={false}
       hideScrollBar
       orientation="horizontal"
-      className="lg:w-fit"
+      className="lg:w-fit flex justify-center"
     >
       {menuItems}
     </ScrollShadow>

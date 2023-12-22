@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import categoriesStore from "../../../store/categoriesStore";
 import { ScrollShadow } from "@nextui-org/react";
 import productStore from "../../../store/products/ProductStore";
+import { useTranslation } from "react-i18next";
 
 function Categories() {
   const { getCategories, categoriesError, categoriesList } = categoriesStore();
@@ -49,6 +50,8 @@ function Categories() {
     isActive: PropTypes.bool,
   };
 
+  const { t } = useTranslation();
+
   return (
     <ScrollShadow
       orientation="horizontal"
@@ -56,7 +59,7 @@ function Categories() {
     >
       <Category
         link="all"
-        title="all"
+        title={t("all")}
         isActive={!category || category == "all"}
       />
       {!categoriesError &&

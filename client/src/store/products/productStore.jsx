@@ -93,10 +93,6 @@ const productStore = create((set) => ({
   },
 
   // **************************** Filter products ****************************
-  // filterValue: "",
-  // updateFilterValue: (value) => {
-  //   set({ searchValue: value });
-  // },
   getProductsByFilter: async (filterValue) => {
     try {
       set({ loading: true, productList: [] });
@@ -113,6 +109,28 @@ const productStore = create((set) => ({
       console.log(response);
     } catch (error) {
       set({ loading: false });
+      return Promise.reject(error);
+    }
+  },
+
+  // **************************** Get product ****************************
+  productData: [],
+  productId: "",
+  setProduct: (id) => {
+    set({ productId: id });
+  },
+  getProduct: async () => {
+    try {
+      const { productId } = productStore.getState();
+      const response = await axios.get(
+        `http://localhost:8081/products/${productId}`,
+        { withCredentials: true }
+      );
+      set({
+        productData: response.data.product,
+      });
+      console.log(response.data.product);
+    } catch (error) {
       return Promise.reject(error);
     }
   },

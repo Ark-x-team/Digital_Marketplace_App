@@ -7,8 +7,11 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import productStore from "../../../store/products/ProductStore";
+import { useTranslation } from "react-i18next";
 
 const Filter = () => {
+  const { t } = useTranslation();
+
   const { getProductsByFilter } = productStore();
   return (
     <Dropdown placement="bottom-start" className="dropdown">
@@ -22,13 +25,13 @@ const Filter = () => {
           className="capitalize py-2 px-4 md:px-6 "
           onClick={() => getProductsByFilter("low")}
         >
-          Price: low to high
+          {t("price") + " : " + t("low to high")}
         </DropdownItem>
         <DropdownItem
           className="capitalize py-2 px-4 md:px-6 "
           onClick={() => getProductsByFilter("high")}
         >
-          Price: high to low
+          {t("price") + " : " + t("high to low")}
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

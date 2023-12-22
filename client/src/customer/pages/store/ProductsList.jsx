@@ -55,46 +55,44 @@ function ProductsList() {
         product.active && product?.product_type === "audio" ? (
           <Audio
             key={index}
+            id={product._id}
             name={product?.product_name}
-            images={product?.product_images[0]}
-            audio={product?.product_images[1]}
+            images={product?.product_files[0]}
+            audio={product?.product_files[1]}
             price={product?.price}
-            play={(audioRef) =>
-              handlePlay(product?.product_images[1], audioRef)
-            }
+            play={(audioRef) => handlePlay(product?.product_files[1], audioRef)}
           />
         ) : product?.product_type === "font" ? (
           <Font
             key={index}
+            id={product._id}
             name={product?.product_name}
-            font={product?.product_images[0]}
-            images="fonts.jpg"
+            images={product?.product_files[0]}
+            font={product?.product_files[1]}
             price={product?.price}
           />
         ) : product?.product_type === "image" ||
           product.product_type == "text" ||
-          product?.subcategory_name == "courses" ? (
+          product?.subcategory_name == "courses" ||
+          product.product_type == "pdf" ? (
           <Image
             key={index}
+            id={product._id}
             name={product?.product_name}
-            images={product?.product_images[0]}
+            images={product?.product_files[0]}
             price={product?.price}
           />
-        ) : product?.product_type === "pdf" ? (
-          <Pdf
-            key={index}
-            name={product?.product_name}
-            image={product?.product_images[0]}
-            price={product?.price}
-          />
-        ) : (
+        ) : product?.product_type === "video" ? (
           <Video
             key={index}
+            id={product._id}
             name={product?.product_name}
-            video={product?.product_images[0]}
+            video={product?.product_files[0]}
             price={product?.price}
             subCategory={product?.subcategory_name}
           />
+        ) : (
+          ""
         )
       )}
     </div>

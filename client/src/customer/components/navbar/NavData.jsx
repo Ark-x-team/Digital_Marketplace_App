@@ -4,7 +4,7 @@ const navData = [
     url: "/store",
   },
   {
-    title: "How it works",
+    title: "how it works",
     url: "/how-it-works",
   },
   {

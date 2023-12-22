@@ -5,9 +5,11 @@ import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import mainStore from "../../../store/mainStore";
 import { Link, useLocation } from "react-router-dom";
 import navData from "./NavData";
+import { useTranslation } from "react-i18next";
 
 function ClientNavbar() {
   const { closeNav } = mainStore();
+  const { t } = useTranslation();
 
   const location = useLocation();
   const [currentPathname, setCurrentPathname] = useState("");
@@ -25,7 +27,7 @@ function ClientNavbar() {
       variant={item.url === currentPathname ? "flat" : "light"}
       className="w-fit dark:text-white capitalize"
     >
-      {item.title}
+      {t(item.title)}
     </Button>
   ));
   const endButton = (
@@ -38,7 +40,7 @@ function ClientNavbar() {
       className="w-fit dark:text-white capitalize"
       endContent={<LoginRoundedIcon />}
     >
-      account
+      {t("account")}
     </Button>
   );
 

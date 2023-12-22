@@ -8,6 +8,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import customerAuthStore from "../../../store/authentication/customerAuthStore";
+import { useTranslation } from "react-i18next";
 
 function ResetPassword() {
   const [isVisible, setIsVisible] = useState(true);
@@ -39,11 +40,13 @@ function ResetPassword() {
     }
   };
 
+  const { t } = useTranslation();
+
   const successMessage = (
     <Textarea
       readOnly
       color="success"
-      defaultValue="Your password has been updated successfully"
+      defaultValue={t("your password has been updated successfully")}
       startContent={<DoneRoundedIcon className="mr-4" />}
       className="max-w-xs "
     />
@@ -117,7 +120,7 @@ function ResetPassword() {
           endContent={<ForwardToInboxRoundedIcon />}
           className="capitalize grow"
         >
-          update
+          {t("update")}
         </Button>
         <Button
           as={Link}
@@ -127,7 +130,7 @@ function ResetPassword() {
           startContent={<ArrowBackRoundedIcon />}
           className="capitalize grow"
         >
-          back to login
+          {t("back to login")}
         </Button>
       </div>
     </form>

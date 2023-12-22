@@ -39,6 +39,7 @@ const userRoutes = require('./routes/userRoutes')
 const customerRoutes = require('./routes/customerRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
 const subcategoryRoutes = require('./routes/subcategoryRoutes')
+const cartRoutes = require('./routes/cartRoutes')
 
 const orderRoutes = require('./routes/orderRoutes')
 app.use(productRoutes)
@@ -47,6 +48,7 @@ app.use(customerRoutes)
 app.use(categoryRoutes)
 app.use(subcategoryRoutes)
 app.use(orderRoutes)
+app.use(cartRoutes)
 
 // ******************************** App security ********************************
 

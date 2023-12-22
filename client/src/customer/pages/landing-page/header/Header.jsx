@@ -1,7 +1,7 @@
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { Modal, Button, useDisclosure } from "@nextui-org/react";
-import CircularText from "../../../components/styled/CircularText";
-import ScrollText from "../../../components/styled/ScrollText";
+// import CircularText from "../../../components/styled/CircularText";
+// import ScrollText from "../../../components/styled/ScrollText";
 import QuickSearch from "./QuickSearch";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
@@ -9,8 +9,9 @@ import { For } from "million/react";
 import PropTypes from "prop-types";
 import statisticData from "./StatisticData";
 import { useEffect, useMemo, useState } from "react";
-
+import { useTranslation } from "react-i18next";
 function Header() {
+  const { t } = useTranslation();
   const StatisticItem = (props) => (
     <li className="bg-white dark:bg-dark bg-opacity-30 dark:bg-opacity-20 backdrop-blur-xl flex flex-col items-center p-4 rounded-2xl">
       <span className="text-2xl font-semibold">{props.data}</span>
@@ -23,12 +24,12 @@ function Header() {
   };
   const statistic = (
     <ul className="w-full flex gap-4 md:gap-6 lg:gap-10 z-10">
-      <For each={statisticData} memo>
+      <For each={statisticData}>
         {(item, index) => (
           <StatisticItem
             key={index}
             data={item.data}
-            description={item.description}
+            description={t(item.description)}
           />
         )}
       </For>
@@ -72,7 +73,7 @@ function Header() {
       className="relative after:absolute after:w-full after:h-full after:bg-gradient-to-tr after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0 
       overflow-hidden"
     >
-      <div className="h-full w-full relative after:absolute after:w-full after:h-full after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
+      <div className="h-full lg:h-[120vh] w-full relative after:absolute after:w-full after:h-full after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
         {coverImages.map((image, index) => (
           <LazyLoadImage
             key={index}
@@ -87,18 +88,18 @@ function Header() {
             className="absolute h-full w-full object-cover lg:object-center"
           />
         ))}
-        <div className="header relative main-container px-3 pt-56 pb-28 md:pt-64 md:pb-56 lg:pl-8  flex w-full justify-start">
+        <div className="relative main-container px-4 pt-56  pb-14 md:pb-32 lg:pb-40 lg:pl-8 flex w-full justify-start">
           <img
             src="/shapes/blur.svg"
             alt=""
             loading="lazy"
-            className="blur-shape left-0 top-2/4 w-2/4"
+            className="blur-shape left-0 top-1/4 w-2/4"
           />
           <img
             src="/shapes/blur-2.svg"
             alt=""
             loading="lazy"
-            className="blur-shape -right-60 top-1/4 w-2/4"
+            className="blur-shape left-60 top-1/4 w-2/4"
           />
           <img
             src="/shapes/blur-2.svg"
@@ -113,8 +114,8 @@ function Header() {
             >
               markstone
             </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-dark dark:text-light max-w-2xl z-10">
-              Your Needs, Brought Home
+            <p className="capitalize text-lg md:text-xl lg:text-2xl text-dark dark:text-light max-w-2xl z-10">
+              {t("your needs, brought home")}
             </p>
             <Button
               onClick={onOpen}
@@ -122,14 +123,14 @@ function Header() {
               className="search-button"
               startContent={<SearchRoundedIcon />}
             >
-              quick search
+              {t("quick search")}
             </Button>
             {statistic}
             {searchModal}
-            <CircularText>Markstone●Markstone●</CircularText>
+            {/* <CircularText>Markstone●Markstone●</CircularText> */}
           </div>
         </div>
-        <ScrollText />
+        {/* <ScrollText /> */}
       </div>
     </div>
   );

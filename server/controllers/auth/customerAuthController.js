@@ -318,5 +318,13 @@ const customerLogout = async (req, res) => {
         res.status(500).json({ status: 500, message: "Internal Server Error" });
     } 
 }
+
+function checkAuth(req, res) {
+    try{
+      res.sendStatus(200)
+    } catch(err){
+      return res.sendStatus(400)
+    }
+  }
   
-module.exports = { customerSignup, customerLogin, customerGoogleLogin, customerLogout, resetPasswordVerification, accountVerification, customerResetPassword, };
+module.exports = { customerSignup, customerLogin, customerGoogleLogin, customerLogout, resetPasswordVerification, accountVerification, customerResetPassword, checkAuth};

@@ -31,16 +31,17 @@
     margin: 0;
     padding: 0%;
     box-sizing: border-box;
+    line-height: 1.3 !important;
   }
-   body {
+body {
     overflow-x: hidden !important;
     font-family: var(--font-main) !important;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
-    line-height: 1.7 !important;
   }
+
   
   ::selection:not(img){
     @apply bg-primary text-white
@@ -164,17 +165,6 @@
   
   /*********************************** Header ***********************************/
   
-  @media (min-width: 1024px) {
-    .header {
-      padding-bottom: 32rem !important;
-    }
-  }
-  @media (min-width: 1440px) {
-    .header {
-      padding-bottom: 16rem !important;
-    }
-  }
-  
   .search-button{
     @apply w-full md:w-fit py-6 md:pr-28 bg-white dark:bg-dark bg-opacity-60 dark:bg-opacity-50 backdrop-blur-xl capitalize text-dark dark:text-white cursor-pointer z-10 !important;
   }
@@ -203,7 +193,7 @@
     @apply min-w-fit !important;
   }
   
-  /******************************** Music player *******************************/
+  /******************************** Audio player *******************************/
   .rhap_progress-section {
     @apply gap-2
   }
@@ -229,11 +219,16 @@
 .rhap_additional-controls{
   @apply hidden !important
 }
-.rhap_main-controls {
+.audio .rhap_main-controls {
   position: absolute;
-    top: -40% !important;
-    left: 45% !important;
-  }
+  top: -40% !important;
+  left: 45% !important;
+}
+.audio-modal .rhap_main-controls {
+  position: absolute;
+  top: -110% !important;
+  left: 47.5% !important;
+}
 .rhap_volume-controls{
   @apply justify-start !important;
 }
@@ -248,4 +243,9 @@
 .video-player video{
   height: 100% !important;
   object-fit: cover !important;
+}
+
+/******************************** Video player *******************************/
+.account-menu [data-slot="tabList"] {
+  @apply md:flex-col md:p-4 !important;
 }

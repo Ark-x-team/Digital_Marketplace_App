@@ -1,5 +1,7 @@
 const Product = require("../models/Product"); 
-const fs = require('fs'); 
+const path = require('path');
+const fs = require('fs');
+const archiver = require('archiver');
 
 // ******************************* Create product ************************************
 const createProduct = async (req, res) => {
@@ -19,8 +21,8 @@ const createProduct = async (req, res) => {
                 message: "Product already exists, check the name and the serialization"
             })
         } else {
-            // Check files existence and attach filenames to product_images
-            let product_images = "default-product-image"
+            // Check files existence and attach filenames to product_files
+            let product_files = "default-product-image"
             if (files.length > 0) {
 
                 // Store images in uploads folder
@@ -33,12 +35,12 @@ const createProduct = async (req, res) => {
                         })
                     })
                 });
-                product_images = files.map(file => file.filename)
+                product_files = files.map(file => file.filename)
             } 
 
             // Post product data
             await Product.create({
-                sku, product_name, product_images, price, discount_price,
+                sku, product_name, product_files, price, discount_price,
                 short_description, long_description,  active, subcategory_id, hide, product_type
             })
             res.status(200).json({ status: 200, message: "product created successfully" })
@@ -94,7 +96,7 @@ const getProductsByCategory = async (req, res) => {
                     active: 1,
                     category_name: "$category.category_name",
                     subcategory_name: "$subcategory.subcategory_name",
-                    product_images: "$product_images",
+                    product_files: "$product_files",
                     created_at: { $toDate: "$created_at" }
                 },
             },
@@ -181,7 +183,7 @@ const getProductsBySubcategory = async (req, res) => {
                     active: 1,
                     category_name: "$category.category_name",
                     subcategory_name: "$subcategory.subcategory_name",
-                    product_images: "$product_images",
+                    product_files: "$product_files",
                     created_at: { $toDate: "$created_at" }
                 },
             },
@@ -261,7 +263,7 @@ const getProductsByFilter = async (req, res) => {
                     active: 1,
                     category_name: "$category.category_name",
                     subcategory_name: "$subcategory.subcategory_name",
-                    product_images: "$product_images",
+                    product_files: "$product_files",
                     created_at: { $toDate: "$created_at" },
                 },
             },
@@ -303,61 +305,24 @@ const getProductsByFilter = async (req, res) => {
     }
 };
 
-
 // ******************************* Get one product ***********************************
 const getProduct = async (req, res) => {
     try {
         // Get product id from request params
-        const productId = req.params.id; 
+        const productId = req.params.id;
 
         // Get product by its ID
         const product = await Product.findById(productId);
-
+        
         if (!product) {
             res.status(404).json({ status: 404, message: "Product not found" });
         } else {
+            const subcategory = await Product.findById(product.subcategory_id);
+            res.status(200).json({ status: 200, product });
 
-            // Get subcategory name using aggregation
-            const productWithSubcategory = await Product.aggregate([
-                {
-                    $match: { _id: product._id },
-                },
-                {
-                    $lookup: {
-                        from: "subcategories", 
-                        localField: "subcategory_id",
-                        foreignField: "_id",
-                        as: "subcategory",
-                    },
-                },
-                {
-                    $unwind: "$subcategory",
-                },
-                {
-                    $project: {
-                        _id: 1,
-                        product_name: 1,
-                        subcategory_id:"$subcategory._id",
-                        subcategory_name: "$subcategory.subcategory_name",
-                        product_images: 1,
-                        short_description: 1,
-                        long_description: 1,
-                        price: 1,
-                        discount_price: 1,
-                        active: 1,
-                    },
-                },
-            ]);
-            if (!productWithSubcategory || productWithSubcategory.length === 0) {
-                res.status(500).json({ status: 500, error: "Failed to retrieve subcategory name" });
-            } else {
-                res.status(200).json({ status: 200, data: productWithSubcategory });
-            }
         }
-        
-        res.status(200).json({status: 200, data : product})
     } catch (error) {
-        res.status(404).json({status: 404, message: "Product not found"})
+        res.status(500).json({ status: 500, error: "Internal Server Error" });
     }
 };
 
@@ -401,7 +366,7 @@ const searchProduct = async (req, res) => {
                     product_name: 1,
                     subcategory_id:"$subcategory._id",
                     subcategory_name: "$subcategory.subcategory_name",
-                    product_images: 1,
+                    product_files: 1,
                     short_description: 1,
                     long_description: 1,
                     price: 1,
@@ -468,8 +433,8 @@ const updateProduct = async (req, res) => {
                     })
                 });
  
-                // Check files existence and attach filenames to product_images
-                const product_images = files.length > 0 ? files.map(file => file.filename) : productExist.product_images
+                // Check files existence and attach filenames to product_files
+                const product_files = files.length > 0 ? files.map(file => file.filename) : productExist.product_files
  
                 // Get the product price
                 const price = req.body.price || productExist.price
@@ -482,7 +447,7 @@ const updateProduct = async (req, res) => {
              
                 // Find product by it's Id and update it
                 await Product.findByIdAndUpdate(productId, {
-                     sku, product_name, product_images, price, discount_price, short_description,
+                     sku, product_name, product_files, price, discount_price, short_description,
                      long_description,  active, updated_at: updatedAt, subcategory_id
                 })
                 res.status(200).json({ status: 200, message: "Product updated successfully" })
@@ -514,5 +479,48 @@ const deleteProduct = async (req, res) => {
     }
 };
 
+// ****************************** Download product ***********************************
+const downloadProducts = async (req, res) => {
+    try {
+      const { filenames } = req.body;
+  
+      if (!filenames || !filenames.length) {
+        return res.status(400).json({ status: 400, message: 'Please provide valid filenames' });
+      }
+  
+      const zipFileName = 'markstone-files.zip';
+      const zipFilePath = path.join(__dirname, '..', 'public', 'uploads', zipFileName);
+  
+      const archive = archiver('zip', {
+        zlib: { level: 9 }, // compression level (0 to 9)
+      });
+  
+      // Set appropriate headers for download
+      res.setHeader('Content-Disposition', `attachment; filename=${zipFileName}`);
+      res.setHeader('Content-Type', 'application/zip');
+  
+      // Create a writable stream to the response
+      const output = res;
+      archive.pipe(output);
+  
+      // Add each file to the zip archive
+      for (const filename of filenames) {
+        const filePath = path.join(__dirname, '..', 'public', 'uploads', filename);
+  
+        // Check if the file exists
+        if (fs.existsSync(filePath)) {
+          // Add the file to the zip archive with the same name
+          archive.file(filePath, { name: filename });
+        }
+      }
+  
+      // Finalize the archive and send it to the response
+      archive.finalize();
+  
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ status: 500, message: 'Internal Server Error' });
+    }
+  };
 
-module.exports = {createProduct, getProductsByCategory, getProductsBySubcategory, getProductsByFilter, searchProduct, getProduct, updateProduct, deleteProduct};
+module.exports = {createProduct, getProductsByCategory, getProductsBySubcategory, getProductsByFilter, searchProduct, getProduct, downloadProducts, updateProduct, deleteProduct};

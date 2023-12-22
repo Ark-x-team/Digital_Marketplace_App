@@ -18,7 +18,7 @@ const productSchema = new mongoose.Schema({
         enum: ['image', 'audio', 'video', 'pdf', 'font', 'text'],
         required: true,
     },
-    product_images: {
+    product_files: {
         type: Array,
     },
     price: {

@@ -8,6 +8,8 @@ import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 import { NextUIProvider } from "@nextui-org/react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
+import "./i18n";
+
 // Disable React Dev Tools
 disableReactDevTools();
 

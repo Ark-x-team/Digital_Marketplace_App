@@ -5,7 +5,7 @@ import quickLinksData from "./QuickLinksData";
 import { useTranslation } from "react-i18next";
 
 function QuickLinks() {
-  const { t } = useTranslation(); // Initialize the useTranslation hook
+  const { t } = useTranslation();
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -49,11 +49,11 @@ function QuickLinks() {
 
   return (
     <ul className="z-20 hidden lg:flex flex-col justify-end px-6 xl:px-10 py-8 xl:py-12 gap-4 fixed top-1/3 right-4 bg-main-navy hover:-translate-y-2 duration-300">
-      <For each={quickLinksData} memo>
+      <For each={quickLinksData}>
         {(item, index) => (
           <QuickLink
             key={index}
-            title={t(item.title)}
+            title={item.title}
             icon={item.icon}
             sectionId={item.title}
           />

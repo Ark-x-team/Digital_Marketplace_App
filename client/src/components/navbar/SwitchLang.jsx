@@ -7,14 +7,27 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 import mainStore from "../../store/mainStore";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 function SwitchLang() {
   const { selectedLang, languages, handleLangSwitch } = mainStore();
+  const currentLang = Cookies.get("lang").substring(0, 2);
+
+  useEffect(() => {
+    i18n.changeLanguage(currentLang);
+  }, []);
+
+  const { i18n } = useTranslation();
   const dropdownMenu = languages.map((item, index) => (
     <DropdownItem
       key={index}
-      onClick={() => handleLangSwitch(item)}
+      onClick={() => {
+        handleLangSwitch(item);
+        i18n.changeLanguage(item.lang.substring(0, 2));
+      }}
       startContent={
         <Avatar alt={`${item.lang} flag`} className="w-6 h-6" src={item.flag} />
       }
@@ -23,6 +36,7 @@ function SwitchLang() {
       {item.lang}
     </DropdownItem>
   ));
+
   return (
     <Dropdown placement="bottom-end" className="dropdown">
       <Badge

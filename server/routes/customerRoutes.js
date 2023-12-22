@@ -9,7 +9,7 @@ const customerAuthController = require('../controllers/auth/customerAuthControll
 
 // Middlewares (data validation & authorization)
 const { validationRules, passwordValidationRules, newDataValidationRules, dataValidation }  = require('../middlewares/validation')
-const { customerRole, adminRole, userRole } = require('../middlewares/auth')
+const { customerRole, adminRole, userRole, customerCheckAuth } = require('../middlewares/auth')
 
 // Auth routes
 router.post('/customers/signup', validationRules(), dataValidation, customerAuthController.customerSignup)
@@ -19,6 +19,7 @@ router.post('/customers/google-login', customerAuthController.customerGoogleLogi
 router.get('/customers/logout', customerAuthController.customerLogout)
 router.post('/customers/reset-password-verification', customerAuthController.resetPasswordVerification)
 router.post('/customers/reset-password', passwordValidationRules(), dataValidation, customerAuthController.customerResetPassword)
+router.get('/customers/check-auth', customerCheckAuth, customerAuthController.checkAuth)
 
 // Generate refresh token
 // router.get('/customers/refresh-token', customerAuthController.handleRefreshToken)

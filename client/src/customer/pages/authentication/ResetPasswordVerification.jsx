@@ -7,6 +7,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import customerAuthStore from "../../../store/authentication/customerAuthStore";
+import { useTranslation } from "react-i18next";
 
 function ResetPasswordVerification() {
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,8 @@ function ResetPasswordVerification() {
     }
   };
 
+  const { t } = useTranslation();
+
   const errorMessage = (
     <Textarea
       readOnly
@@ -45,7 +48,9 @@ function ResetPasswordVerification() {
     <Textarea
       readOnly
       color="success"
-      defaultValue="An email containing a link to reset your password has been sent to your email address. Please check your inbox"
+      defaultValue={t(
+        "an email containing a link to reset your password has been sent to your email address. Please check your inbox"
+      )}
       startContent={<MarkEmailReadRoundedIcon className="mr-2" />}
     />
   );
@@ -76,7 +81,7 @@ function ResetPasswordVerification() {
           endContent={<ForwardToInboxRoundedIcon />}
           className="capitalize grow"
         >
-          Get link
+          {t("get link")}
         </Button>
         <Button
           as={Link}
@@ -86,7 +91,7 @@ function ResetPasswordVerification() {
           startContent={<ArrowBackRoundedIcon />}
           className="capitalize grow"
         >
-          back to login
+          {t("back to login")}
         </Button>
       </div>
     </form>
@@ -121,12 +126,13 @@ function ResetPasswordVerification() {
           />
           <div className="relative main-container px-3 pt-56 flex w-full justify-center">
             <div className="w-11/12 md:w-8/12 mx-auto lg:mr-auto lg:ml-0 z-10 flex flex-col items-center lg:items-start ">
-              <h1 className="font-title capitalize text-4xl lg:text-5xl text-primary  dark:text-white dark:lg:text-primary text-center lg:text-start mb-2 md:mb-4 lg:mb-6">
-                reset password
+              <h1 className="font-title capitalize text-4xl lg:text-5xl text-primary  dark:text-white dark:lg:text-primary text-center lg:text-start mb-2 md:mb-4 lg:mb-6 max-w-lg">
+                {t("reset password")}
               </h1>
               <p className="dark:text-light text-center max-w-md lg:text-start mb-8 md:mb-10 lg:mb-12">
-                Please enter the email address you&apos;d like your password
-                reset information sent to
+                {t(
+                  "please enter the email address you&apos;d like your password reset information sent to"
+                )}
               </p>
               {resetPasswordInputs}
             </div>

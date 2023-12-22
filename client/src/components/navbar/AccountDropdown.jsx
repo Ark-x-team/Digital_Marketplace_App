@@ -11,10 +11,11 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import customerAuthStore from "../../store/authentication/customerAuthStore";
 import { googleLogout } from "@react-oauth/google";
+import { useTranslation } from "react-i18next";
 
 function AccountDropdown() {
   const { logout, googleLoggedIn } = customerAuthStore();
-
+  const { t } = useTranslation(); // Initialize the useTranslation hook
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
@@ -40,7 +41,7 @@ function AccountDropdown() {
         className="capitalize py-2 px-4 md:px-6"
         startContent={item.icon}
       >
-        {item.title}
+        {t(item.title)}
       </DropdownItem>
     ));
   return (
@@ -56,7 +57,7 @@ function AccountDropdown() {
           className="capitalize py-2 px-4 md:px-6 "
           startContent={<PersonRoundedIcon />}
         >
-          my account
+          {t("my account")}
         </DropdownItem>
         {dropdownMenu}
         <DropdownItem
@@ -65,7 +66,7 @@ function AccountDropdown() {
           className="capitalize py-2 px-4 md:px-6 text-red-600"
           startContent={<PowerSettingsNewRoundedIcon />}
         >
-          log out
+          {t("log out")}
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

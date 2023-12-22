@@ -1,8 +1,11 @@
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { For } from "million/react";
+import { useTranslation } from "react-i18next";
 
 function Overview() {
   const iconsData = ["design.svg", "code.svg", "image.svg", "music.svg"];
+
+  const { t } = useTranslation();
 
   const icons = (
     <ul className="flex gap-4">
@@ -32,14 +35,14 @@ function Overview() {
         >
           <span className="flex flex-col items-center lg:items-start gap-6 ">
             <h1 className="font-title capitalize text-3xl md:text-4xl lg:text-5xl text-primary ">
-              Explore Endless Possibilities
+              {t("explore endless possibilities")}
             </h1>
             {icons}
           </span>
           <p className="text-lg text-dark dark:text-light">
-            Dive into boundless creativity on our digital marketplace. Explore
-            design, photography, programming, and more. Unleash endless
-            possibilities tailored to your needs
+            {t(
+              "dive into boundless creativity on our digital marketplace. Explore design, photography, programming, and more. unleash endless possibilities tailored to your needs"
+            )}
           </p>
         </div>
         <div className="p-1 flex flex-wrap justify-center relative after:absolute after:w-full after:h-full after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0 max-w-sm md:max-w-full lg:max-w-md xl:max-w-xl -rotate-3">

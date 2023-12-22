@@ -29,14 +29,14 @@ const mainStore = create((set) => ({
     set({ mode: appearance, navOpen: false });
   },
 
-  // ******************************* language *******************************
+  // ******************************* languages *******************************
   languages: [
     {
       lang: "english",
       flag: "https://flagcdn.com/gb.svg",
     },
     {
-      lang: "francais",
+      lang: "français",
       flag: "https://flagcdn.com/fr.svg",
     },
   ],

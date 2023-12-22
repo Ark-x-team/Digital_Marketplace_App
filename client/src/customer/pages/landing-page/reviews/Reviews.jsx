@@ -59,7 +59,7 @@ function Reviews() {
   return (
     <div
       id="reviews"
-      className="w-full main-container px-4 md:px-0 mt-28 md:mt-4 lg:mt-0 py-10 md:py-14 lg:pb-20 flex justify-center items-center gap-52 relative overflow-hidden"
+      className="w-full main-container px-4 md:px-0 md:mt-4 lg:mt-0 py-10 md:pb-14 lg:pb-20 flex justify-center items-center gap-52 relative overflow-hidden"
     >
       <div className="h-fit hidden lg:block relative -rotate-3 after:absolute after:w-full after:h-full after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
         <LazyLoadImage

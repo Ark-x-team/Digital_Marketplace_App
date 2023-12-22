@@ -1,4 +1,8 @@
+import { useTranslation } from "react-i18next";
+
 function Footer() {
+  const { t } = useTranslation();
+
   const currentDate = new Date();
   const year = currentDate.getFullYear();
   return (
@@ -8,8 +12,8 @@ function Footer() {
         alt="Markstone logo"
         className="w-16 grayscale opacity-30 dark:opacity-100"
       />
-      <p className="text-neutral-500">
-        &copy; {year} Markstone. All rights reserved.
+      <p className="text-neutral-500 capitalize">
+        &copy; {year} Markstone. {t("all rights reserved")}.
       </p>
     </div>
   );

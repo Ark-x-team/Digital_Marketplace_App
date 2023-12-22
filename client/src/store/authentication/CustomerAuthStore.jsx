@@ -451,6 +451,30 @@ const customerAuthStore = create((set) => ({
       return Promise.reject(error);
     }
   },
+
+  // ******************************* Check auth *******************************
+  customer: "",
+  customerId: "",
+  checkAuth: async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8081/customers/check-auth",
+        {
+          headers: {
+            "content-type": "application/json",
+            Authorization: Cookies.get("token"),
+          },
+          withCredentials: true,
+        }
+      );
+      set({
+        customer: response.data.customer,
+        customerId: response.data.customer._id,
+      });
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  },
 }));
 
 export default customerAuthStore;
