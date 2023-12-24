@@ -47,7 +47,6 @@ const AccountMenu = block(() => {
   );
   return (
     <ScrollShadow
-      isEnabled={false}
       hideScrollBar
       orientation="horizontal"
       className="lg:w-fit flex justify-center"

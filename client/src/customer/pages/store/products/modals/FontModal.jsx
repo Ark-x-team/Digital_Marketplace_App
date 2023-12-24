@@ -1,11 +1,15 @@
 import { useEffect } from "react";
 import productStore from "../../../../../store/products/ProductStore";
 import { Button } from "@nextui-org/react";
-import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { useTranslation } from "react-i18next";
+import cartStore from "../../../../../store/cartStore";
+import customerAuthStore from "../../../../../store/authentication/customerAuthStore";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const FontModal = () => {
-  const { getProduct, productData, downloadProduct } = productStore();
+  const { getProduct, productData } = productStore();
 
   useEffect(() => {
     getProduct();
@@ -21,13 +25,24 @@ const FontModal = () => {
     }
   `;
 
+  const navigate = useNavigate();
+  const { addToCart } = cartStore();
+  const handleAddToCart = (id, customerId) => {
+    const token = Cookies.get("token");
+    if (token) {
+      addToCart(id, customerId);
+    } else {
+      navigate("/login");
+    }
+  };
+
   const { t } = useTranslation();
 
   return (
     <div className="h-fit">
       <span className="relative h-80 w-full">
         <style>{fontStyles}</style>
-        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
           <span className="h-48 w-full relative hover:opacity-75 duration-200">
             <img
               src={`http://localhost:8081/uploads/${productData.product_files[0]}`}
@@ -58,13 +73,18 @@ const FontModal = () => {
       </div>
       <div className="p-3 md:p-4 lg:p-5 xl:px-8 flex justify-end">
         <Button
-          onClick={() => downloadProduct(productData.product_files[1])}
+          onClick={() =>
+            handleAddToCart(
+              productData._id,
+              customerAuthStore.getState().customerId
+            )
+          }
           color="primary"
           variant="flat"
           className="w-fit dark:text-primary capitalize"
-          endContent={<FileDownloadRoundedIcon />}
+          endContent={<AddRoundedIcon />}
         >
-          {t("download")}
+          {t("add")}
         </Button>
       </div>
     </div>

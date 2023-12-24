@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import customerAuthStore from "../../store/authentication/customerAuthStore";
 import { googleLogout } from "@react-oauth/google";
 import { useTranslation } from "react-i18next";
+import mainStore from "../../store/mainStore";
 
 function AccountDropdown() {
   const { logout, googleLoggedIn } = customerAuthStore();
@@ -21,6 +22,7 @@ function AccountDropdown() {
     try {
       await logout();
       navigate("/login");
+      closeNav();
     } catch (error) {
       console.log(error);
     }
@@ -29,7 +31,10 @@ function AccountDropdown() {
     await googleLogout();
     await logout();
     navigate("/login");
+    closeNav();
   };
+
+  const { closeNav } = mainStore();
 
   const dropdownMenu = accountMenuData
     .filter((item) => item.priority)
@@ -37,6 +42,7 @@ function AccountDropdown() {
       <DropdownItem
         to={item.url}
         as={Link}
+        onClick={() => closeNav()}
         key={index}
         className="capitalize py-2 px-4 md:px-6"
         startContent={item.icon}
@@ -54,6 +60,7 @@ function AccountDropdown() {
         <DropdownItem
           to="/account"
           as={Link}
+          onClick={() => closeNav()}
           className="capitalize py-2 px-4 md:px-6 "
           startContent={<PersonRoundedIcon />}
         >

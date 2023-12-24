@@ -6,6 +6,9 @@ import FontModal from "./modals/FontModal";
 import productStore from "../../../../store/products/ProductStore";
 import cartStore from "../../../../store/cartStore";
 import customerAuthStore from "../../../../store/authentication/customerAuthStore";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+
 import { useTranslation } from "react-i18next";
 
 function Font(props) {
@@ -36,7 +39,17 @@ function Font(props) {
     </Modal>
   );
   const { setProduct, getProduct } = productStore();
+
+  const navigate = useNavigate();
   const { addToCart } = cartStore();
+  const handleAddToCart = (id, customerId) => {
+    const token = Cookies.get("token");
+    if (token) {
+      addToCart(id, customerId);
+    } else {
+      navigate("/login");
+    }
+  };
 
   const { t } = useTranslation();
 
@@ -77,7 +90,7 @@ function Font(props) {
           </li>
           <Button
             onClick={() =>
-              addToCart(id, customerAuthStore.getState().customerId)
+              handleAddToCart(id, customerAuthStore.getState().customerId)
             }
             color="primary"
             variant="light"

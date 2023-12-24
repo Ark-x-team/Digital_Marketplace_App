@@ -1,18 +1,29 @@
 import { useEffect } from "react";
 import productStore from "../../../../../store/products/ProductStore";
 import { Button } from "@nextui-org/react";
-import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { useTranslation } from "react-i18next";
+import cartStore from "../../../../../store/cartStore";
+import customerAuthStore from "../../../../../store/authentication/customerAuthStore";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const PdfModal = () => {
-  const { getProduct, productData, downloadProduct } = productStore();
+  const { getProduct, productData } = productStore();
 
   useEffect(() => {
     getProduct();
   }, []);
 
-  const handleDownload = () => {
-    downloadProduct(productData.product_files[1]);
+  const navigate = useNavigate();
+  const { addToCart } = cartStore();
+  const handleAddToCart = (id, customerId) => {
+    const token = Cookies.get("token");
+    if (token) {
+      addToCart(id, customerId);
+    } else {
+      navigate("/login");
+    }
   };
 
   const { t } = useTranslation();
@@ -46,13 +57,18 @@ const PdfModal = () => {
       </div>
       <div className="p-3 md:p-4 lg:p-5 xl:px-8 flex justify-end">
         <Button
-          onClick={handleDownload}
+          onClick={() =>
+            handleAddToCart(
+              productData._id,
+              customerAuthStore.getState().customerId
+            )
+          }
           color="primary"
           variant="flat"
           className="w-fit dark:text-primary capitalize"
-          endContent={<FileDownloadRoundedIcon />}
+          endContent={<AddRoundedIcon />}
         >
-          {t("download")}
+          {t("add")}
         </Button>
       </div>
     </div>

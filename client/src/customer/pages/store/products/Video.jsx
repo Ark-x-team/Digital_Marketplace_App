@@ -10,6 +10,8 @@ import productStore from "../../../../store/products/ProductStore";
 import customerAuthStore from "../../../../store/authentication/customerAuthStore";
 import cartStore from "../../../../store/cartStore";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function Video(props) {
   const { id, name, video, price, subCategory } = props;
@@ -37,7 +39,18 @@ function Video(props) {
   );
 
   const { setProduct, getProduct } = productStore();
+
+  const navigate = useNavigate();
   const { addToCart } = cartStore();
+
+  const handleAddToCart = (id, customerId) => {
+    const token = Cookies.get("token");
+    if (token) {
+      addToCart(id, customerId);
+    } else {
+      navigate("/login");
+    }
+  };
 
   const { t } = useTranslation();
 
@@ -83,7 +96,7 @@ function Video(props) {
           </li>
           <Button
             onClick={() =>
-              addToCart(id, customerAuthStore.getState().customerId)
+              handleAddToCart(id, customerAuthStore.getState().customerId)
             }
             color="primary"
             variant="light"

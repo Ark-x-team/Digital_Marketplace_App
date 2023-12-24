@@ -3,9 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
 import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import { Button } from "@nextui-org/react";
-import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 import productStore from "../../../../../store/products/ProductStore";
 import { useTranslation } from "react-i18next";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import customerAuthStore from "../../../../../store/authentication/customerAuthStore";
+import cartStore from "../../../../../store/cartStore";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const AudioModal = () => {
   const { getProduct, productData } = productStore();
@@ -21,6 +25,17 @@ const AudioModal = () => {
     console.log(videoElement);
   }, []);
 
+  const navigate = useNavigate();
+  const { addToCart } = cartStore();
+  const handleAddToCart = (id, customerId) => {
+    const token = Cookies.get("token");
+    if (token) {
+      addToCart(id, customerId);
+    } else {
+      navigate("/login");
+    }
+  };
+
   const { t } = useTranslation();
 
   return (
@@ -28,7 +43,7 @@ const AudioModal = () => {
       <div className="relative h-80 w-full object-cover object-center duration-200">
         <HoverVideoPlayer
           videoRef={hoverVideoRef}
-          videoSrc={`http://localhost:8081/uploads/${productData.product_files[0]}`}
+          videoSrc={`http://localhost:8081/uploads/${productData.product_files[1]}`}
           muted={isMute}
           loop={true}
           className="video-player h-full w-full"
@@ -58,12 +73,18 @@ const AudioModal = () => {
       </div>
       <div className="p-3 md:p-4 lg:p-5 xl:px-8 flex justify-end">
         <Button
+          onClick={() =>
+            handleAddToCart(
+              productData._id,
+              customerAuthStore.getState().customerId
+            )
+          }
           color="primary"
           variant="flat"
           className="w-fit dark:text-primary capitalize"
-          endContent={<FileDownloadRoundedIcon />}
+          endContent={<AddRoundedIcon />}
         >
-          {t("download")}
+          {t("add")}
         </Button>
       </div>
     </div>

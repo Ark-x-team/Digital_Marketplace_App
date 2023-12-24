@@ -13,6 +13,7 @@ import customerAuthStore from "../../store/authentication/customerAuthStore";
 import cartStore from "../../store/cartStore";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import mainStore from "../../store/mainStore";
 
 function CartDropdown() {
   const { checkAuth } = customerAuthStore();
@@ -33,6 +34,8 @@ function CartDropdown() {
 
     fetchData();
   }, [checkAuth, getCartItems]);
+
+  const { closeNav } = mainStore();
 
   const cart = (
     <>
@@ -64,8 +67,9 @@ function CartDropdown() {
         ))}
       {cartList && cartList.length > 3 && (
         <Button
-          as={Link}
           to="/account/cart"
+          as={Link}
+          onClick={() => closeNav()}
           variant="light"
           color="primary"
           className="capitalize"
@@ -79,7 +83,9 @@ function CartDropdown() {
           <span className="capitalize">{t("total")} :</span>{" "}
           <span className=" font-semibold mx-2">{bill} MAD </span>
         </div>
+
         <Button
+          onClick={() => closeNav()}
           variant="flat"
           color="primary"
           endContent={<ShoppingCartCheckoutRoundedIcon />}
@@ -92,13 +98,7 @@ function CartDropdown() {
   );
 
   return (
-    <Popover
-      showArrow
-      shouldBlockScroll
-      offset={10}
-      placement="bottom-end"
-      backdrop="blur"
-    >
+    <Popover showArrow shouldBlockScroll offset={10}>
       <PopoverTrigger>
         <Button
           isIconOnly
@@ -110,7 +110,7 @@ function CartDropdown() {
       </PopoverTrigger>
       <PopoverContent
         className={`${
-          cartList && cartList.length < 1 ? "min-w-fit" : "min-w-[450px]"
+          cartList && cartList.length < 1 ? "min-w-fit" : "md:min-w-[450px]"
         } overflow-scroll p-4 md:p-6 xl:p-8 rounded-2xl flex flex-col gap-4`}
       >
         {cartList && cartList.length < 1 ? "Your cart is empty" : cart}

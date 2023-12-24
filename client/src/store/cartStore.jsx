@@ -26,6 +26,10 @@ const cartStore = create((set) => ({
     }
   },
 
+  itemAdded: false,
+  closeItemAdded: () => {
+    set({ itemAdded: false });
+  },
   addToCart: async (itemId, customerId) => {
     try {
       const response = await axios.post(
@@ -43,6 +47,7 @@ const cartStore = create((set) => ({
       set({
         cartList: response.data.items,
         bill: response.data.bill,
+        itemAdded: true,
       });
     } catch (error) {
       console.log(error);

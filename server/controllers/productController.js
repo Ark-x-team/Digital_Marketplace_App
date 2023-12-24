@@ -382,6 +382,7 @@ const searchProduct = async (req, res) => {
             return res.status(404).json({status: 404, message: "Product not found"})
         } else res.status(200).json({ status: 200, count, page, limit, products: matchingProduct })
     } catch (error) {
+        console.log(error)
         res.status(400).json({status: 400, message: "Failed to get product"})
     }
 };

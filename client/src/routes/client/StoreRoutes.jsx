@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
 import Categories from "../../customer/pages/store/Categories";
 import SubCategories from "../../customer/pages/store/SubCategories";
@@ -24,6 +24,7 @@ const StorePage = () => (
 );
 function StoreRoutes() {
   const { loading } = productStore();
+
   return (
     <>
       {loading ? (
@@ -38,6 +39,7 @@ function StoreRoutes() {
         ""
       )}
       <ClientNavbar />
+
       <div className="pt-24 store-container px-4">
         <Routes>
           <Route path="/" element={<StorePage />} />
