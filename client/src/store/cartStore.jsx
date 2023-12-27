@@ -128,6 +128,7 @@ const cartStore = create((set) => ({
   },
 
   paymentUrl: "",
+  payed: false,
   checkout: async (customerId) => {
     const { transformCartData, cartList } = cartStore.getState();
     try {
@@ -143,6 +144,7 @@ const cartStore = create((set) => ({
         }
       );
       set({
+        payed: true,
         paymentUrl: response.data.url,
       });
     } catch (error) {
