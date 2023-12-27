@@ -40,6 +40,7 @@ const customerRoutes = require('./routes/customerRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
 const subcategoryRoutes = require('./routes/subcategoryRoutes')
 const cartRoutes = require('./routes/cartRoutes')
+const paymentRoutes = require('./routes/paymentRoutes')
 
 const orderRoutes = require('./routes/orderRoutes')
 app.use(productRoutes)
@@ -49,6 +50,7 @@ app.use(categoryRoutes)
 app.use(subcategoryRoutes)
 app.use(orderRoutes)
 app.use(cartRoutes)
+app.use(paymentRoutes)
 
 // ******************************** App security ********************************
 
