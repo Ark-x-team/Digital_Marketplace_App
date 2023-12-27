@@ -32,7 +32,7 @@ function QuickSearch() {
 
   const Category = (props) => (
     <Link
-      to={props.link}
+      to={`store/${props.link}`}
       className="w-full block h-24 my-4 md:my-0 rounded-md md:rounded-lg overflow-hidden relative hover:opacity-90 hover:scale-95 duration-300"
     >
       <img

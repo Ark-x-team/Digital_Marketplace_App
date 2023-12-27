@@ -88,5 +88,7 @@
     "all": "tout",
     "low to high": "bas au haut",
     "high to low": "haut au bas",
-    "search": "chercher"
+    "search": "chercher",
+    "your payment was successful": "votre paiement a réussi",
+    "your payment was not successful, please try again": "votre paiement n'a pas abouti, veuillez réessayer"
 }

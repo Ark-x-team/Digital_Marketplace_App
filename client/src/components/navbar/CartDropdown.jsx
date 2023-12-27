@@ -4,6 +4,7 @@ import {
   PopoverContent,
   Popover,
   PopoverTrigger,
+  Badge,
 } from "@nextui-org/react";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import ShoppingCartCheckoutRoundedIcon from "@mui/icons-material/ShoppingCartCheckoutRounded";
@@ -85,6 +86,8 @@ function CartDropdown() {
         </div>
 
         <Button
+          to="/account/cart"
+          as={Link}
           onClick={() => closeNav()}
           variant="flat"
           color="primary"
@@ -99,15 +102,22 @@ function CartDropdown() {
 
   return (
     <Popover showArrow shouldBlockScroll offset={10}>
-      <PopoverTrigger>
-        <Button
-          isIconOnly
-          aria-label="Cart"
-          className="bg-white bg-opacity-50 dark:bg-dark dark:bg-opacity-30"
-        >
-          <ShoppingCartRoundedIcon className="text-primary dark:text-white" />
-        </Button>
-      </PopoverTrigger>
+      <Badge
+        content={cartList.length > 0 ? cartList.length : false}
+        color="primary"
+        shape="rectangle"
+        showOutline={false}
+      >
+        <PopoverTrigger>
+          <Button
+            isIconOnly
+            aria-label="Cart"
+            className="bg-white bg-opacity-50 dark:bg-dark dark:bg-opacity-30"
+          >
+            <ShoppingCartRoundedIcon className="text-primary dark:text-white" />
+          </Button>
+        </PopoverTrigger>
+      </Badge>
       <PopoverContent
         className={`${
           cartList && cartList.length < 1 ? "min-w-fit" : "md:min-w-[450px]"

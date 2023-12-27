@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
 import Error from "../../components/Error";
+import PaymentSuccess from "../../customer/pages/payment/PaymentSuccess";
+import PaymentFailed from "../../customer/pages/payment/PaymentFailed";
 
 const ClientNavbar = lazy(() =>
   import("../../customer/components/navbar/Navbar")
@@ -43,6 +45,8 @@ function ClientRoutes() {
           element={<ResetPasswordVerification />}
         />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/checkout-success" element={<PaymentSuccess />} />
+        <Route path="/checkout-failed" element={<PaymentFailed />} />
       </Routes>
     </>
   );

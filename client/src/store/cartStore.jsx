@@ -112,6 +112,44 @@ const cartStore = create((set) => ({
       console.error(error);
     }
   },
+
+  transformCartData: (customerId, cartData) => {
+    const transformedData = {
+      userId: customerId,
+      cartItems: cartData.map((item) => ({
+        name: item.name,
+        id: item.itemId,
+        price: item.price,
+        cartQuantity: item.quantity,
+      })),
+    };
+
+    return transformedData;
+  },
+
+  paymentUrl: "",
+  checkout: async (customerId) => {
+    const { transformCartData, cartList } = cartStore.getState();
+    try {
+      const response = await axios.post(
+        "http://localhost:8081/create-checkout-session",
+        transformCartData(customerId, cartList),
+        {
+          headers: {
+            "content-type": "application/json",
+            Authorization: Cookies.get("token"),
+          },
+          withCredentials: true,
+        }
+      );
+      set({
+        paymentUrl: response.data.url,
+      });
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  },
 }));
 
 export default cartStore;

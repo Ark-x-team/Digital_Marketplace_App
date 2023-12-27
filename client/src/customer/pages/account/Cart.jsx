@@ -1,15 +1,15 @@
 import { block } from "million/react";
-import { Button, Divider } from "@nextui-org/react";
+import { Button, Divider, Spinner } from "@nextui-org/react";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
-import { useEffect } from "react";
+import ShoppingCartCheckoutRoundedIcon from "@mui/icons-material/ShoppingCartCheckoutRounded";
+import { useEffect, useState } from "react";
 import customerAuthStore from "../../../store/authentication/customerAuthStore";
 import cartStore from "../../../store/cartStore";
 import { useTranslation } from "react-i18next";
 
 const Cart = block(() => {
-  const { checkAuth } = customerAuthStore();
-  const { getCartItems, cartList, bill, removeFromCart, downloadProduct } =
+  const { checkAuth, customerId } = customerAuthStore();
+  const { getCartItems, cartList, bill, removeFromCart, checkout } =
     cartStore();
 
   useEffect(() => {
@@ -23,9 +23,21 @@ const Cart = block(() => {
         console.error(error);
       }
     };
-
     fetchData();
   }, [checkAuth, getCartItems]);
+
+  const [loading, setLoading] = useState(false);
+  const handleCheckout = async (id) => {
+    setLoading(true);
+    try {
+      await checkout(id);
+      setLoading(false);
+      let { paymentUrl } = cartStore.getState();
+      window.location.replace(paymentUrl);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   const { t } = useTranslation();
 
@@ -41,7 +53,7 @@ const Cart = block(() => {
                     <img
                       src={`http://localhost:8081/uploads/${item.files[0]}`}
                       alt="product image"
-                      className="w-56 h-32 rounded-xl object-cover object-center"
+                      className="w-42 md:w-56 h-24 md:h-32 rounded-xl object-cover object-center"
                     />
                     <div className="flex flex-col grow">
                       <span className="flex flex-col gap-1">
@@ -82,13 +94,19 @@ const Cart = block(() => {
               <span className=" font-semibold mx-2">{bill} MAD </span>
             </div>
             <Button
-              onClick={() => downloadProduct()}
+              onClick={() => handleCheckout(customerId)}
               variant="flat"
               color="primary"
-              endContent={<DownloadRoundedIcon />}
+              endContent={
+                loading ? (
+                  <Spinner size="sm" />
+                ) : (
+                  <ShoppingCartCheckoutRoundedIcon />
+                )
+              }
               className="capitalize"
             >
-              {t("download")}
+              {t("checkout")}
             </Button>
           </div>
         </>
