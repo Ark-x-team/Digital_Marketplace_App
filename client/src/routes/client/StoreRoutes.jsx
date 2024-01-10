@@ -6,7 +6,7 @@ import Footer from "../../customer/components/Footer";
 import ProductsList from "../../customer/pages/store/ProductsList";
 import PaginationCursor from "../../customer/pages/store/Pagination";
 import { Progress } from "@nextui-org/react";
-import productStore from "../../store/products/ProductStore";
+// import productStore from "../../store/products/ProductStore";
 
 // Lazy-loaded components
 const ClientNavbar = lazy(() =>
@@ -28,12 +28,12 @@ const StorePage = () => (
 // Component for handling routes for the store
 function StoreRoutes() {
   // Destructuring values from productStore
-  const { loading } = productStore();
+  // const { loading } = productStore();
 
   return (
     <>
       {/* Display loading spinner when data is loading */}
-      {loading ? (
+      {/* {loading ? (
         <Progress
           style={{ zIndex: "9999" }}
           size="sm"
@@ -43,7 +43,7 @@ function StoreRoutes() {
         />
       ) : (
         ""
-      )}
+      )} */}
 
       {/* Navbar for the customer side */}
       <ClientNavbar />
