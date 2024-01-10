@@ -6,7 +6,7 @@ import Footer from "../../customer/components/Footer";
 import ProductsList from "../../customer/pages/store/ProductsList";
 import PaginationCursor from "../../customer/pages/store/Pagination";
 import { Progress } from "@nextui-org/react";
-import productStore from "../../store/products/ProductStore";
+import productStore from "../../store/products/productStore";
 
 // Lazy-loaded components
 const ClientNavbar = lazy(() =>
