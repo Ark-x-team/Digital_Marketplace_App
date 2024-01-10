@@ -1,7 +1,6 @@
+// Import necessary dependencies and components
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { Modal, Button, useDisclosure } from "@nextui-org/react";
-// import CircularText from "../../../components/styled/CircularText";
-// import ScrollText from "../../../components/styled/ScrollText";
 import QuickSearch from "./QuickSearch";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
@@ -10,18 +9,26 @@ import PropTypes from "prop-types";
 import statisticData from "./StatisticData";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+// Define the Header component
 function Header() {
   const { t } = useTranslation();
+
+  // StatisticItem component representing an individual statistic
   const StatisticItem = (props) => (
     <li className="bg-white dark:bg-dark bg-opacity-30 dark:bg-opacity-20 backdrop-blur-xl flex flex-col items-center p-4 rounded-2xl">
       <span className="text-2xl font-semibold">{props.data}</span>
       <span className="text-sm">{props.description}</span>
     </li>
   );
+
+  // PropTypes for the StatisticItem component
   StatisticItem.propTypes = {
     data: PropTypes.string,
     description: PropTypes.string,
   };
+
+  // Generate StatisticItem components from the statisticData array
   const statistic = (
     <ul className="w-full flex gap-4 md:gap-6 lg:gap-10 z-10">
       <For each={statisticData}>
@@ -35,7 +42,11 @@ function Header() {
       </For>
     </ul>
   );
+
+  // Custom hook for handling modal state
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  // Create a memoized searchModal component
   const searchModal = useMemo(
     () => (
       <Modal
@@ -51,23 +62,30 @@ function Header() {
     [isOpen, onOpenChange]
   );
 
+  // Cover images for the header background
   const coverImages = [
     "https://images.pexels.com/photos/3760280/pexels-photo-3760280.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     "https://images.pexels.com/photos/3184611/pexels-photo-3184611.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     "https://images.pexels.com/photos/6214920/pexels-photo-6214920.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   ];
 
+  // State to track the current image index for the slideshow effect
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Function to transition to the next image in the slideshow
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % coverImages.length);
   };
+
+  // useEffect to start the slideshow on component mount
   useEffect(() => {
     const intervalId = setInterval(nextImage, 4000);
 
+    // Cleanup function to clear the interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
+  // Render the Header component
   return (
     <div
       className="relative after:absolute after:w-full after:h-full after:bg-gradient-to-tr after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0 

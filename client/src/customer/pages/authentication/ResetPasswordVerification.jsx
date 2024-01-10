@@ -1,3 +1,5 @@
+// Importing necessary components and libraries
+import { useState } from "react";
 import { Input, Button, Textarea, Progress } from "@nextui-org/react";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import ForwardToInboxRoundedIcon from "@mui/icons-material/ForwardToInboxRounded";
@@ -5,13 +7,16 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import MarkEmailReadRoundedIcon from "@mui/icons-material/MarkEmailReadRounded";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import customerAuthStore from "../../../store/authentication/customerAuthStore";
 import { useTranslation } from "react-i18next";
 
+// ResetPasswordVerification component
 function ResetPasswordVerification() {
+  // State variables
   const [loading, setLoading] = useState(false);
   const [resetLink, setResetLink] = useState(false);
+
+  // Destructuring values from the authentication store
   const {
     verificationEmail,
     updateVerificationEmail,
@@ -20,6 +25,7 @@ function ResetPasswordVerification() {
     verificationEmailError,
   } = customerAuthStore();
 
+  // Function to handle password reset verification
   const handleResetPasswordVerification = async (e) => {
     setLoading(true);
     e.preventDefault();
@@ -33,8 +39,10 @@ function ResetPasswordVerification() {
     }
   };
 
+  // Translation hook
   const { t } = useTranslation();
 
+  // Error message component
   const errorMessage = (
     <Textarea
       readOnly
@@ -44,6 +52,7 @@ function ResetPasswordVerification() {
     />
   );
 
+  // Success message component
   const successMessage = (
     <Textarea
       readOnly
@@ -55,11 +64,13 @@ function ResetPasswordVerification() {
     />
   );
 
+  // JSX for the reset password verification form
   const resetPasswordInputs = (
     <form
       onSubmit={handleResetPasswordVerification}
       className="flex flex-col gap-5 w-full lg:w-1/2"
     >
+      {/* Email input */}
       <Input
         name="email"
         value={verificationEmail}
@@ -70,9 +81,13 @@ function ResetPasswordVerification() {
           <EmailRoundedIcon className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
         }
       />
+      {/* Display verification email error message if there is one */}
       {verificationEmailError && errorMessage}
+      {/* Display success message if reset link is sent successfully */}
       {resetLink && !loading && successMessage}
+      {/* Buttons for getting link and navigating back to login */}
       <div className="mt-2 flex flex-col lg:flex-row-reverse gap-4">
+        {/* Get link button */}
         <Button
           type="submit"
           isDisabled={!verificationEmailValidation}
@@ -83,6 +98,7 @@ function ResetPasswordVerification() {
         >
           {t("get link")}
         </Button>
+        {/* Back to login button */}
         <Button
           as={Link}
           to="/login"
@@ -97,8 +113,12 @@ function ResetPasswordVerification() {
     </form>
   );
 
+  // Cover image URL
   const coverImage =
     "https://images.pexels.com/photos/4048595/pexels-photo-4048595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+
+  // Render the ResetPasswordVerification component
+
   return (
     <>
       {loading ? (

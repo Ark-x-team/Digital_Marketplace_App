@@ -72,7 +72,6 @@ const userAuthStore = create((set) => ({
           password: "",
         },
       });
-      console.log(Cookies.get("refresh_token"));
     } catch (error) {
       console.log(error);
       if (error.response) {

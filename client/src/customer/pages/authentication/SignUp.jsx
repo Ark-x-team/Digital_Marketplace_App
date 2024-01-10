@@ -1,3 +1,4 @@
+// Importing necessary components and libraries
 import { Input, Button, Tooltip, Textarea, Progress } from "@nextui-org/react";
 import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
@@ -12,13 +13,15 @@ import ReCAPTCHA from "react-google-recaptcha";
 import customerAuthStore from "../../../store/authentication/customerAuthStore";
 import { useTranslation } from "react-i18next";
 
+// SignUp component
 function SignUp() {
+  // State variables
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
-
   const [verificationLink, setVerificationLink] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Destructuring values from the authentication store
   const {
     signUpForm,
     updateSignUpForm,
@@ -33,10 +36,12 @@ function SignUp() {
     setRecaptchaValue,
   } = customerAuthStore();
 
+  // Ref for ReCAPTCHA
   const recaptchaRef = useRef(null);
   const handleSignUp = async (e) => {
     e.preventDefault();
 
+    // Execute ReCAPTCHA and get the token
     const captchaToken = await recaptchaRef.current.executeAsync();
     recaptchaRef.current.reset();
     setRecaptchaValue(captchaToken);
@@ -166,6 +171,7 @@ function SignUp() {
 
   const coverImage =
     "https://images.pexels.com/photos/4048595/pexels-photo-4048595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+
   return (
     <>
       {loading ? (

@@ -1,3 +1,4 @@
+// Importing required icons and components from Material-UI and other libraries
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import {
   Button,
@@ -16,12 +17,14 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import mainStore from "../../store/mainStore";
 
+// React functional component for the cart dropdown
 function CartDropdown() {
+  // Destructuring required functions and objects from hooks and stores
   const { checkAuth } = customerAuthStore();
   const { getCartItems, cartList, bill, removeFromCart } = cartStore();
-
   const { t } = useTranslation();
 
+  // Fetching cart items on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,8 +39,10 @@ function CartDropdown() {
     fetchData();
   }, [checkAuth, getCartItems]);
 
+  // Destructuring required function from main store for closing navigation
   const { closeNav } = mainStore();
 
+  // Cart content JSX with mapped cart items and checkout details
   const cart = (
     <>
       {cartList &&
@@ -100,14 +105,17 @@ function CartDropdown() {
     </>
   );
 
+  // Rendering the cart dropdown component
   return (
     <Popover showArrow shouldBlockScroll offset={10}>
+      {/* Badge with cart item count */}
       <Badge
         content={cartList.length > 0 ? cartList.length : false}
         color="primary"
         shape="rectangle"
         showOutline={false}
       >
+        {/* Cart icon button */}
         <PopoverTrigger>
           <Button
             isIconOnly
@@ -118,6 +126,7 @@ function CartDropdown() {
           </Button>
         </PopoverTrigger>
       </Badge>
+      {/* Cart content in the popover */}
       <PopoverContent
         className={`${
           cartList && cartList.length < 1 ? "min-w-fit" : "md:min-w-[450px]"
@@ -129,4 +138,5 @@ function CartDropdown() {
   );
 }
 
+// Exporting the CartDropdown component as the default export
 export default CartDropdown;

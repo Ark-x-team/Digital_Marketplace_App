@@ -1,3 +1,4 @@
+// Importing required components and icons from libraries
 import { Button, Avatar } from "@nextui-org/react";
 import LanguageRoundedIcon from "@mui/icons-material/LanguageRounded";
 import {
@@ -12,19 +13,28 @@ import mainStore from "../../store/mainStore";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 
+// React functional component for language switching
 function SwitchLang() {
+  // Destructuring required functions and objects from main store
   const { selectedLang, languages, handleLangSwitch } = mainStore();
+
+  // Getting the current language from cookies
   const currentLang = Cookies.get("lang").substring(0, 2);
 
+  // useEffect to change the language on component mount
   useEffect(() => {
     i18n.changeLanguage(currentLang);
   }, []);
 
+  // Destructuring i18n from useTranslation hook
   const { i18n } = useTranslation();
+
+  // Creating dropdown menu items based on available languages
   const dropdownMenu = languages.map((item, index) => (
     <DropdownItem
       key={index}
       onClick={() => {
+        // Handling language switch on item click
         handleLangSwitch(item);
         i18n.changeLanguage(item.lang.substring(0, 2));
       }}
@@ -37,8 +47,10 @@ function SwitchLang() {
     </DropdownItem>
   ));
 
+  // Rendering the language switch component
   return (
     <Dropdown placement="bottom-end" className="dropdown">
+      {/* Badge for the currently selected language */}
       <Badge
         isOneChar
         content={
@@ -50,6 +62,7 @@ function SwitchLang() {
         }
         placement="bottom-right"
       >
+        {/* Dropdown trigger button with language icon */}
         <DropdownTrigger>
           <Button
             isIconOnly
@@ -61,10 +74,13 @@ function SwitchLang() {
           </Button>
         </DropdownTrigger>
       </Badge>
+      {/* Dropdown menu for selecting different languages */}
       <DropdownMenu variant="flat" aria-label="switch language">
         {dropdownMenu}
       </DropdownMenu>
     </Dropdown>
   );
 }
+
+// Exporting the SwitchLang component as the default export
 export default SwitchLang;

@@ -1,3 +1,4 @@
+// Importing required icons and components from Material-UI and other libraries
 import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRounded";
 import accountMenuData from "../../customer/pages/account/menu/MenuData";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
@@ -14,10 +15,14 @@ import { googleLogout } from "@react-oauth/google";
 import { useTranslation } from "react-i18next";
 import mainStore from "../../store/mainStore";
 
+// React functional component for the account dropdown
 function AccountDropdown() {
+  // Destructuring required functions and objects from hooks and stores
   const { logout, googleLoggedIn } = customerAuthStore();
   const { t } = useTranslation(); // Initialize the useTranslation hook
   const navigate = useNavigate();
+
+  // Function to handle regular logout
   const handleLogout = async () => {
     try {
       await logout();
@@ -27,6 +32,8 @@ function AccountDropdown() {
       console.log(error);
     }
   };
+
+  // Function to handle Google logout
   const handleGoogleLogout = async () => {
     await googleLogout();
     await logout();
@@ -34,8 +41,10 @@ function AccountDropdown() {
     closeNav();
   };
 
+  // Destructuring required function from main store for closing navigation
   const { closeNav } = mainStore();
 
+  // Creating the dropdown menu items based on accountMenuData
   const dropdownMenu = accountMenuData
     .filter((item) => item.priority)
     .map((item, index) => (
@@ -50,6 +59,8 @@ function AccountDropdown() {
         {t(item.title)}
       </DropdownItem>
     ));
+
+  // Rendering the account dropdown component
   return (
     <Dropdown placement="bottom-end" className="dropdown">
       <DropdownTrigger>
@@ -57,6 +68,7 @@ function AccountDropdown() {
       </DropdownTrigger>
 
       <DropdownMenu aria-label="Profile Actions" variant="flat">
+        {/* My Account dropdown item */}
         <DropdownItem
           to="/account"
           as={Link}
@@ -66,7 +78,11 @@ function AccountDropdown() {
         >
           {t("my account")}
         </DropdownItem>
+
+        {/* Additional dropdown menu items based on accountMenuData */}
         {dropdownMenu}
+
+        {/* Logout dropdown item with conditional styling */}
         <DropdownItem
           onClick={googleLoggedIn ? handleGoogleLogout : handleLogout}
           color="danger"
@@ -79,4 +95,6 @@ function AccountDropdown() {
     </Dropdown>
   );
 }
+
+// Exporting the AccountDropdown component as the default export
 export default AccountDropdown;

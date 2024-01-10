@@ -1,11 +1,16 @@
+// Import necessary dependencies and components
 import { Link } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
+// Btn component to represent a custom-styled button with a Link
 const Btn = (props) => {
+  // Initialize the translation hook
   const { t } = useTranslation();
+
+  // Render the button with Link, color, variant, and endContent (arrow icon)
   return (
     <Button
       to={props.link}
@@ -20,11 +25,13 @@ const Btn = (props) => {
   );
 };
 
+// Define PropTypes for Btn component
 Btn.propTypes = {
   link: PropTypes.string,
   btnText: PropTypes.string,
 };
 
+// Array of objects representing steps in the "How It Works" process
 const howItWorksData = [
   {
     title: "create account",
@@ -53,4 +60,6 @@ const howItWorksData = [
     alt: "Payment image",
   },
 ];
+
+// Export the array of objects as the default export
 export default howItWorksData;

@@ -1,10 +1,10 @@
+// Importing icons from Material-UI library
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
-import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
 import InventoryRoundedIcon from "@mui/icons-material/InventoryRounded";
 
+// Array containing data for the account menu, each with a title, URL, and an associated icon
 const accountMenuData = [
   {
     title: "profile",
@@ -28,4 +28,5 @@ const accountMenuData = [
   },
 ];
 
+// Exporting the accountMenuData array as the default export
 export default accountMenuData;

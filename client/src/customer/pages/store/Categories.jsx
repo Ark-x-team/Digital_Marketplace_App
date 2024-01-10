@@ -1,3 +1,4 @@
+// Importing necessary libraries and components
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -6,20 +7,29 @@ import { ScrollShadow } from "@nextui-org/react";
 import productStore from "../../../store/products/ProductStore";
 import { useTranslation } from "react-i18next";
 
+// Functional component for displaying categories
 function Categories() {
+  // Destructuring functions and state from categoriesStore and productStore
   const { getCategories, categoriesError, categoriesList } = categoriesStore();
   const { getProductsByCategory, setPage } = productStore();
+
+  // Extracting the "category" parameter from the URL using useParams
   let { category } = useParams();
+
+  // useEffect hook to fetch categories and products when the "category" parameter changes
   useEffect(() => {
     try {
+      // Fetching categories and products
       getCategories(category);
       getProductsByCategory(category);
+      // Setting the page to 1
       setPage(1);
     } catch (error) {
       console.error(error);
     }
-  }, [category]);
+  }, [category]); // Dependency array ensures that this effect runs when "category" changes
 
+  // Category component for displaying individual categories
   const Category = (props) => (
     <Link
       to={`/store/${props.link}`}
@@ -43,6 +53,7 @@ function Categories() {
     </Link>
   );
 
+  // PropTypes for type-checking the properties of the Category component
   Category.propTypes = {
     title: PropTypes.string,
     link: PropTypes.string,
@@ -50,18 +61,22 @@ function Categories() {
     isActive: PropTypes.bool,
   };
 
+  // Initializing translation hook
   const { t } = useTranslation();
 
   return (
+    // ScrollShadow component for horizontal scrolling
     <ScrollShadow
       orientation="horizontal"
       className="w-full grid grid-rows-1 grid-flow-col gap-4 justify-between overflow-x-scroll scrollbar-hide"
     >
+      {/* Default category for "All" */}
       <Category
         link="all"
         title={t("all")}
-        isActive={!category || category == "all"}
+        isActive={!category || category === "all"}
       />
+      {/* Mapping through categoriesList and rendering Category components */}
       {!categoriesError &&
         categoriesList.map((item) => (
           <Category
@@ -70,11 +85,13 @@ function Categories() {
             title={item.category_name}
             image={item.cover_image}
             isActive={
-              !category || category == item.category_name.replace(/ /g, "-")
+              !category || category === item.category_name.replace(/ /g, "-")
             }
           />
         ))}
     </ScrollShadow>
   );
 }
+
+// Exporting the Categories component
 export default Categories;

@@ -96,8 +96,6 @@ const cartStore = create((set) => ({
           withCredentials: true,
         }
       );
-
-      console.log(response);
       const blob = new Blob([response.data], {
         type: response.headers["content-type"],
       });

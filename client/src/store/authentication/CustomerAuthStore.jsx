@@ -252,7 +252,6 @@ const customerAuthStore = create((set) => ({
           withCredentials: true,
         }
       );
-      console.log(response);
       const accessToken = response.headers["access_token"];
       Cookies.set("token", accessToken, { expires: 7 });
       setLoggedIn(true);

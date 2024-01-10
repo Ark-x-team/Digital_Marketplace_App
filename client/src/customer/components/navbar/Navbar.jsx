@@ -1,22 +1,29 @@
+// Importing React hooks, components, and icons from libraries
 import { useEffect, useState } from "react";
 import Navbar from "../../../components/navbar/Navbar";
 import { Button } from "@nextui-org/react";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import mainStore from "../../../store/mainStore";
 import { Link, useLocation } from "react-router-dom";
-import navData from "./NavData";
+import navData from "./NavData"; // Assuming there is a file with navigation data
 import { useTranslation } from "react-i18next";
 
+// React functional component for the client-specific navbar
 function ClientNavbar() {
+  // Destructuring required functions and objects from main store
   const { closeNav } = mainStore();
   const { t } = useTranslation();
 
+  // Using React Router's useLocation to get the current pathname
   const location = useLocation();
   const [currentPathname, setCurrentPathname] = useState("");
+
+  // useEffect to update the current pathname when the location changes
   useEffect(() => {
     setCurrentPathname(location.pathname);
   }, [location.pathname]);
 
+  // Generating menu items based on the navigation data
   const menuItems = navData.map((item, index) => (
     <Button
       key={index}
@@ -30,6 +37,8 @@ function ClientNavbar() {
       {t(item.title)}
     </Button>
   ));
+
+  // Generating the "Login" button for the end of the navbar
   const endButton = (
     <Button
       as={Link}
@@ -44,6 +53,9 @@ function ClientNavbar() {
     </Button>
   );
 
+  // Rendering the Navbar component with the generated menu items and end button
   return <Navbar menuItems={menuItems} endButton={endButton} />;
 }
+
+// Exporting the ClientNavbar component as the default export
 export default ClientNavbar;

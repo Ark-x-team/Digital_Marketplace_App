@@ -10,6 +10,7 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import cartStore from "../../../store/cartStore";
 
 function ProductsList() {
+  // Destructuring values from the productStore
   const {
     getProductsByCategory,
     getProductsBySubcategory,
@@ -19,11 +20,17 @@ function ProductsList() {
     getProductsBySearch,
     searchedProduct,
   } = productStore();
+
+  // Destructuring values from the cartStore
   const { itemAdded, closeItemAdded } = cartStore();
+
+  // State for currently playing audio
   const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
 
+  // Destructuring category and subcategory from the URL params
   let { category, subcategory } = useParams();
 
+  // Effect hook to fetch products based on category, subcategory, or search value
   useEffect(() => {
     try {
       if (subcategory) {
@@ -38,9 +45,11 @@ function ProductsList() {
     } catch (error) {
       console.error(error);
     }
+    // Scroll to the top of the window when the component mounts
     window.scrollTo(0, 0);
   }, [subcategory, page, searchValue]);
 
+  // Function to handle playing audio
   const handlePlay = (audioUrl, audioRef) => {
     const audioElement = audioRef.current.audio.current;
     if (!currentlyPlaying || currentlyPlaying.audioUrl !== audioUrl) {
@@ -54,7 +63,10 @@ function ProductsList() {
     }
   };
 
+  // Ref for popover content
   const popoverContentRef = useRef(null);
+
+  // Function to close the popover when clicking outside
   const closePopover = (e) => {
     if (
       popoverContentRef.current &&
@@ -63,6 +75,8 @@ function ProductsList() {
       closeItemAdded();
     }
   };
+
+  // Effect hook to close the item added message after a timeout
   useEffect(() => {
     setTimeout(() => {
       closeItemAdded();
@@ -77,6 +91,7 @@ function ProductsList() {
     };
   }, [itemAdded]);
 
+  // JSX for the added message popover
   const addedMessage = (
     <Popover
       ref={popoverContentRef}
@@ -99,11 +114,13 @@ function ProductsList() {
     </Popover>
   );
 
+  // JSX for the product list
   return (
     <>
       <div className="min-h-screen grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 py-5">
-        {searchedProduct.length == 0
+        {searchedProduct.length === 0
           ? productList.map((product, index) =>
+              // Rendering different components based on product type
               product.active && product?.product_type === "audio" ? (
                 <Audio
                   key={index}
@@ -126,9 +143,9 @@ function ProductsList() {
                   price={product?.price}
                 />
               ) : product?.product_type === "image" ||
-                product.product_type == "text" ||
-                product?.subcategory_name == "courses" ||
-                product.product_type == "pdf" ? (
+                product.product_type === "text" ||
+                product?.subcategory_name === "courses" ||
+                product.product_type === "pdf" ? (
                 <Image
                   key={index}
                   id={product._id}
@@ -150,6 +167,7 @@ function ProductsList() {
               )
             )
           : searchedProduct.map((product, index) =>
+              // Rendering different components based on product type for searched products
               product.active && product?.product_type === "audio" ? (
                 <Audio
                   key={index}
@@ -172,9 +190,9 @@ function ProductsList() {
                   price={product?.price}
                 />
               ) : product?.product_type === "image" ||
-                product.product_type == "text" ||
-                product?.subcategory_name == "courses" ||
-                product.product_type == "pdf" ? (
+                product.product_type === "text" ||
+                product?.subcategory_name === "courses" ||
+                product.product_type === "pdf" ? (
                 <Image
                   key={index}
                   id={product._id}
@@ -196,6 +214,7 @@ function ProductsList() {
               )
             )}
       </div>
+      {/* Render the added message*/}
       {addedMessage}
     </>
   );

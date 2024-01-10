@@ -1,7 +1,7 @@
 import { block } from "million/react";
 
 const Orders = block(() => {
-  return <div>Orders</div>;
+  return <div></div>;
 });
 
 export default Orders;

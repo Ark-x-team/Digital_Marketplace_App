@@ -1,7 +1,7 @@
 import { block } from "million/react";
 
 const Inbox = block(() => {
-  return <div>Inbox</div>;
+  return <div></div>;
 });
 
 export default Inbox;

@@ -17,8 +17,6 @@ const productStore = create((set) => ({
   searchedProduct: [],
   updateSearchValue: (e) => {
     set({ searchValue: e.target.value });
-    const { searchValue } = productStore.getState();
-    console.log(searchValue);
   },
   getProductsBySearch: async () => {
     try {
@@ -33,8 +31,6 @@ const productStore = create((set) => ({
         loading: false,
         productError: false,
       });
-      const { searchedProduct } = productStore.getState();
-      console.log(searchedProduct);
     } catch (error) {
       set({ loading: false });
       return Promise.reject(error);
@@ -57,7 +53,6 @@ const productStore = create((set) => ({
         loading: false,
         productError: false,
       });
-      console.log(response);
     } catch (error) {
       if (error.response.data.products.length < 1) {
         set({
@@ -82,7 +77,6 @@ const productStore = create((set) => ({
         loading: false,
         productError: false,
       });
-      console.log(response);
     } catch (error) {
       if (error.response.data.products.length < 1) {
         set({
@@ -108,7 +102,6 @@ const productStore = create((set) => ({
         loading: false,
         productError: false,
       });
-      console.log(response);
     } catch (error) {
       set({ loading: false });
       return Promise.reject(error);
@@ -130,7 +123,6 @@ const productStore = create((set) => ({
       set({
         productData: response.data.product,
       });
-      console.log(response.data.product);
     } catch (error) {
       return Promise.reject(error);
     }

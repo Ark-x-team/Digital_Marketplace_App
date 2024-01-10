@@ -1,3 +1,5 @@
+// Importing necessary components and libraries
+import { useState } from "react";
 import { Input, Button, Textarea, Progress } from "@nextui-org/react";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import ForwardToInboxRoundedIcon from "@mui/icons-material/ForwardToInboxRounded";
@@ -6,17 +8,17 @@ import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import customerAuthStore from "../../../store/authentication/customerAuthStore";
 import { useTranslation } from "react-i18next";
 
+// ResetPassword component
 function ResetPassword() {
+  // State variables
   const [isVisible, setIsVisible] = useState(true);
-  const toggleVisibility = () => setIsVisible(!isVisible);
-
   const [passwordUpdated, setPasswordUpdated] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Destructuring values from the authentication store
   const {
     resetPassword,
     resetPasswordForm,
@@ -27,6 +29,10 @@ function ResetPassword() {
     resetPasswordError,
   } = customerAuthStore();
 
+  // Function to toggle password visibility
+  const toggleVisibility = () => setIsVisible(!isVisible);
+
+  // Function to handle password reset
   const handleResetPassword = async (e) => {
     setLoading(true);
     e.preventDefault();
@@ -40,8 +46,10 @@ function ResetPassword() {
     }
   };
 
+  // Translation hook
   const { t } = useTranslation();
 
+  // Success message component
   const successMessage = (
     <Textarea
       readOnly
@@ -51,6 +59,8 @@ function ResetPassword() {
       className="max-w-xs "
     />
   );
+
+  // Error message component
   const errorMessage = (
     <Textarea
       readOnly
@@ -59,11 +69,14 @@ function ResetPassword() {
       placeholder={resetPasswordError}
     />
   );
+
+  // JSX for the reset password form
   const resetPasswordInputs = (
     <form
       onSubmit={handleResetPassword}
       className="flex flex-col gap-5 w-full lg:w-1/2"
     >
+      {/* New password input */}
       <Input
         name="password"
         value={resetPasswordForm.password}
@@ -85,6 +98,7 @@ function ResetPassword() {
           </button>
         }
       />
+      {/* Confirm password input */}
       <Input
         name="confirmPassword"
         value={resetPasswordForm.confirmPassword}
@@ -108,10 +122,14 @@ function ResetPassword() {
           </button>
         }
       />
+      {/* Display reset password error message if there is one */}
       {resetPasswordError && !loading && errorMessage}
+      {/* Display success message if password is updated successfully */}
       {passwordUpdated && !loading && successMessage}
 
+      {/* Buttons for updating and navigating back to login */}
       <div className="mt-2 flex flex-col lg:flex-row-reverse gap-4">
+        {/* Update button */}
         <Button
           type="submit"
           isDisabled={!resetPasswordValidation}
@@ -122,6 +140,7 @@ function ResetPassword() {
         >
           {t("update")}
         </Button>
+        {/* Back to login button */}
         <Button
           as={Link}
           to="/login"
@@ -136,8 +155,11 @@ function ResetPassword() {
     </form>
   );
 
+  // Cover image URL
   const coverImage =
     "https://images.pexels.com/photos/4048595/pexels-photo-4048595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+
+  // Render the ResetPassword component
   return (
     <>
       {loading ? (
