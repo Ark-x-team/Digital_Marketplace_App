@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [
-    million.vite({ auto: true }), react()],
+    react(),
+    million.vite({ auto: true })],
 });
  
