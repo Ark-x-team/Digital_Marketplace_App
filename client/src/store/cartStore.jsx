@@ -2,7 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const cartStore = create((set) => ({
+const CartStore = create((set) => ({
   // **************************** Fetch categories ****************************
   cartList: [],
   bill: "",
@@ -81,7 +81,7 @@ const cartStore = create((set) => ({
   // **************************** Download product ****************************
   downloadProduct: async () => {
     try {
-      const { cartList } = cartStore.getState();
+      const { cartList } = CartStore.getState();
       let files = [];
       cartList.map((item) =>
         files.push(item.files.length === 1 ? item.files[0] : item.files[1])
@@ -128,7 +128,7 @@ const cartStore = create((set) => ({
   paymentUrl: "",
   payed: false,
   checkout: async (customerId) => {
-    const { transformCartData, cartList } = cartStore.getState();
+    const { transformCartData, cartList } = CartStore.getState();
     try {
       const response = await axios.post(
         "http://localhost:8081/create-checkout-session",
@@ -151,4 +151,4 @@ const cartStore = create((set) => ({
   },
 }));
 
-export default cartStore;
+export default CartStore;

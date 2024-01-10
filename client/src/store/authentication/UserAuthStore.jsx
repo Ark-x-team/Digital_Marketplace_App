@@ -2,7 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const userAuthStore = create((set) => ({
+const UserAuthStore = create((set) => ({
   // ********************************** Recaptcha **********************************
   recaptchaValue: null,
   setRecaptchaValue: (value) => set({ recaptchaValue: value }),
@@ -20,7 +20,7 @@ const userAuthStore = create((set) => ({
   checkLoginErrors: () => {
     const {
       loginForm: { email, password },
-    } = userAuthStore.getState();
+    } = UserAuthStore.getState();
     set({
       loginValidation: email !== "" && password !== "",
     });
@@ -35,7 +35,7 @@ const userAuthStore = create((set) => ({
         },
       };
     });
-    const { checkLoginErrors } = userAuthStore.getState();
+    const { checkLoginErrors } = UserAuthStore.getState();
     checkLoginErrors();
   },
 
@@ -43,11 +43,11 @@ const userAuthStore = create((set) => ({
   accessToken: false,
   role: null,
   login: async () => {
-    const { recaptchaValue } = userAuthStore.getState();
+    const { recaptchaValue } = UserAuthStore.getState();
     try {
       const {
         loginForm: { email, password },
-      } = userAuthStore.getState();
+      } = UserAuthStore.getState();
       const response = await axios.post(
         "/users/login",
         {
@@ -109,7 +109,7 @@ const userAuthStore = create((set) => ({
   // ? Logout
   logout: async () => {
     try {
-      const { setLoggedIn } = userAuthStore.getState();
+      const { setLoggedIn } = UserAuthStore.getState();
       await axios.get("/customers/logout", {
         headers: { "content-type": "application/json" },
         withCredentials: true,
@@ -126,18 +126,18 @@ const userAuthStore = create((set) => ({
   verificationEmailError: false,
   verificationEmailValidation: false,
   checkVerificationEmailValidation: () => {
-    const { verificationEmail } = userAuthStore.getState();
+    const { verificationEmail } = UserAuthStore.getState();
     set({ verificationEmailValidation: verificationEmail !== "" });
   },
   updateVerificationEmail: (e) => {
     const { value } = e.target;
     set({ verificationEmail: value });
-    const { checkVerificationEmailValidation } = userAuthStore.getState();
+    const { checkVerificationEmailValidation } = UserAuthStore.getState();
     checkVerificationEmailValidation();
   },
   resetPasswordVerification: async () => {
     try {
-      const { verificationEmail } = userAuthStore.getState();
+      const { verificationEmail } = UserAuthStore.getState();
       await axios.post(
         "/customers/reset-password-verification",
         { email: verificationEmail },
@@ -174,7 +174,7 @@ const userAuthStore = create((set) => ({
       passwordValidation,
       confirmPasswordValidation,
       resetPasswordForm: { password, confirmPassword },
-    } = userAuthStore.getState();
+    } = UserAuthStore.getState();
     set({
       resetPasswordValidation:
         passwordValidation.state &&
@@ -194,7 +194,7 @@ const userAuthStore = create((set) => ({
         },
       };
     });
-    const { validation, checkResetPasswordErrors } = userAuthStore.getState();
+    const { validation, checkResetPasswordErrors } = UserAuthStore.getState();
     validation(name, value);
     checkResetPasswordErrors();
   },
@@ -204,7 +204,7 @@ const userAuthStore = create((set) => ({
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
 
-      const { resetPasswordForm } = userAuthStore.getState();
+      const { resetPasswordForm } = UserAuthStore.getState();
       await axios.post(
         `/customers/reset-password?token=${token}`,
         { newPassword: resetPasswordForm.password },
@@ -237,4 +237,4 @@ const userAuthStore = create((set) => ({
   },
 }));
 
-export default userAuthStore;
+export default UserAuthStore;

@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import Cookies from "js-cookie";
 
-const mainStore = create((set) => ({
+const MainStore = create((set) => ({
   // ******************************* Navbar *******************************
   navOpen: false,
   handleNav: () => {
-    const { navOpen } = mainStore.getState();
+    const { navOpen } = MainStore.getState();
     set({ navOpen: !navOpen });
   },
   closeNav: () => {
@@ -13,7 +13,7 @@ const mainStore = create((set) => ({
   },
   activeButton: "",
   handleNavButton: (button) => {
-    const { closeNav } = mainStore.getState();
+    const { closeNav } = MainStore.getState();
     set({ activeButton: button });
     closeNav();
   },
@@ -22,7 +22,7 @@ const mainStore = create((set) => ({
   mode: Cookies.get("appearance") || "dark",
   cookieExpiration: { expires: 365 },
   handleSwitchMode: () => {
-    const { mode, cookieExpiration } = mainStore.getState();
+    const { mode, cookieExpiration } = MainStore.getState();
     // Set the appearance mode in the cookie
     const appearance = mode === "light" ? "dark" : "light";
     Cookies.set("appearance", appearance, cookieExpiration);
@@ -45,7 +45,7 @@ const mainStore = create((set) => ({
     flag: Cookies.get("flag") || "https://flagcdn.com/gb.svg",
   },
   handleLangSwitch: (item) => {
-    const { cookieExpiration } = mainStore.getState();
+    const { cookieExpiration } = MainStore.getState();
     // Set the selected language in the cookie
     Cookies.set("lang", item.lang, cookieExpiration);
     Cookies.set("flag", item.flag, cookieExpiration);
@@ -54,4 +54,4 @@ const mainStore = create((set) => ({
   },
 }));
 
-export default mainStore;
+export default MainStore;

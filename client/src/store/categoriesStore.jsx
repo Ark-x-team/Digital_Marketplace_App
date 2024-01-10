@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const categoriesStore = create((set) => ({
+const CategoriesStore = create((set) => ({
   // **************************** Fetch categories ****************************
   categoriesList: [],
   categoriesError: false,
@@ -36,4 +36,4 @@ const categoriesStore = create((set) => ({
   },
 }));
 
-export default categoriesStore;
+export default CategoriesStore;

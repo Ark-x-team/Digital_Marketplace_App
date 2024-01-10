@@ -2,7 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const customerAuthStore = create((set) => ({
+const CustomerAuthStore = create((set) => ({
   // ********************************** Recaptcha **********************************
   recaptchaValue: null,
   setRecaptchaValue: (value) => set({ recaptchaValue: value }),
@@ -37,7 +37,7 @@ const customerAuthStore = create((set) => ({
     const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
     const {
       resetPasswordForm: { password },
-    } = customerAuthStore.getState();
+    } = CustomerAuthStore.getState();
     switch (name) {
       case "username":
         usernameRegex.test(value) || value == ""
@@ -109,7 +109,7 @@ const customerAuthStore = create((set) => ({
       emailValidation,
       passwordValidation,
       signUpForm: { username, email, password },
-    } = customerAuthStore.getState();
+    } = CustomerAuthStore.getState();
     set({
       signUpValidation:
         usernameValidation.state &&
@@ -130,7 +130,7 @@ const customerAuthStore = create((set) => ({
         },
       };
     });
-    const { validation, checkSignupFormErrors } = customerAuthStore.getState();
+    const { validation, checkSignupFormErrors } = CustomerAuthStore.getState();
     validation(name, value);
     checkSignupFormErrors();
   },
@@ -141,7 +141,7 @@ const customerAuthStore = create((set) => ({
     const res = await fetch(passwordGeneratorApi);
     const generatedPassword = await res.text();
     const { signUpForm, validation, checkSignupFormErrors } =
-      customerAuthStore.getState();
+      CustomerAuthStore.getState();
     set({
       signUpForm: {
         ...signUpForm,
@@ -156,7 +156,7 @@ const customerAuthStore = create((set) => ({
       const {
         signUpForm: { username, email, password },
         recaptchaValue,
-      } = customerAuthStore.getState();
+      } = CustomerAuthStore.getState();
       const res = await axios.post(
         "/customers/signup",
         { username, email, password, recaptchaValue },
@@ -188,7 +188,7 @@ const customerAuthStore = create((set) => ({
 
   AccountVerification: async () => {
     try {
-      const { setLoggedIn } = customerAuthStore.getState();
+      const { setLoggedIn } = CustomerAuthStore.getState();
       // Get the token from the URL
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
@@ -219,7 +219,7 @@ const customerAuthStore = create((set) => ({
   checkLoginErrors: () => {
     const {
       loginForm: { email, password },
-    } = customerAuthStore.getState();
+    } = CustomerAuthStore.getState();
     set({
       loginValidation: email !== "" && password !== "",
     });
@@ -234,7 +234,7 @@ const customerAuthStore = create((set) => ({
         },
       };
     });
-    const { checkLoginErrors } = customerAuthStore.getState();
+    const { checkLoginErrors } = CustomerAuthStore.getState();
     checkLoginErrors();
   },
 
@@ -242,7 +242,7 @@ const customerAuthStore = create((set) => ({
   googleLoggedIn: false,
   googleLogin: async (credentialResponse) => {
     try {
-      const { setLoggedIn } = customerAuthStore.getState();
+      const { setLoggedIn } = CustomerAuthStore.getState();
       const credential = credentialResponse.credential;
       const response = await axios.post(
         "/customers/google-login",
@@ -257,7 +257,7 @@ const customerAuthStore = create((set) => ({
       setLoggedIn(true);
       set({ googleLoggedIn: true });
     } catch (error) {
-      const { setLoggedIn } = customerAuthStore.getState();
+      const { setLoggedIn } = CustomerAuthStore.getState();
       setLoggedIn(false);
       if (error.response) {
         set({ loginError: error.response.data.message });
@@ -277,12 +277,12 @@ const customerAuthStore = create((set) => ({
     });
   },
   login: async () => {
-    const { recaptchaValue } = customerAuthStore.getState();
+    const { recaptchaValue } = CustomerAuthStore.getState();
     try {
       const {
         loginForm: { email, password },
         setLoggedIn,
-      } = customerAuthStore.getState();
+      } = CustomerAuthStore.getState();
       const response = await axios.post(
         "/customers/login",
         {
@@ -307,7 +307,7 @@ const customerAuthStore = create((set) => ({
         },
       });
     } catch (error) {
-      const { setLoggedIn } = customerAuthStore.getState();
+      const { setLoggedIn } = CustomerAuthStore.getState();
       setLoggedIn(false);
       if (error.response) {
         set({ loginError: error.response.data.message });
@@ -323,7 +323,7 @@ const customerAuthStore = create((set) => ({
   // ? Logout
   logout: async () => {
     try {
-      const { setLoggedIn } = customerAuthStore.getState();
+      const { setLoggedIn } = CustomerAuthStore.getState();
       await axios.get("/customers/logout", {
         headers: { "content-type": "application/json" },
         withCredentials: true,
@@ -340,18 +340,18 @@ const customerAuthStore = create((set) => ({
   verificationEmailError: false,
   verificationEmailValidation: false,
   checkVerificationEmailValidation: () => {
-    const { verificationEmail } = customerAuthStore.getState();
+    const { verificationEmail } = CustomerAuthStore.getState();
     set({ verificationEmailValidation: verificationEmail !== "" });
   },
   updateVerificationEmail: (e) => {
     const { value } = e.target;
     set({ verificationEmail: value });
-    const { checkVerificationEmailValidation } = customerAuthStore.getState();
+    const { checkVerificationEmailValidation } = CustomerAuthStore.getState();
     checkVerificationEmailValidation();
   },
   resetPasswordVerification: async () => {
     try {
-      const { verificationEmail } = customerAuthStore.getState();
+      const { verificationEmail } = CustomerAuthStore.getState();
       await axios.post(
         "/customers/reset-password-verification",
         { email: verificationEmail },
@@ -388,7 +388,7 @@ const customerAuthStore = create((set) => ({
       passwordValidation,
       confirmPasswordValidation,
       resetPasswordForm: { password, confirmPassword },
-    } = customerAuthStore.getState();
+    } = CustomerAuthStore.getState();
     set({
       resetPasswordValidation:
         passwordValidation.state &&
@@ -409,7 +409,7 @@ const customerAuthStore = create((set) => ({
       };
     });
     const { validation, checkResetPasswordErrors } =
-      customerAuthStore.getState();
+      CustomerAuthStore.getState();
     validation(name, value);
     checkResetPasswordErrors();
   },
@@ -419,7 +419,7 @@ const customerAuthStore = create((set) => ({
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
 
-      const { resetPasswordForm } = customerAuthStore.getState();
+      const { resetPasswordForm } = CustomerAuthStore.getState();
       await axios.post(
         `/customers/reset-password?token=${token}`,
         { newPassword: resetPasswordForm.password },
@@ -476,4 +476,4 @@ const customerAuthStore = create((set) => ({
   },
 }));
 
-export default customerAuthStore;
+export default CustomerAuthStore;

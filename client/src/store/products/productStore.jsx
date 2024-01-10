@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const productStore = create((set) => ({
+const ProductStore = create((set) => ({
   // **************************** Fetch categories ****************************
   productList: [],
   productError: false,
@@ -21,7 +21,7 @@ const productStore = create((set) => ({
   getProductsBySearch: async () => {
     try {
       set({ loading: true, searchedProduct: [], productList: [] });
-      const { page, limit, searchValue } = productStore.getState();
+      const { page, limit, searchValue } = ProductStore.getState();
       const response = await axios.get(
         `/products/search?search_query=${searchValue}&page=${page}&limit=${limit}`,
         { withCredentials: true }
@@ -40,7 +40,7 @@ const productStore = create((set) => ({
   getProductsByCategory: async (category) => {
     try {
       set({ loading: true, productList: [], searchedProduct: [] });
-      const { page, limit } = productStore.getState();
+      const { page, limit } = ProductStore.getState();
       const response = await axios.get(
         `/products-category?page=${page}&limit=${limit}&active=true&category_name=${
           category && category !== "all" ? category : ""
@@ -67,7 +67,7 @@ const productStore = create((set) => ({
   getProductsBySubcategory: async (subcategory) => {
     try {
       set({ loading: true, productList: [], searchedProduct: [] });
-      const { page, limit } = productStore.getState();
+      const { page, limit } = ProductStore.getState();
       const response = await axios.get(
         `/products-subcategory?page=${page}&limit=${limit}0&active=true&subcategory_name=${subcategory}`,
         { withCredentials: true }
@@ -92,7 +92,7 @@ const productStore = create((set) => ({
   getProductsByFilter: async (filterValue) => {
     try {
       set({ loading: true, productList: [] });
-      const { page, limit } = productStore.getState();
+      const { page, limit } = ProductStore.getState();
       const response = await axios.get(
         `/products-by-filter?page=${page}&limit=${limit}&filter=${filterValue}`,
         { withCredentials: true }
@@ -116,7 +116,7 @@ const productStore = create((set) => ({
   },
   getProduct: async () => {
     try {
-      const { productId } = productStore.getState();
+      const { productId } = ProductStore.getState();
       const response = await axios.get(`/products/${productId}`, {
         withCredentials: true,
       });
@@ -129,4 +129,4 @@ const productStore = create((set) => ({
   },
 }));
 
-export default productStore;
+export default ProductStore;
