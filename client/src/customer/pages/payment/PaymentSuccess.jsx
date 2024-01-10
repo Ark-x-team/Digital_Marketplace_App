@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import cartStore from "../../../store/cartStore";
+import cartStore from "../../../store/CartStore";
 
 // Functional component for the PaymentSuccess screen
 const PaymentSuccess = () => {

@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 import { Modal, ModalContent, useDisclosure } from "@nextui-org/react";
 import ImageModal from "./modals/ImageModal"; // Importing the ImageModal component
 import productStore from "../../../../store/products/ProductStore";
-import customerAuthStore from "../../../../store/authentication/customerAuthStore";
-import cartStore from "../../../../store/cartStore";
+import customerAuthStore from "../../../../store/authentication/CustomerAuthStore";
+import cartStore from "../../../../store/CartStore";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";

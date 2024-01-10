@@ -9,7 +9,7 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
-import mainStore from "../../store/mainStore";
+import mainStore from "../../store/MainStore";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 

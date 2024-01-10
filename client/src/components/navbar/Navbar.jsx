@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import SwitchMode from "./SwitchMode";
 import SwitchLang from "./SwitchLang";
 import AccountDropdown from "./AccountDropdown";
-import mainStore from "../../store/mainStore";
-import customerAuthStore from "../../store/authentication/customerAuthStore";
+import mainStore from "../../store/MainStore";
+import customerAuthStore from "../../store/authentication/CustomerAuthStore";
 
 import PropTypes from "prop-types";
 import { memo } from "react";

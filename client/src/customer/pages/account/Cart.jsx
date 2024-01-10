@@ -4,15 +4,16 @@ import { Button, Divider, Spinner } from "@nextui-org/react";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import ShoppingCartCheckoutRoundedIcon from "@mui/icons-material/ShoppingCartCheckoutRounded";
 import { useEffect, useState } from "react";
-import customerAuthStore from "../../../store/authentication/customerAuthStore";
-import cartStore from "../../../store/cartStore";
+import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
+import cartStore from "../../../store/CartStore";
 import { useTranslation } from "react-i18next";
 
 // Defining the Cart component as a block
 const Cart = block(() => {
   // Extracting functions and state from customerAuthStore and cartStore
   const { checkAuth, customerId } = customerAuthStore();
-  const { getCartItems, cartList, bill, removeFromCart, checkout } = cartStore();
+  const { getCartItems, cartList, bill, removeFromCart, checkout } =
+    cartStore();
 
   // Fetching cart items when the component mounts
   useEffect(() => {

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../../components/navbar/Navbar";
 import { Button } from "@nextui-org/react";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
-import mainStore from "../../../store/mainStore";
+import mainStore from "../../../store/MainStore";
 import { Link, useLocation } from "react-router-dom";
 import navData from "./NavData"; // Assuming there is a file with navigation data
 import { useTranslation } from "react-i18next";

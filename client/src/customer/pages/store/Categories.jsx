@@ -2,7 +2,7 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import categoriesStore from "../../../store/categoriesStore";
+import categoriesStore from "../../../store/CategoriesStore";
 import { ScrollShadow } from "@nextui-org/react";
 import productStore from "../../../store/products/ProductStore";
 import { useTranslation } from "react-i18next";

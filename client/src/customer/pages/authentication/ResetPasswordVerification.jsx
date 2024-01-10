@@ -7,7 +7,7 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import MarkEmailReadRoundedIcon from "@mui/icons-material/MarkEmailReadRounded";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
-import customerAuthStore from "../../../store/authentication/customerAuthStore";
+import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
 import { useTranslation } from "react-i18next";
 
 // ResetPasswordVerification component

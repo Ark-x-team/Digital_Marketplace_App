@@ -1,5 +1,5 @@
 import { Tabs, Tab, ScrollShadow } from "@nextui-org/react";
-import categoriesStore from "../../../store/categoriesStore";
+import categoriesStore from "../../../store/CategoriesStore";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import productStore from "../../../store/products/ProductStore";

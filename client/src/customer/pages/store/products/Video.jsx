@@ -8,8 +8,8 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { Modal, ModalContent, useDisclosure, Button } from "@nextui-org/react";
 import VideoModal from "./modals/VideoModal"; // Importing the VideoModal component
 import productStore from "../../../../store/products/ProductStore";
-import customerAuthStore from "../../../../store/authentication/customerAuthStore";
-import cartStore from "../../../../store/cartStore";
+import customerAuthStore from "../../../../store/authentication/CustomerAuthStore";
+import cartStore from "../../../../store/CartStore";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";

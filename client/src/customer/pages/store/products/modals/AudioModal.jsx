@@ -6,8 +6,8 @@ import "react-h5-audio-player/lib/styles.css";
 import { Button } from "@nextui-org/react";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { useTranslation } from "react-i18next";
-import cartStore from "../../../../../store/cartStore";
-import customerAuthStore from "../../../../../store/authentication/customerAuthStore";
+import cartStore from "../../../../../store/CartStore";
+import customerAuthStore from "../../../../../store/authentication/CustomerAuthStore";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -51,7 +51,9 @@ const AudioModal = () => {
       <span className="h-80 w-full relative hover:opacity-75 duration-200">
         {/* Displaying product image */}
         <img
-          src={`${import.meta.env.VITE_SERVER_URL}/uploads/${productData.product_files[0]}`}
+          src={`${import.meta.env.VITE_SERVER_URL}/uploads/${
+            productData.product_files[0]
+          }`}
           alt={productData.product_name}
           className="h-80 w-full object-cover object-center dark:brightness-[.8] "
         />
@@ -61,7 +63,9 @@ const AudioModal = () => {
             setShowControls(true);
           }}
           onEnded={() => setShowControls(false)}
-          src={`${import.meta.env.VITE_SERVER_URL}/uploads/${productData.product_files[1]}`}
+          src={`${import.meta.env.VITE_SERVER_URL}/uploads/${
+            productData.product_files[1]
+          }`}
           showJumpControls={false}
           autoPlayAfterSrcChange={false}
           autoPlay={false}

@@ -11,7 +11,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import ReCAPTCHA from "react-google-recaptcha";
 import { GoogleLogin } from "@react-oauth/google";
 import { useTranslation } from "react-i18next";
-import customerAuthStore from "../../../store/authentication/customerAuthStore";
+import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
 
 // Login component
 function Login() {

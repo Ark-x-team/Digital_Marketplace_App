@@ -2,7 +2,7 @@
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import { useEffect } from "react";
-import mainStore from "../../store/mainStore";
+import mainStore from "../../store/MainStore";
 import { Button } from "@nextui-org/react";
 
 // React functional component for switching between light and dark modes

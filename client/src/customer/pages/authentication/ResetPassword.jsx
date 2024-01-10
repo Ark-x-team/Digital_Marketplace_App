@@ -8,7 +8,7 @@ import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
-import customerAuthStore from "../../../store/authentication/customerAuthStore";
+import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
 import { useTranslation } from "react-i18next";
 
 // ResetPassword component

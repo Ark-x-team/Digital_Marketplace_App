@@ -7,7 +7,7 @@ import Font from "./products/Font";
 import Video from "./products/Video";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import cartStore from "../../../store/cartStore";
+import cartStore from "../../../store/CartStore";
 
 function ProductsList() {
   // Destructuring values from the productStore

@@ -2,7 +2,7 @@
 import { block } from "million/react";
 import { Avatar, Spinner } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import customerAuthStore from "../../../store/authentication/customerAuthStore";
+import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
 
 // Defining the Profile component as a block
 const Profile = block(() => {

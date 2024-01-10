@@ -4,8 +4,8 @@ import productStore from "../../../../../store/products/ProductStore";
 import { Button } from "@nextui-org/react";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { useTranslation } from "react-i18next";
-import cartStore from "../../../../../store/cartStore";
-import customerAuthStore from "../../../../../store/authentication/customerAuthStore";
+import cartStore from "../../../../../store/CartStore";
+import customerAuthStore from "../../../../../store/authentication/CustomerAuthStore";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -47,7 +47,9 @@ const ImageModal = () => {
       <span className="relative h-80 w-full">
         {/* Displaying product image */}
         <img
-          src={`${import.meta.env.VITE_SERVER_URL}/uploads/${productData.product_files[0]}`}
+          src={`${import.meta.env.VITE_SERVER_URL}/uploads/${
+            productData.product_files[0]
+          }`}
           alt={productData.product_name}
           className="h-80 min-w-full object-cover object-center hover:opacity-75 duration-200"
         />

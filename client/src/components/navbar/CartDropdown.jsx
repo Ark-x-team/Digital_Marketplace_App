@@ -11,11 +11,11 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import ShoppingCartCheckoutRoundedIcon from "@mui/icons-material/ShoppingCartCheckoutRounded";
 import { Divider } from "@nextui-org/react";
 import { useEffect } from "react";
-import customerAuthStore from "../../store/authentication/customerAuthStore";
-import cartStore from "../../store/cartStore";
+import customerAuthStore from "../../store/authentication/CustomerAuthStore";
+import cartStore from "../../store/CartStore";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import mainStore from "../../store/mainStore";
+import mainStore from "../../store/MainStore";
 
 // React functional component for the cart dropdown
 function CartDropdown() {

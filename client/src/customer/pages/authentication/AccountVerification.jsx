@@ -2,7 +2,7 @@
 import { Spinner, Textarea } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import customerAuthStore from "../../../store/authentication/customerAuthStore";
+import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
 import { useTranslation } from "react-i18next";
 
 // Defining the EmailVerification component
