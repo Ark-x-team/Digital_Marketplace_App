@@ -17,7 +17,7 @@ const productStore = create((set) => ({
       set({ loading: true, productList: [] });
       const { page, limit } = productStore.getState();
       const response = await axios.get(
-        `http://localhost:8081/products-category?page=${page}&limit=${limit}&active=true&category_name=${
+        `/products-category?page=${page}&limit=${limit}&active=true&category_name=${
           category && category !== "all" ? category : ""
         }`,
         { withCredentials: true }
@@ -45,7 +45,7 @@ const productStore = create((set) => ({
       set({ loading: true, productList: [] });
       const { page, limit } = productStore.getState();
       const response = await axios.get(
-        `http://localhost:8081/products-subcategory?page=${page}&limit=${limit}0&active=true&subcategory_name=${subcategory}`,
+        `/products-subcategory?page=${page}&limit=${limit}0&active=true&subcategory_name=${subcategory}`,
         { withCredentials: true }
       );
       set({
@@ -77,7 +77,7 @@ const productStore = create((set) => ({
       set({ loading: true, productList: [] });
       const { page, limit, searchValue } = productStore.getState();
       const response = await axios.get(
-        `http://localhost:8081/products/search?search_query=${searchValue}&page=${page}&limit=${limit}`,
+        `/products/search?search_query=${searchValue}&page=${page}&limit=${limit}`,
         { withCredentials: true }
       );
       set({
@@ -98,7 +98,7 @@ const productStore = create((set) => ({
       set({ loading: true, productList: [] });
       const { page, limit } = productStore.getState();
       const response = await axios.get(
-        `http://localhost:8081/products-by-filter?page=${page}&limit=${limit}&filter=${filterValue}`,
+        `/products-by-filter?page=${page}&limit=${limit}&filter=${filterValue}`,
         { withCredentials: true }
       );
       set({
@@ -123,7 +123,7 @@ const productStore = create((set) => ({
     try {
       const { productId } = productStore.getState();
       const response = await axios.get(
-        `http://localhost:8081/products/${productId}`,
+        `/products/${productId}`,
         { withCredentials: true }
       );
       set({

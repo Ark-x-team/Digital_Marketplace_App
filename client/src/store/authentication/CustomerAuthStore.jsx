@@ -158,7 +158,7 @@ const customerAuthStore = create((set) => ({
         recaptchaValue,
       } = customerAuthStore.getState();
       const res = await axios.post(
-        "http://localhost:8081/customers/signup",
+        "/customers/signup",
         { username, email, password, recaptchaValue },
         {
           headers: { "content-type": "application/json" },
@@ -194,7 +194,7 @@ const customerAuthStore = create((set) => ({
       const token = urlParams.get("token");
 
       await axios.post(
-        `http://localhost:8081/customers/email-verification?token=${token}`,
+        `/customers/email-verification?token=${token}`,
         {
           headers: { "content-type": "application/json" },
           withCredentials: true,
@@ -245,7 +245,7 @@ const customerAuthStore = create((set) => ({
       const { setLoggedIn } = customerAuthStore.getState();
       const credential = credentialResponse.credential;
       const response = await axios.post(
-        "http://localhost:8081/customers/google-login",
+        "/customers/google-login",
         { credential },
         {
           headers: { "content-type": "application/json" },
@@ -285,7 +285,7 @@ const customerAuthStore = create((set) => ({
         setLoggedIn,
       } = customerAuthStore.getState();
       const response = await axios.post(
-        "http://localhost:8081/customers/login",
+        "/customers/login",
         {
           email,
           password,
@@ -325,7 +325,7 @@ const customerAuthStore = create((set) => ({
   logout: async () => {
     try {
       const { setLoggedIn } = customerAuthStore.getState();
-      await axios.get("http://localhost:8081/customers/logout", {
+      await axios.get("/customers/logout", {
         headers: { "content-type": "application/json" },
         withCredentials: true,
       });
@@ -354,7 +354,7 @@ const customerAuthStore = create((set) => ({
     try {
       const { verificationEmail } = customerAuthStore.getState();
       await axios.post(
-        "http://localhost:8081/customers/reset-password-verification",
+        "/customers/reset-password-verification",
         { email: verificationEmail },
         {
           headers: { "content-type": "application/json" },
@@ -422,7 +422,7 @@ const customerAuthStore = create((set) => ({
 
       const { resetPasswordForm } = customerAuthStore.getState();
       await axios.post(
-        `http://localhost:8081/customers/reset-password?token=${token}`,
+        `/customers/reset-password?token=${token}`,
         { newPassword: resetPasswordForm.password },
         {
           headers: { "content-type": "application/json" },
@@ -458,7 +458,7 @@ const customerAuthStore = create((set) => ({
   checkAuth: async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8081/customers/check-auth",
+        "/customers/check-auth",
         {
           headers: {
             "content-type": "application/json",

@@ -10,7 +10,7 @@ const verifyEmail = (username, verificationToken) => {
                 button: {
                     color: '#5a2ce2',
                     text: 'Verify',
-                    link: `http://localhost:5173/email-verification?token=${verificationToken}`
+                    link: `${process.env.CLIENT_URL}/email-verification?token=${verificationToken}`
                 }
             },
             outro: "This email is automatically generated. Please do not answer it."
@@ -30,7 +30,7 @@ const resetPassword = (username, verificationToken) => {
                 button: {
                     color: '#5a2ce2',
                     text: 'Reset password',
-                    link: `http://localhost:5173/reset-password?token=${verificationToken}`
+                    link: `${process.env.CLIENT_URL}/reset-password?token=${verificationToken}`
                 }
             },
             outro: "This email is automatically generated. Please do not answer it."
@@ -59,7 +59,7 @@ const userCredentials = (username, role, email, password, verificationToken) => 
                     color: '#5a2ce2',
                     text: 'Update your credentials',
                     // link: `${process.env.DEPLOYMENT_CLIENT_URI}/dashboard/account`
-                    link: `http://localhost:${process.env.PORT}/users/reset-password?token=${verificationToken}`
+                    link: `${process.env.CLIENT_URL}/users/reset-password?token=${verificationToken}`
                 }
             },
             outro: "This email is automatically generated. Please do not answer it."

@@ -49,7 +49,7 @@ const userAuthStore = create((set) => ({
         loginForm: { email, password },
       } = userAuthStore.getState();
       const response = await axios.post(
-        "http://localhost:8081/users/login",
+        "/users/login",
         {
           email,
           password,
@@ -89,7 +89,7 @@ const userAuthStore = create((set) => ({
   getAccessToken: async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8081/users/get-access-token",
+        "/users/get-access-token",
         {
           refreshToken: Cookies.get("refresh_token"),
         },
@@ -111,7 +111,7 @@ const userAuthStore = create((set) => ({
   logout: async () => {
     try {
       const { setLoggedIn } = userAuthStore.getState();
-      await axios.get("http://localhost:8081/customers/logout", {
+      await axios.get("/customers/logout", {
         headers: { "content-type": "application/json" },
         withCredentials: true,
       });
@@ -140,7 +140,7 @@ const userAuthStore = create((set) => ({
     try {
       const { verificationEmail } = userAuthStore.getState();
       await axios.post(
-        "http://localhost:8081/customers/reset-password-verification",
+        "/customers/reset-password-verification",
         { email: verificationEmail },
         {
           headers: { "content-type": "application/json" },
@@ -207,7 +207,7 @@ const userAuthStore = create((set) => ({
 
       const { resetPasswordForm } = userAuthStore.getState();
       await axios.post(
-        `http://localhost:8081/customers/reset-password?token=${token}`,
+        `/customers/reset-password?token=${token}`,
         { newPassword: resetPasswordForm.password },
         {
           headers: { "content-type": "application/json" },

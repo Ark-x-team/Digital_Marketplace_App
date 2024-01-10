@@ -13,16 +13,13 @@ import "./i18n";
 // Disable React Dev Tools
 disableReactDevTools();
 
-// Set the default base URL for Axios requests to "http://localhost:3000".
-// axios.defaults.baseURL = import.meta.env.deploymentServerUrl;
-
-axios.defaults.baseURL = import.meta.env.localServerUrl;
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
 axios.defaults.withCredentials = true;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId="301326894496-q2m380rscft5agqbsf89l3hpgi21ri2t.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <BrowserRouter>
         <NextUIProvider>
           <App />

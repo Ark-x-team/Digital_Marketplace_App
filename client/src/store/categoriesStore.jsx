@@ -7,7 +7,7 @@ const categoriesStore = create((set) => ({
   categoriesError: false,
   getCategories: async () => {
     try {
-      const response = await axios.get("http://localhost:8081/categories");
+      const response = await axios.get("/categories");
       set({
         categoriesList: response.data.categories,
         categoriesError: false,
@@ -27,7 +27,7 @@ const categoriesStore = create((set) => ({
   getSubCategories: async (subcategory) => {
     try {
       const response = await axios.get(
-        `http://localhost:8081/subcategories?categoryName=${subcategory}`
+        `/subcategories?categoryName=${subcategory}`
       );
       set({ subCategories: response.data.subcategories });
     } catch (error) {
