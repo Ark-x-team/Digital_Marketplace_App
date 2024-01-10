@@ -5,7 +5,7 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import userAuthStore from "../../store/authentication/UserAuthStore";
 
@@ -21,7 +21,6 @@ function UserLogin() {
     loginValidation,
     loginError,
     setRecaptchaValue,
-    accessToken,
   } = userAuthStore();
 
   const recaptchaRef = useRef(null);
