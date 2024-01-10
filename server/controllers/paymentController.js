@@ -33,8 +33,8 @@ const checkout = async (req, res) => {
       line_items,
       mode: "payment",
       customer: customer.id,
-      success_url: `${process.env.LOCAL_CLIENT_URL}/checkout-success`,
-      cancel_url: `${process.env.LOCAL_CLIENT_URL}/cart`,
+      success_url: `${process.env.CLIENT_URL}/checkout-success`,
+      cancel_url: `${process.env.CLIENT_URL}/cart`,
     });
 
     res.status(200).json({ url: session.url });

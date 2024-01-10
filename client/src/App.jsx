@@ -7,6 +7,7 @@ import Progress from "./components/Progress";
 // Middlewares
 import CustomerAuthorization from "./middlewares/CustomerAuthorization";
 import UserAuthorization from "./middlewares/UserAuthorization";
+import PaymentRoutes from "./routes/customer/PaymentRoutes";
 
 // Client
 const ClientRoutes = lazy(() => import("./routes/client/ClientRoutes"));
@@ -66,6 +67,18 @@ function App() {
           </Suspense>
         }
       />
+      {/************************ Payment ************************/}
+      <Route
+        path="payment/*"
+        element={
+          <Suspense fallback={<Progress />}>
+            <CustomerAuthorization>
+              <PaymentRoutes />
+            </CustomerAuthorization>
+          </Suspense>
+        }
+      />
+
       {/********************  User Auth ********************/}
       <Route
         path="user/*"

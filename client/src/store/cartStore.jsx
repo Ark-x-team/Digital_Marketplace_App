@@ -9,7 +9,7 @@ const cartStore = create((set) => ({
 
   getCartItems: async (id) => {
     try {
-      const response = await axios.get(`/cart/${id}`, {
+      const response = await axios.get(`http://localhost:8081/cart/${id}`, {
         headers: {
           "content-type": "application/json",
           Authorization: Cookies.get("token"),
@@ -33,7 +33,7 @@ const cartStore = create((set) => ({
   addToCart: async (itemId, customerId) => {
     try {
       const response = await axios.post(
-        `/cart/${customerId}`,
+        `http://localhost:8081/cart/${customerId}`,
         { itemId },
         {
           headers: {
@@ -57,14 +57,17 @@ const cartStore = create((set) => ({
 
   removeFromCart: async (itemId, customerId) => {
     try {
-      const response = await axios.delete(`/cart/${customerId}`, {
-        data: { itemId },
-        headers: {
-          "content-type": "application/json",
-          Authorization: Cookies.get("token"),
-        },
-        withCredentials: true,
-      });
+      const response = await axios.delete(
+        `http://localhost:8081/cart/${customerId}`,
+        {
+          data: { itemId },
+          headers: {
+            "content-type": "application/json",
+            Authorization: Cookies.get("token"),
+          },
+          withCredentials: true,
+        }
+      );
       set({
         cartList: response.data.items,
         bill: response.data.bill,
@@ -84,7 +87,7 @@ const cartStore = create((set) => ({
         files.push(item.files.length === 1 ? item.files[0] : item.files[1])
       );
       const response = await axios.post(
-        "/download-product",
+        "http://localhost:8081/download-product",
         {
           filenames: files,
         },
@@ -130,7 +133,7 @@ const cartStore = create((set) => ({
     const { transformCartData, cartList } = cartStore.getState();
     try {
       const response = await axios.post(
-        "/create-checkout-session",
+        "http://localhost:8081/create-checkout-session",
         transformCartData(customerId, cartList),
         {
           headers: {
@@ -141,7 +144,6 @@ const cartStore = create((set) => ({
         }
       );
       set({
-        payed: true,
         paymentUrl: response.data.url,
       });
     } catch (error) {
