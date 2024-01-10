@@ -17,6 +17,7 @@ function ProductsList() {
     page,
     searchValue,
     getProductsBySearch,
+    searchedProduct,
   } = productStore();
   const { itemAdded, closeItemAdded } = cartStore();
   const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
@@ -28,9 +29,10 @@ function ProductsList() {
       if (subcategory) {
         getProductsBySubcategory(subcategory);
       } else {
-        if (searchValue !== "") {
-          getProductsBySearch();
-        } else getProductsByCategory(category);
+        getProductsByCategory(category);
+      }
+      if (searchValue !== "") {
+        getProductsBySearch();
       }
       setCurrentlyPlaying(null);
     } catch (error) {
@@ -100,52 +102,99 @@ function ProductsList() {
   return (
     <>
       <div className="min-h-screen grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 py-5">
-        {productList.map((product, index) =>
-          product.active && product?.product_type === "audio" ? (
-            <Audio
-              key={index}
-              id={product._id}
-              name={product?.product_name}
-              images={product?.product_files[0]}
-              audio={product?.product_files[1]}
-              price={product?.price}
-              play={(audioRef) =>
-                handlePlay(product?.product_files[1], audioRef)
-              }
-            />
-          ) : product?.product_type === "font" ? (
-            <Font
-              key={index}
-              id={product._id}
-              name={product?.product_name}
-              images={product?.product_files[0]}
-              font={product?.product_files[1]}
-              price={product?.price}
-            />
-          ) : product?.product_type === "image" ||
-            product.product_type == "text" ||
-            product?.subcategory_name == "courses" ||
-            product.product_type == "pdf" ? (
-            <Image
-              key={index}
-              id={product._id}
-              name={product?.product_name}
-              images={product?.product_files[0]}
-              price={product?.price}
-            />
-          ) : product?.product_type === "video" ? (
-            <Video
-              key={index}
-              id={product._id}
-              name={product?.product_name}
-              video={product?.product_files[1]}
-              price={product?.price}
-              subCategory={product?.subcategory_name}
-            />
-          ) : (
-            ""
-          )
-        )}
+        {searchedProduct.length == 0
+          ? productList.map((product, index) =>
+              product.active && product?.product_type === "audio" ? (
+                <Audio
+                  key={index}
+                  id={product._id}
+                  name={product?.product_name}
+                  images={product?.product_files[0]}
+                  audio={product?.product_files[1]}
+                  price={product?.price}
+                  play={(audioRef) =>
+                    handlePlay(product?.product_files[1], audioRef)
+                  }
+                />
+              ) : product?.product_type === "font" ? (
+                <Font
+                  key={index}
+                  id={product._id}
+                  name={product?.product_name}
+                  images={product?.product_files[0]}
+                  font={product?.product_files[1]}
+                  price={product?.price}
+                />
+              ) : product?.product_type === "image" ||
+                product.product_type == "text" ||
+                product?.subcategory_name == "courses" ||
+                product.product_type == "pdf" ? (
+                <Image
+                  key={index}
+                  id={product._id}
+                  name={product?.product_name}
+                  images={product?.product_files[0]}
+                  price={product?.price}
+                />
+              ) : product?.product_type === "video" ? (
+                <Video
+                  key={index}
+                  id={product._id}
+                  name={product?.product_name}
+                  video={product?.product_files[1]}
+                  price={product?.price}
+                  subCategory={product?.subcategory_name}
+                />
+              ) : (
+                ""
+              )
+            )
+          : searchedProduct.map((product, index) =>
+              product.active && product?.product_type === "audio" ? (
+                <Audio
+                  key={index}
+                  id={product._id}
+                  name={product?.product_name}
+                  images={product?.product_files[0]}
+                  audio={product?.product_files[1]}
+                  price={product?.price}
+                  play={(audioRef) =>
+                    handlePlay(product?.product_files[1], audioRef)
+                  }
+                />
+              ) : product?.product_type === "font" ? (
+                <Font
+                  key={index}
+                  id={product._id}
+                  name={product?.product_name}
+                  images={product?.product_files[0]}
+                  font={product?.product_files[1]}
+                  price={product?.price}
+                />
+              ) : product?.product_type === "image" ||
+                product.product_type == "text" ||
+                product?.subcategory_name == "courses" ||
+                product.product_type == "pdf" ? (
+                <Image
+                  key={index}
+                  id={product._id}
+                  name={product?.product_name}
+                  images={product?.product_files[0]}
+                  price={product?.price}
+                />
+              ) : product?.product_type === "video" ? (
+                <Video
+                  key={index}
+                  id={product._id}
+                  name={product?.product_name}
+                  video={product?.product_files[1]}
+                  price={product?.price}
+                  subCategory={product?.subcategory_name}
+                />
+              ) : (
+                ""
+              )
+            )}
       </div>
       {addedMessage}
     </>

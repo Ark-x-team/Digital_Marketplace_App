@@ -12,9 +12,38 @@ const productStore = create((set) => ({
   totalPage: 0,
   loading: false,
 
+  // **************************** Search products ****************************
+  searchValue: "",
+  searchedProduct: [],
+  updateSearchValue: (e) => {
+    set({ searchValue: e.target.value });
+    const { searchValue } = productStore.getState();
+    console.log(searchValue);
+  },
+  getProductsBySearch: async () => {
+    try {
+      set({ loading: true, searchedProduct: [], productList: [] });
+      const { page, limit, searchValue } = productStore.getState();
+      const response = await axios.get(
+        `/products/search?search_query=${searchValue}&page=${page}&limit=${limit}`,
+        { withCredentials: true }
+      );
+      set({
+        searchedProduct: response.data.products,
+        loading: false,
+        productError: false,
+      });
+      const { searchedProduct } = productStore.getState();
+      console.log(searchedProduct);
+    } catch (error) {
+      set({ loading: false });
+      return Promise.reject(error);
+    }
+  },
+
   getProductsByCategory: async (category) => {
     try {
-      set({ loading: true, productList: [] });
+      set({ loading: true, productList: [], searchedProduct: [] });
       const { page, limit } = productStore.getState();
       const response = await axios.get(
         `/products-category?page=${page}&limit=${limit}&active=true&category_name=${
@@ -42,7 +71,7 @@ const productStore = create((set) => ({
 
   getProductsBySubcategory: async (subcategory) => {
     try {
-      set({ loading: true, productList: [] });
+      set({ loading: true, productList: [], searchedProduct: [] });
       const { page, limit } = productStore.getState();
       const response = await axios.get(
         `/products-subcategory?page=${page}&limit=${limit}0&active=true&subcategory_name=${subcategory}`,
@@ -60,33 +89,6 @@ const productStore = create((set) => ({
           productError: `Products list is empty`,
         });
       }
-      set({ loading: false });
-      return Promise.reject(error);
-    }
-  },
-
-  // **************************** Search products ****************************
-  searchValue: "",
-  updateSearchValue: (e) => {
-    set({ searchValue: e.target.value });
-    const { searchValue } = productStore.getState();
-    console.log(searchValue);
-  },
-  getProductsBySearch: async () => {
-    try {
-      set({ loading: true, productList: [] });
-      const { page, limit, searchValue } = productStore.getState();
-      const response = await axios.get(
-        `/products/search?search_query=${searchValue}&page=${page}&limit=${limit}`,
-        { withCredentials: true }
-      );
-      set({
-        productList: response.data.products,
-        loading: false,
-        productError: false,
-      });
-      console.log(response);
-    } catch (error) {
       set({ loading: false });
       return Promise.reject(error);
     }
@@ -122,10 +124,9 @@ const productStore = create((set) => ({
   getProduct: async () => {
     try {
       const { productId } = productStore.getState();
-      const response = await axios.get(
-        `/products/${productId}`,
-        { withCredentials: true }
-      );
+      const response = await axios.get(`/products/${productId}`, {
+        withCredentials: true,
+      });
       set({
         productData: response.data.product,
       });

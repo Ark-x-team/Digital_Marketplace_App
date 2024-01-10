@@ -364,14 +364,13 @@ const searchProduct = async (req, res) => {
                 $project: {
                     _id: 1,
                     product_name: 1,
-                    subcategory_id:"$subcategory._id",
-                    subcategory_name: "$subcategory.subcategory_name",
-                    product_files: 1,
-                    short_description: 1,
-                    long_description: 1,
+                    product_type: 1,
                     price: 1,
-                    discount_price: 1,
                     active: 1,
+                    category_name: "$category.category_name",
+                    subcategory_name: "$subcategory.subcategory_name",
+                    product_files: "$product_files",
+                    created_at: { $toDate: "$created_at" }
                 },
               },
             ]).limit(limit).skip(skip).sort({ 'product_name': -1 });
