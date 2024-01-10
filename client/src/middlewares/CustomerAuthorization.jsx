@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import Cookies from "js-cookie";
 import Progress from "../components/Progress";
 import CustomerRoutes from "../routes/customer/CustomerRoutes";
-import customerAuthStore from "../store/authentication/customerAuthStore";
 import { useNavigate } from "react-router-dom";
+import customerAuthStore from "../store/authentication/customerAuthStore";
 
 // Component for handling customer authorization
 function CustomerAuthorization(props) {
