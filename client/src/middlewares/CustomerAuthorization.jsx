@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import Progress from "../components/Progress";
 import CustomerRoutes from "../routes/customer/CustomerRoutes";
 import { useNavigate } from "react-router-dom";
-import customerAuthStore from "../store/authentication/customerAuthStore";
+import customerAuthStore from "../store/authentication/CustomerAuthStore";
 
 // Component for handling customer authorization
 function CustomerAuthorization(props) {
