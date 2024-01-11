@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
 
-const ManagerDashboardHome = lazy(() => import("../../user/manager/Dashboard"));
+const ManagerDashboardHome = lazy(() => import("../../User/Manager/Dashboard"));
 
 function ManagerRoutes() {
   return (

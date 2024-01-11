@@ -3,15 +3,15 @@ import { lazy } from "react";
 
 // Lazy-loaded components
 const ClientNavbar = lazy(() =>
-  import("../../customer/components/navbar/Navbar")
+  import("../../Customer/Components/Navbar/Navbar")
 );
 const AccountMenu = lazy(() =>
-  import("../../customer/pages/account/menu/Menu")
+  import("../../Customer/Pages/Account/Menu/Menu")
 );
-import Profile from "../../customer/pages/account/Profile";
-import Cart from "../../customer/pages/account/Cart";
-import Inbox from "../../customer/pages/account/Inbox";
-import Orders from "../../customer/pages/account/Orders";
+import Profile from "../../Customer/Pages/Account/Profile";
+import Cart from "../../Customer/Pages/Account/Cart";
+import Inbox from "../../Customer/Pages/Account/Inbox";
+import Orders from "../../Customer/Pages/Account/Orders";
 
 // Component for handling routes for the customer's account
 function CustomerRoutes() {

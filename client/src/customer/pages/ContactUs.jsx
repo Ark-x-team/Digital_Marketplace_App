@@ -1,4 +1,4 @@
-import Footer from "../components/Footer";
+import Footer from "../Components/Footer";
 import { Input, Textarea, Button } from "@nextui-org/react";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import { useTranslation } from "react-i18next";

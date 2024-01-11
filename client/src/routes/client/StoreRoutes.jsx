@@ -1,16 +1,16 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
-import Categories from "../../customer/pages/store/Categories";
-import SubCategories from "../../customer/pages/store/SubCategories";
-import Footer from "../../customer/components/Footer";
-import ProductsList from "../../customer/pages/store/ProductsList";
-import PaginationCursor from "../../customer/pages/store/Pagination";
+import Categories from "../../Customer/Pages/Store/Categories";
+import SubCategories from "../../Customer/Pages/Store/SubCategories";
+import Footer from "../../Customer/Components/Footer";
+import ProductsList from "../../Customer/Pages/Store/ProductsList";
+import PaginationCursor from "../../Customer/Pages/Store/Pagination";
 import { Progress } from "@nextui-org/react";
-import productStore from "../../store/products/ProductStore";
+import ProductStore from "../../Store/Products/ProductStore";
 
 // Lazy-loaded components
 const ClientNavbar = lazy(() =>
-  import("../../customer/components/navbar/Navbar")
+  import("../../Customer/Components/Navbar/Navbar")
 );
 
 // Store page component rendering categories, subcategories, products list, and pagination
@@ -28,7 +28,7 @@ const StorePage = () => (
 // Component for handling routes for the store
 function StoreRoutes() {
   // Destructuring values from productStore
-  const { loading } = productStore();
+  const { loading } = ProductStore();
 
   return (
     <>

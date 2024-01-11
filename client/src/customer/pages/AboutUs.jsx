@@ -1,4 +1,4 @@
-import Footer from "../components/Footer";
+import Footer from "../Components/Footer";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useTranslation } from "react-i18next";
 

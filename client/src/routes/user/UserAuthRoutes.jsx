@@ -1,12 +1,12 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { lazy } from "react";
 
-const UserLogin = lazy(() => import("../../user/authentication/Login"));
+const UserLogin = lazy(() => import("../../User/Authentication/Login"));
 const UserResetPasswordVerify = lazy(() =>
-  import("../../user/authentication/ResetPasswordVerify")
+  import("../../User/Authentication/ResetPasswordVerify")
 );
 const UserResetPassword = lazy(() =>
-  import("../../user/authentication/ResetPassword")
+  import("../../User/Authentication/ResetPassword")
 );
 
 function UserAuthRoutes() {

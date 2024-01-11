@@ -11,17 +11,17 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import ShoppingCartCheckoutRoundedIcon from "@mui/icons-material/ShoppingCartCheckoutRounded";
 import { Divider } from "@nextui-org/react";
 import { useEffect } from "react";
-import customerAuthStore from "../../store/authentication/CustomerAuthStore";
-import cartStore from "../../store/CartStore";
+import CustomerAuthStore from "../../Store/Authentication/CustomerAuthStore";
+import CartStore from "../../Store/CartStore";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import mainStore from "../../store/MainStore";
+import MainStore from "../../Store/MainStore";
 
 // React functional component for the cart dropdown
 function CartDropdown() {
   // Destructuring required functions and objects from hooks and stores
-  const { checkAuth } = customerAuthStore();
-  const { getCartItems, cartList, bill, removeFromCart } = cartStore();
+  const { checkAuth } = CustomerAuthStore();
+  const { getCartItems, cartList, bill, removeFromCart } = CartStore();
   const { t } = useTranslation();
 
   // Fetching cart items on component mount
@@ -29,7 +29,7 @@ function CartDropdown() {
     const fetchData = async () => {
       try {
         await checkAuth();
-        let { customerId } = customerAuthStore.getState();
+        let { customerId } = CustomerAuthStore.getState();
         await getCartItems(customerId);
       } catch (error) {
         console.error(error);
@@ -40,7 +40,7 @@ function CartDropdown() {
   }, [checkAuth, getCartItems]);
 
   // Destructuring required function from main store for closing navigation
-  const { closeNav } = mainStore();
+  const { closeNav } = MainStore();
 
   // Cart content JSX with mapped cart items and checkout details
   const cart = (
@@ -57,7 +57,7 @@ function CartDropdown() {
                 onClick={() =>
                   removeFromCart(
                     item.itemId,
-                    customerAuthStore.getState().customerId
+                    CustomerAuthStore.getState().customerId
                   )
                 }
                 variant="light"

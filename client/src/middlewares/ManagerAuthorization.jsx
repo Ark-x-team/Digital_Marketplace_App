@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Progress from "../components/Progress";
-import userAuthStore from "../store/authentication/UserAuthStore";
+import Progress from "../Components/Progress";
+import userAuthStore from "../Store/Authentication/UserAuthStore";
 
 // Component for handling manager authorization
 function ManagerAuthorization(props) {

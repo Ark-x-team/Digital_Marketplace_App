@@ -11,7 +11,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import ReCAPTCHA from "react-google-recaptcha";
 import { GoogleLogin } from "@react-oauth/google";
 import { useTranslation } from "react-i18next";
-import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
+import CustomerAuthStore from "../../../Store/Authentication/CustomerAuthStore";
 
 // Login component
 function Login() {
@@ -28,7 +28,7 @@ function Login() {
     loginValidation,
     setRecaptchaValue,
     googleLogin,
-  } = customerAuthStore();
+  } = CustomerAuthStore();
 
   // React Router navigation
   const navigate = useNavigate();

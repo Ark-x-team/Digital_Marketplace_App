@@ -1,11 +1,11 @@
 // Import necessary dependencies and components
 import { useEffect } from "react";
-import Footer from "../../components/Footer";
-import Features from "./features/Features";
-import Header from "./header/Header";
-import Reviews from "./reviews/Reviews";
+import Footer from "../../Components/Footer";
+import Features from "./Features/Features";
+import Header from "./Header/Header";
+import Reviews from "./Reviews/Reviews";
 import Overview from "./Overview";
-import QuickLinks from "../../components/quick-links/QuickLinks";
+import QuickLinks from "../../Components/Quick-links/QuickLinks";
 import AOS from "aos"; // Import AOS (Animate On Scroll) library
 import "aos/dist/aos.css"; // Import AOS styles
 

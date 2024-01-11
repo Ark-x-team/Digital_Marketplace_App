@@ -1,4 +1,4 @@
-import Navbar from "../../components/navbar/Navbar";
+import Navbar from "../../Components/Navbar/Navbar";
 import { Input, Button, Progress, Textarea } from "@nextui-org/react";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
@@ -7,7 +7,7 @@ import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import userAuthStore from "../../store/authentication/UserAuthStore";
+import UserAuthStore from "../../Store/Authentication/UserAuthStore";
 
 function UserLogin() {
   const [isVisible, setIsVisible] = useState(false);
@@ -21,7 +21,7 @@ function UserLogin() {
     loginValidation,
     loginError,
     setRecaptchaValue,
-  } = userAuthStore();
+  } = UserAuthStore();
 
   const recaptchaRef = useRef(null);
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ function UserLogin() {
 
     try {
       await login();
-      const { role } = userAuthStore.getState();
+      const { role } = UserAuthStore.getState();
       navigate(`/${role}`);
       setLoading(false);
     } catch (error) {

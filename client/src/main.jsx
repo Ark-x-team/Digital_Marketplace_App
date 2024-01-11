@@ -1,6 +1,6 @@
 import React from "react";
 import App from "./App";
-import "./style/index.css";
+import "./Style/index.css";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";

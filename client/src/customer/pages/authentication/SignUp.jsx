@@ -10,7 +10,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
 import { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
+import CustomerAuthStore from "../../../Store/Authentication/CustomerAuthStore";
 import { useTranslation } from "react-i18next";
 
 // SignUp component
@@ -34,7 +34,7 @@ function SignUp() {
     signUp,
     signUpSuccess,
     setRecaptchaValue,
-  } = customerAuthStore();
+  } = CustomerAuthStore();
 
   // Ref for ReCAPTCHA
   const recaptchaRef = useRef(null);

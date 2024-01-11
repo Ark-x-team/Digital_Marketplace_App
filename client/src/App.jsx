@@ -1,34 +1,34 @@
-import "./style/App.css";
-import "./style/App.scss";
+import "./Style/App.css";
+import "./Style/App.scss";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
-import Progress from "./components/Progress";
+import Progress from "./Components/Progress";
 
 // Middlewares
 import CustomerAuthorization from "./middlewares/CustomerAuthorization";
 import UserAuthorization from "./middlewares/UserAuthorization";
-import PaymentRoutes from "./routes/customer/PaymentRoutes";
+import PaymentRoutes from "./Routes/Customer/PaymentRoutes";
 
 // Client
-const ClientRoutes = lazy(() => import("./routes/client/ClientRoutes"));
+const ClientRoutes = lazy(() => import("./Routes/Client/ClientRoutes"));
 
 // Store
-const StoreRoutes = lazy(() => import("./routes/client/StoreRoutes"));
+const StoreRoutes = lazy(() => import("./Routes/Client/StoreRoutes"));
 
 // Customer
-const CustomerRoutes = lazy(() => import("./routes/customer/CustomerRoutes"));
+const CustomerRoutes = lazy(() => import("./Routes/Customer/CustomerRoutes"));
 
 // User Auth
-const UserAuthRoutes = lazy(() => import("./routes/user/UserAuthRoutes"));
+const UserAuthRoutes = lazy(() => import("./Routes/User/UserAuthRoutes"));
 
 // Admin
-const AdminRoutes = lazy(() => import("./routes/user/AdminRoutes"));
+const AdminRoutes = lazy(() => import("./Routes/User/AdminRoutes"));
 
 // Manager
-const ManagerRoutes = lazy(() => import("./routes/user/ManagerRoutes"));
+const ManagerRoutes = lazy(() => import("./Routes/User/ManagerRoutes"));
 
 // Assistant
-const AssistantRoutes = lazy(() => import("./routes/user/AssistantRoutes"));
+const AssistantRoutes = lazy(() => import("./Routes/User/AssistantRoutes"));
 
 function App() {
   const { pathname } = useLocation();

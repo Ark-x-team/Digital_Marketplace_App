@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import Progress from "../components/Progress";
+import Progress from "../Components/Progress";
 import { useNavigate } from "react-router-dom";
-import userAuthStore from "../store/authentication/UserAuthStore";
+import userAuthStore from "../Store/Authentication/UserAuthStore";
 
 // Component for handling user authorization
 function UserAuthorization(props) {

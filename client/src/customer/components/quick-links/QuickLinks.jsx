@@ -2,7 +2,7 @@
 import { Tooltip, Button } from "@nextui-org/react";
 import { For } from "million/react";
 import PropTypes from "prop-types";
-import quickLinksData from "./QuickLinksData"; // Assuming there's a file with quick links data
+import QuickLinksData from "./QuickLinksData"; // Assuming there's a file with quick links data
 import { useTranslation } from "react-i18next";
 
 // React functional component for displaying quick links with tooltips
@@ -57,8 +57,8 @@ function QuickLinks() {
   // Rendering the QuickLinks component with a list of quick links
   return (
     <ul className="z-20 hidden lg:flex flex-col justify-end px-6 xl:px-10 py-8 xl:py-12 gap-4 fixed top-1/3 right-4 bg-main-navy hover:-translate-y-2 duration-300">
-      {/* Mapping through quickLinksData to generate QuickLink components */}
-      <For each={quickLinksData}>
+      {/* Mapping through QuickLinksData to generate QuickLink components */}
+      <For each={QuickLinksData}>
         {(item, index) => (
           <QuickLink
             key={index}

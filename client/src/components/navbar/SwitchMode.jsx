@@ -2,13 +2,13 @@
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import { useEffect } from "react";
-import mainStore from "../../store/MainStore";
+import MainStore from "../../Store/MainStore";
 import { Button } from "@nextui-org/react";
 
 // React functional component for switching between light and dark modes
 function SwitchMode() {
   // Destructuring required functions and objects from main store
-  const { mode, handleSwitchMode } = mainStore();
+  const { mode, handleSwitchMode } = MainStore();
 
   // useEffect to add or remove "dark" class from the HTML element based on the mode
   useEffect(() => {

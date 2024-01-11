@@ -17,7 +17,7 @@ const AccountMenu = block(() => {
   // Effect to update the active menu item based on the current location
   useEffect(() => {
     setCurrentItem(
-      accountMenuData.findIndex(
+      AccountMenuData.findIndex(
         (item) => `/account/${item.url}` === location.pathname
       )
     );
@@ -36,22 +36,20 @@ const AccountMenu = block(() => {
       aria-label="Tabs variants"
       className="account-menu"
     >
-      {accountMenuData
-        .filter((item) => !item.replace)
-        .map((item, index) => (
-          <Tab
-            key={index}
-            as={Link}
-            to={item.url}
-            title={
-              <div className="flex items-center space-x-2">
-                {item.icon}
-                <span>{t(item.title)}</span>
-              </div>
-            }
-            className="justify-start"
-          />
-        ))}
+      {AccountMenuData.filter((item) => !item.replace).map((item, index) => (
+        <Tab
+          key={index}
+          as={Link}
+          to={item.url}
+          title={
+            <div className="flex items-center space-x-2">
+              {item.icon}
+              <span>{t(item.title)}</span>
+            </div>
+          }
+          className="justify-start"
+        />
+      ))}
     </Tabs>
   );
 

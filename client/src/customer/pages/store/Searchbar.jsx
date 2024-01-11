@@ -1,6 +1,6 @@
 import { Input } from "@nextui-org/react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import productStore from "../../../store/products/ProductStore";
+import productStore from "../../../Store/Products/ProductStore";
 import { useTranslation } from "react-i18next";
 
 // Functional component for the search bar

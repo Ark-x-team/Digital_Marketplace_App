@@ -1,5 +1,5 @@
 // Array containing navigation data for the client navbar
-const navData = [
+const NavData = [
   {
     title: "store",
     url: "/store",
@@ -18,5 +18,5 @@ const navData = [
   },
 ];
 
-// Exporting the navData array as the default export
-export default navData;
+// Exporting the NavData array as the default export
+export default NavData;

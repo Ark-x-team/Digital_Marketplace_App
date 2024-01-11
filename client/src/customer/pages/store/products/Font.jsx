@@ -3,10 +3,10 @@ import { Button } from "@nextui-org/react";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import PropTypes from "prop-types";
 import { Modal, ModalContent, useDisclosure } from "@nextui-org/react";
-import FontModal from "./modals/FontModal"; // Importing the FontModal component
-import productStore from "../../../../store/products/ProductStore";
-import cartStore from "../../../../store/CartStore";
-import customerAuthStore from "../../../../store/authentication/CustomerAuthStore";
+import FontModal from "./Modals/FontModal"; // Importing the FontModal component
+import productStore from "../../../../Store/Products/ProductStore";
+import cartStore from "../../../../Store/CartStore";
+import customerAuthStore from "../../../../Store/Authentication/CustomerAuthStore";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";

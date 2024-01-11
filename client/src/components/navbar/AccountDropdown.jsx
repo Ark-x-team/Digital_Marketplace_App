@@ -1,6 +1,5 @@
 // Importing required icons and components from Material-UI and other libraries
 import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRounded";
-import accountMenuData from "../../customer/pages/account/menu/MenuData";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import {
   Avatar,
@@ -10,15 +9,16 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import { Link, useNavigate } from "react-router-dom";
-import customerAuthStore from "../../store/authentication/CustomerAuthStore";
+import AccountMenuData from "../../Customer/Pages/Account/Menu/MenuData";
 import { googleLogout } from "@react-oauth/google";
 import { useTranslation } from "react-i18next";
-import mainStore from "../../store/MainStore";
+import CustomerAuthStore from "../../Store/Authentication/CustomerAuthStore";
+import MainStore from "../../Store/MainStore";
 
 // React functional component for the account dropdown
 function AccountDropdown() {
   // Destructuring required functions and objects from hooks and stores
-  const { logout, googleLoggedIn } = customerAuthStore();
+  const { logout, googleLoggedIn } = CustomerAuthStore();
   const { t } = useTranslation(); // Initialize the useTranslation hook
   const navigate = useNavigate();
 
@@ -42,12 +42,11 @@ function AccountDropdown() {
   };
 
   // Destructuring required function from main store for closing navigation
-  const { closeNav } = mainStore();
+  const { closeNav } = MainStore();
 
-  // Creating the dropdown menu items based on accountMenuData
-  const dropdownMenu = accountMenuData
-    .filter((item) => item.priority)
-    .map((item, index) => (
+  // Creating the dropdown menu items based on AccountMenuData
+  const dropdownMenu = AccountMenuData.filter((item) => item.priority).map(
+    (item, index) => (
       <DropdownItem
         to={item.url}
         as={Link}
@@ -58,7 +57,8 @@ function AccountDropdown() {
       >
         {t(item.title)}
       </DropdownItem>
-    ));
+    )
+  );
 
   // Rendering the account dropdown component
   return (
@@ -79,7 +79,7 @@ function AccountDropdown() {
           {t("my account")}
         </DropdownItem>
 
-        {/* Additional dropdown menu items based on accountMenuData */}
+        {/* Additional dropdown menu items based on AccountMenuData */}
         {dropdownMenu}
 
         {/* Logout dropdown item with conditional styling */}

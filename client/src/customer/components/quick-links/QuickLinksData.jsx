@@ -4,7 +4,7 @@ import AutoFixHighRoundedIcon from "@mui/icons-material/AutoFixHighRounded";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 
 // Array containing data for quick links, each with a title and an associated icon
-const quickLinksData = [
+const QuickLinksData = [
   {
     title: "reviews",
     icon: <SpeakerNotesRoundedIcon />,
@@ -19,5 +19,5 @@ const quickLinksData = [
   },
 ];
 
-// Exporting the quickLinksData array as the default export
-export default quickLinksData;
+// Exporting the QuickLinksData array as the default export
+export default QuickLinksData;

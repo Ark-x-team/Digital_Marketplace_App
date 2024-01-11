@@ -1,13 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import productStore from "../../../store/products/ProductStore";
-import Image from "./products/Image";
-import Audio from "./products/Audio";
-import Font from "./products/Font";
-import Video from "./products/Video";
+import productStore from "../../../Store/Products/ProductStore";
+import Image from "./Products/Image";
+import Audio from "./Products/Audio";
+import Font from "./Products/Font";
+import Video from "./Products/Video";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import cartStore from "../../../store/CartStore";
+import cartStore from "../../../Store/CartStore";
 
 function ProductsList() {
   // Destructuring values from the productStore

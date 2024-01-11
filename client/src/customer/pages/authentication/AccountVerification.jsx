@@ -2,13 +2,13 @@
 import { Spinner, Textarea } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
+import CustomerAuthStore from "../../../Store/Authentication/CustomerAuthStore";
 import { useTranslation } from "react-i18next";
 
 // Defining the EmailVerification component
 function EmailVerification() {
-  // Extracting necessary functions and state from customerAuthStore
-  const { AccountVerification } = customerAuthStore();
+  // Extracting necessary functions and state from CustomerAuthStore
+  const { AccountVerification } = CustomerAuthStore();
 
   // State to manage verification error
   const [verificationError, setVerificationError] = useState(null);

@@ -2,15 +2,15 @@
 import { block } from "million/react";
 import { Avatar, Spinner } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
+import CustomerAuthStore from "../../../Store/Authentication/CustomerAuthStore";
 
 // Defining the Profile component as a block
 const Profile = block(() => {
   // State for loading during profile data fetching
   const [loading, setLoading] = useState(false);
 
-  // Extracting functions and state from customerAuthStore
-  const { checkAuth, customer } = customerAuthStore();
+  // Extracting functions and state from CustomerAuthStore
+  const { checkAuth, customer } = CustomerAuthStore();
 
   // Fetching customer data when the component mounts
   useEffect(() => {

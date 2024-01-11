@@ -9,14 +9,14 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
-import mainStore from "../../store/MainStore";
+import MainStore from "../../Store/MainStore";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 
 // React functional component for language switching
 function SwitchLang() {
   // Destructuring required functions and objects from main store
-  const { selectedLang, languages, handleLangSwitch } = mainStore();
+  const { selectedLang, languages, handleLangSwitch } = MainStore();
 
   // Getting the current language from cookies
   const currentLang = Cookies.get("lang").substring(0, 2);

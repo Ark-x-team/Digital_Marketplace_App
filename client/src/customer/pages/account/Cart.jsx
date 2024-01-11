@@ -4,23 +4,23 @@ import { Button, Divider, Spinner } from "@nextui-org/react";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import ShoppingCartCheckoutRoundedIcon from "@mui/icons-material/ShoppingCartCheckoutRounded";
 import { useEffect, useState } from "react";
-import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
-import cartStore from "../../../store/CartStore";
+import CustomerAuthStore from "../../../Store/Authentication/CustomerAuthStore";
+import CartStore from "../../../Store/CartStore";
 import { useTranslation } from "react-i18next";
 
 // Defining the Cart component as a block
 const Cart = block(() => {
-  // Extracting functions and state from customerAuthStore and cartStore
-  const { checkAuth, customerId } = customerAuthStore();
+  // Extracting functions and state from CustomerAuthStore and CartStore
+  const { checkAuth, customerId } = CustomerAuthStore();
   const { getCartItems, cartList, bill, removeFromCart, checkout } =
-    cartStore();
+    CartStore();
 
   // Fetching cart items when the component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
         await checkAuth();
-        let { customerId } = customerAuthStore.getState();
+        let { customerId } = CustomerAuthStore.getState();
         await getCartItems(customerId);
       } catch (error) {
         console.error(error);
@@ -38,7 +38,7 @@ const Cart = block(() => {
     try {
       await checkout(id);
       setLoading(false);
-      let { paymentUrl } = cartStore.getState();
+      let { paymentUrl } = CartStore.getState();
       window.location.replace(paymentUrl);
     } catch (error) {
       setLoading(false);
@@ -79,7 +79,7 @@ const Cart = block(() => {
                         onClick={() =>
                           removeFromCart(
                             item.itemId,
-                            customerAuthStore.getState().customerId
+                            CustomerAuthStore.getState().customerId
                           )
                         }
                         variant="light"

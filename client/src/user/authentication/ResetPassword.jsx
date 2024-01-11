@@ -7,7 +7,7 @@ import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Navbar from "../../components/navbar/Navbar";
+import Navbar from "../../Components/Navbar/Navbar";
 
 function UserResetPassword() {
   const [passwordUpdated, setPasswordUpdated] = useState(false);

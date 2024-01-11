@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
-import Progress from "../components/Progress";
-import CustomerRoutes from "../routes/customer/CustomerRoutes";
+import Progress from "../Components/Progress";
+import CustomerRoutes from "../Routes/Customer/CustomerRoutes";
 import { useNavigate } from "react-router-dom";
-import customerAuthStore from "../store/authentication/CustomerAuthStore";
+import customerAuthStore from "../Store/Authentication/CustomerAuthStore";
 
 // Component for handling customer authorization
 function CustomerAuthorization(props) {

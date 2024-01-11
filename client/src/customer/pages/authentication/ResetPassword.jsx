@@ -8,7 +8,7 @@ import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
-import customerAuthStore from "../../../store/authentication/CustomerAuthStore";
+import CustomerAuthStore from "../../../Store/Authentication/CustomerAuthStore";
 import { useTranslation } from "react-i18next";
 
 // ResetPassword component
@@ -27,7 +27,7 @@ function ResetPassword() {
     confirmPasswordValidation,
     resetPasswordValidation,
     resetPasswordError,
-  } = customerAuthStore();
+  } = CustomerAuthStore();
 
   // Function to toggle password visibility
   const toggleVisibility = () => setIsVisible(!isVisible);

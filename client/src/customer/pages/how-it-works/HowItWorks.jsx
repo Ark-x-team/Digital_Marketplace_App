@@ -1,7 +1,7 @@
 // Import necessary dependencies and components
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import Footer from "../../components/Footer";
-import howItWorksData from "./HowItWorksData";
+import Footer from "../../Components/Footer";
+import HowItWorksData from "./HowItWorksData";
 import { useTranslation } from "react-i18next";
 
 // Define the functional component HowItWorks
@@ -9,10 +9,10 @@ function HowItWorks() {
   // Initialize the translation hook
   const { t } = useTranslation();
 
-  // Create the steps component using the howItWorksData array
+  // Create the steps component using the HowItWorksData array
   const steps = (
     <ul className="flex flex-col gap-20 lg:gap-24">
-      {howItWorksData.map((item, index) => (
+      {HowItWorksData.map((item, index) => (
         <li
           key={index}
           className="flex flex-col lg:flex-row lg:justify-evenly items-center even:lg:flex-row-reverse gap-8 md:gap-14 lg:gap-28"
@@ -53,9 +53,7 @@ function HowItWorks() {
   return (
     <>
       {/* Hero section with cover image */}
-      <div
-        className="lg relative after:absolute after:w-full after:h-full after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0"
-      >
+      <div className="lg relative after:absolute after:w-full after:h-full after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
         <div className="h-64 md:h-80 lg:h-96 w-full relative after:absolute after:w-full after:h-full after:bg-gradient-to-t after:from-white dark:after:from-black after:to-transparent after:left-0 after:top-0">
           {/* Lazy-loaded cover image */}
           <LazyLoadImage

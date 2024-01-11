@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import SwitchMode from "./SwitchMode";
 import SwitchLang from "./SwitchLang";
 import AccountDropdown from "./AccountDropdown";
-import mainStore from "../../store/MainStore";
-import customerAuthStore from "../../store/authentication/CustomerAuthStore";
+import MainStore from "../../Store/MainStore";
+import CustomerAuthStore from "../../Store/Authentication/CustomerAuthStore";
 
 import PropTypes from "prop-types";
 import { memo } from "react";
@@ -14,7 +14,7 @@ import CartDropdown from "./CartDropdown";
 // React functional component for the Navbar
 function Navbar({ menuItems, endButton }) {
   // Destructuring required functions and objects from main store
-  const { navOpen, handleNav, handleNavButton } = mainStore();
+  const { navOpen, handleNav, handleNavButton } = MainStore();
 
   // useEffect to handle overflow hidden when the navigation is open
   useEffect(() => {
@@ -24,7 +24,7 @@ function Navbar({ menuItems, endButton }) {
   }, [navOpen]);
 
   // Destructuring required function from customer authentication store
-  const { loggedIn } = customerAuthStore();
+  const { loggedIn } = CustomerAuthStore();
 
   // JSX for the navigation menu
   const navMenu = (

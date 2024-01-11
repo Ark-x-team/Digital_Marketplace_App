@@ -3,10 +3,10 @@ import { lazy } from "react";
 
 // Lazy-loaded components
 const ClientNavbar = lazy(() =>
-  import("../../customer/components/navbar/Navbar")
+  import("../../Customer/Components/Navbar/Navbar")
 );
-import PaymentSuccess from "../../customer/pages/payment/PaymentSuccess";
-import PaymentFailed from "../../customer/pages/payment/PaymentFailed";
+import PaymentSuccess from "../../Customer/Pages/Payment/PaymentSuccess";
+import PaymentFailed from "../../Customer/Pages/Payment/PaymentFailed";
 
 // Component for handling routes related to payment
 function PaymentRoutes() {

@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
 
 const AssistantDashboardHome = lazy(() =>
-  import("../../user/assistant/Dashboard")
+  import("../../User/Assistant/Dashboard")
 );
 
 function AssistantRoutes() {

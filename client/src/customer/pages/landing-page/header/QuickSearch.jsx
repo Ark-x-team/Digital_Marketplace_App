@@ -11,7 +11,7 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import categoriesStore from "../../../../store/CategoriesStore";
+import categoriesStore from "../../../../Store/CategoriesStore";
 import { useTranslation } from "react-i18next";
 
 // Define the QuickSearch component

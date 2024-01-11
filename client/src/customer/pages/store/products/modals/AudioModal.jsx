@@ -1,13 +1,13 @@
 // Importing necessary components and libraries
 import { useEffect, useState } from "react";
-import productStore from "../../../../../store/products/ProductStore";
+import productStore from "../../../../../Store/Products/ProductStore";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { Button } from "@nextui-org/react";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { useTranslation } from "react-i18next";
-import cartStore from "../../../../../store/CartStore";
-import customerAuthStore from "../../../../../store/authentication/CustomerAuthStore";
+import cartStore from "../../../../../Store/CartStore";
+import customerAuthStore from "../../../../../Store/Authentication/CustomerAuthStore";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 

@@ -1,31 +1,31 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
-import Error from "../../components/Error";
-import PaymentSuccess from "../../customer/pages/payment/PaymentSuccess";
-import PaymentFailed from "../../customer/pages/payment/PaymentFailed";
+import Error from "../../Components/Error";
+import PaymentSuccess from "../../Customer/Pages/Payment/PaymentSuccess";
+import PaymentFailed from "../../Customer/Pages/Payment/PaymentFailed";
 
 // Lazy-loaded components
 const ClientNavbar = lazy(() =>
-  import("../../customer/components/navbar/Navbar")
+  import("../../Customer/Components/Navbar/Navbar")
 );
 const LandingPage = lazy(() =>
-  import("../../customer/pages/landing-page/LandingPage")
+  import("../../Customer/Pages/Landing-page/LandingPage")
 );
 const HowItWorks = lazy(() =>
-  import("../../customer/pages/how-it-works/HowItWorks")
+  import("../../Customer/Pages/How-it-works/HowItWorks")
 );
-const AboutUs = lazy(() => import("../../customer/pages/AboutUs"));
-const ContactUs = lazy(() => import("../../customer/pages/ContactUs"));
-const SignUp = lazy(() => import("../../customer/pages/authentication/SignUp"));
+const AboutUs = lazy(() => import("../../Customer/Pages/AboutUs"));
+const ContactUs = lazy(() => import("../../Customer/Pages/ContactUs"));
+const SignUp = lazy(() => import("../../Customer/Pages/Authentication/SignUp"));
 const AccountVerification = lazy(() =>
-  import("../../customer/pages/authentication/AccountVerification")
+  import("../../Customer/Pages/Authentication/AccountVerification")
 );
-const Login = lazy(() => import("../../customer/pages/authentication/Login"));
+const Login = lazy(() => import("../../Customer/Pages/Authentication/Login"));
 const ResetPassword = lazy(() =>
-  import("../../customer/pages/authentication/ResetPassword")
+  import("../../Customer/Pages/Authentication/ResetPassword")
 );
 const ResetPasswordVerification = lazy(() =>
-  import("../../customer/pages/authentication/ResetPasswordVerification")
+  import("../../Customer/Pages/Authentication/ResetPasswordVerification")
 );
 
 // Component for handling routes for the customer side

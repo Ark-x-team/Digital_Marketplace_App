@@ -1,17 +1,17 @@
 // Importing React hooks, components, and icons from libraries
 import { useEffect, useState } from "react";
-import Navbar from "../../../components/navbar/Navbar";
+import Navbar from "../../../Components/Navbar/Navbar";
 import { Button } from "@nextui-org/react";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
-import mainStore from "../../../store/MainStore";
+import MainStore from "../../../Store/MainStore";
 import { Link, useLocation } from "react-router-dom";
-import navData from "./NavData"; // Assuming there is a file with navigation data
+import NavData from "./NavData"; // Assuming there is a file with navigation data
 import { useTranslation } from "react-i18next";
 
 // React functional component for the client-specific navbar
 function ClientNavbar() {
   // Destructuring required functions and objects from main store
-  const { closeNav } = mainStore();
+  const { closeNav } = MainStore();
   const { t } = useTranslation();
 
   // Using React Router's useLocation to get the current pathname
@@ -24,7 +24,7 @@ function ClientNavbar() {
   }, [location.pathname]);
 
   // Generating menu items based on the navigation data
-  const menuItems = navData.map((item, index) => (
+  const menuItems = NavData.map((item, index) => (
     <Button
       key={index}
       as={Link}

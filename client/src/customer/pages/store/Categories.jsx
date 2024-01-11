@@ -2,9 +2,9 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import categoriesStore from "../../../store/CategoriesStore";
+import categoriesStore from "../../../Store/CategoriesStore";
 import { ScrollShadow } from "@nextui-org/react";
-import productStore from "../../../store/products/ProductStore";
+import productStore from "../../../Store/Products/ProductStore";
 import { useTranslation } from "react-i18next";
 
 // Functional component for displaying categories

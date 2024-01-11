@@ -6,10 +6,10 @@ import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
 import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { Modal, ModalContent, useDisclosure, Button } from "@nextui-org/react";
-import VideoModal from "./modals/VideoModal"; // Importing the VideoModal component
-import productStore from "../../../../store/products/ProductStore";
-import customerAuthStore from "../../../../store/authentication/CustomerAuthStore";
-import cartStore from "../../../../store/CartStore";
+import VideoModal from "./Modals/VideoModal"; // Importing the VideoModal component
+import productStore from "../../../../Store/Products/ProductStore";
+import customerAuthStore from "../../../../Store/Authentication/CustomerAuthStore";
+import cartStore from "../../../../Store/CartStore";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
