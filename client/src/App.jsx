@@ -1,5 +1,5 @@
-import "./Style/App.css";
-import "./Style/App.scss";
+import "./style/App.css";
+import "./style/App.scss";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
 import Progress from "./Components/Progress";
