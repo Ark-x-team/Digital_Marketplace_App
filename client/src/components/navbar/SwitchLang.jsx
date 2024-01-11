@@ -36,7 +36,7 @@ function SwitchLang() {
       onClick={() => {
         // Handling language switch on item click
         handleLangSwitch(item);
-        i18n.changeLanguage(item.lang.substring(0, 2));
+        i18n.changeLanguage(item.lang);
       }}
       startContent={
         <Avatar alt={`${item.lang} flag`} className="w-6 h-6" src={item.flag} />
