@@ -1,0 +1,74 @@
+import { Route, Routes } from "react-router-dom";
+import { lazy } from "react";
+import Categories from "../../Customer/Pages/Store/Categories";
+import SubCategories from "../../Customer/Pages/Store/SubCategories";
+import Footer from "../../Customer/Components/Footer";
+import ProductsList from "../../Customer/Pages/Store/ProductsList";
+import PaginationCursor from "../../Customer/Pages/Store/Pagination";
+import { Progress } from "@nextui-org/react";
+import ProductStore from "../../Store/Products/ProductStore";
+
+// Lazy-loaded components
+const ClientNavbar = lazy(() =>
+  import("../../Customer/Components/Navbar/Navbar")
+);
+
+// Store page component rendering categories, subcategories, products list, and pagination
+const StorePage = () => (
+  <>
+    <ul className="flex flex-col gap-5">
+      <Categories />
+      <SubCategories />
+    </ul>
+    <ProductsList />
+    <PaginationCursor />
+  </>
+);
+
+// Component for handling routes for the store
+function StoreRoutes() {
+  // Destructuring values from productStore
+  const { loading } = ProductStore();
+
+  return (
+    <>
+      {/* Display loading spinner when data is loading */}
+      {loading ? (
+        <Progress
+          style={{ zIndex: "9999" }}
+          size="sm"
+          isIndeterminate
+          aria-label="Loading..."
+          className="absolute top-0 left-0 w-full"
+        />
+      ) : (
+        ""
+      )}
+
+      {/* Navbar for the customer side */}
+      <ClientNavbar />
+
+      {/* Main store container */}
+      <div className="pt-24 store-container px-4">
+        <Routes>
+          {/* Default route: renders the StorePage component */}
+          <Route path="/" element={<StorePage />} />
+
+          {/* Dynamic route with a category parameter */}
+          <Route path="/:category" element={<StorePage />}>
+            {/* Dynamic route with a subcategory parameter */}
+            <Route path=":subcategory" element={<StorePage />} />
+
+            {/* Static route for 'all' category */}
+            <Route path="all" element={<ProductsList />} />
+          </Route>
+        </Routes>
+
+        {/* Footer for the store */}
+        <Footer />
+      </div>
+    </>
+  );
+}
+
+export default StoreRoutes;

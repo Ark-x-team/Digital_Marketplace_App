@@ -1,0 +1,57 @@
+import { create } from "zustand";
+import Cookies from "js-cookie";
+
+const MainStore = create((set) => ({
+  // ******************************* Navbar *******************************
+  navOpen: false,
+  handleNav: () => {
+    const { navOpen } = MainStore.getState();
+    set({ navOpen: !navOpen });
+  },
+  closeNav: () => {
+    set({ navOpen: false });
+  },
+  activeButton: "",
+  handleNavButton: (button) => {
+    const { closeNav } = MainStore.getState();
+    set({ activeButton: button });
+    closeNav();
+  },
+
+  // ************************** Dark & Light Mode **************************
+  mode: Cookies.get("appearance") || "dark",
+  cookieExpiration: { expires: 365 },
+  handleSwitchMode: () => {
+    const { mode, cookieExpiration } = MainStore.getState();
+    // Set the appearance mode in the cookie
+    const appearance = mode === "light" ? "dark" : "light";
+    Cookies.set("appearance", appearance, cookieExpiration);
+    set({ mode: appearance, navOpen: false });
+  },
+
+  // ******************************* languages *******************************
+  languages: [
+    {
+      lang: "english",
+      flag: "https://flagcdn.com/gb.svg",
+    },
+    {
+      lang: "français",
+      flag: "https://flagcdn.com/fr.svg",
+    },
+  ],
+  selectedLang: {
+    lang: Cookies.get("lang") || "english",
+    flag: Cookies.get("flag") || "https://flagcdn.com/gb.svg",
+  },
+  handleLangSwitch: (item) => {
+    const { cookieExpiration } = MainStore.getState();
+    // Set the selected language in the cookie
+    Cookies.set("lang", item.lang, cookieExpiration);
+    Cookies.set("flag", item.flag, cookieExpiration);
+
+    set({ selectedLang: item, navOpen: false });
+  },
+}));
+
+export default MainStore;
