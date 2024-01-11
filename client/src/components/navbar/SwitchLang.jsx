@@ -19,7 +19,7 @@ function SwitchLang() {
   const { selectedLang, languages, handleLangSwitch } = MainStore();
 
   // Getting the current language from cookies
-  const currentLang = Cookies.get("lang").substring(0, 2);
+  const currentLang = Cookies.get("lang");
 
   // useEffect to change the language on component mount
   useEffect(() => {
