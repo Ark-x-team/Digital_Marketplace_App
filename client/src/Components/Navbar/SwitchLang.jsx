@@ -19,7 +19,7 @@ function SwitchLang() {
   const { selectedLang, languages, handleLangSwitch } = MainStore();
 
   // Getting the current language from cookies
-  const currentLang = Cookies.get("lang");
+  const currentLang = Cookies.get("lang").substring(0, 2);
 
   // useEffect to change the language on component mount
   useEffect(() => {
@@ -36,7 +36,7 @@ function SwitchLang() {
       onClick={() => {
         // Handling language switch on item click
         handleLangSwitch(item);
-        i18n.changeLanguage(item.lang);
+        i18n.changeLanguage(item.lang.substring(0, 2));
       }}
       startContent={
         <Avatar alt={`${item.lang} flag`} className="w-6 h-6" src={item.flag} />
