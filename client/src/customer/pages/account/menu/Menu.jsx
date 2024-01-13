@@ -1,5 +1,5 @@
 // Importing necessary dependencies and components
-import accountMenuData from "./MenuData";
+import AccountMenuData from "./MenuData";
 import { ScrollShadow, Tabs, Tab } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
