@@ -60,7 +60,9 @@ const Cart = block(() => {
                   <div className="w-full flex items-center gap-6">
                     {/* Rendering product image */}
                     <img
-                      src={`http://localhost:8081/uploads/${item.files[0]}`}
+                      src={`${import.meta.env.VITE_SERVER_URL}/uploads/${
+                        item.files[0]
+                      }`}
                       alt="product image"
                       className="w-42 md:w-56 h-24 md:h-32 rounded-xl object-cover object-center"
                     />
