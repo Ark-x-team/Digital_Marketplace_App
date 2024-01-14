@@ -9,7 +9,7 @@ const CartStore = create((set) => ({
 
   getCartItems: async (id) => {
     try {
-      const response = await axios.get(`http://localhost:8081/cart/${id}`, {
+      const response = await axios.get(`/cart/${id}`, {
         headers: {
           "content-type": "application/json",
           Authorization: Cookies.get("token"),
@@ -33,7 +33,7 @@ const CartStore = create((set) => ({
   addToCart: async (itemId, customerId) => {
     try {
       const response = await axios.post(
-        `http://localhost:8081/cart/${customerId}`,
+        `/cart/${customerId}`,
         { itemId },
         {
           headers: {
@@ -57,17 +57,14 @@ const CartStore = create((set) => ({
 
   removeFromCart: async (itemId, customerId) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:8081/cart/${customerId}`,
-        {
-          data: { itemId },
-          headers: {
-            "content-type": "application/json",
-            Authorization: Cookies.get("token"),
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.delete(`/cart/${customerId}`, {
+        data: { itemId },
+        headers: {
+          "content-type": "application/json",
+          Authorization: Cookies.get("token"),
+        },
+        withCredentials: true,
+      });
       set({
         cartList: response.data.items,
         bill: response.data.bill,
@@ -87,7 +84,7 @@ const CartStore = create((set) => ({
         files.push(item.files.length === 1 ? item.files[0] : item.files[1])
       );
       const response = await axios.post(
-        "http://localhost:8081/download-product",
+        "/download-product",
         {
           filenames: files,
         },
@@ -131,7 +128,7 @@ const CartStore = create((set) => ({
     const { transformCartData, cartList } = CartStore.getState();
     try {
       const response = await axios.post(
-        "http://localhost:8081/create-checkout-session",
+        "/create-checkout-session",
         transformCartData(customerId, cartList),
         {
           headers: {
