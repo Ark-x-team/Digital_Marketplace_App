@@ -18,7 +18,7 @@ This web application serves as a versatile platform for digital products across 
 
 ## Key Features ✨
 
-- 🎨 **User Friendly Interface:** The platform is designed with a user-friendly interface, powered by [Tailwind CSS](https://tailwindcss.com/), and enhanced with [Next.js UI](https://nextui.org/), making digital assets easily accessible.
+- 🎨 **User Friendly Interface:** The platform is designed with a user-friendly interface, powered by [Tailwind CSS](https://tailwindcss.com/), and enhanced with [Next UI](https://nextui.org/), making digital assets easily accessible.
 - 💳 **Secure Purchases:** Proceed to purchase for instant access to downloadable content with our secure transaction processes powered by [Stripe](https://stripe.com/), for testing purposes, you can use the credit card number 4242 4242 4242 4242.
 - 🌐 **Multilingual Support:** French and English Translation: Choose your preferred language for a seamless browsing experience. Utilizing the power of `react-i18next`, our content is dynamically translated to provide you with a personalized experience in the language of your choice.
 - 🌙 **Dark Mode:** Toggle between light and dark modes for a personalized viewing experience.
@@ -63,7 +63,13 @@ Follow these steps to quickly get started with our Digital Marketplace Platform:
 Go to the project directory
 
 ```bash
-  cd my-project
+  cd my-project 
+```
+
+client 
+
+```bash
+  cd client
 ```
 
 Install dependencies
@@ -77,6 +83,25 @@ Start the server
 ```bash
   npm run dev
 ```
+
+server 
+
+```bash
+  cd server
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run dev
+```
+
 
 ## Contributors 🤝
 
