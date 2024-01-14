@@ -44,14 +44,6 @@ To enhance application performance, we've implemented the following optimization
 
 - **Lazy Loading Components:** Implemented lazy loading for components to optimize the initial page load and reduce the time it takes for users to interact with the application.
 
-## Environment Variables ⚙️
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`API_KEY`
-
-`ANOTHER_API_KEY`
-
 ## Quick Start 🚀
 
 Follow these steps to quickly get started with our Digital Marketplace Platform:
@@ -63,7 +55,7 @@ Follow these steps to quickly get started with our Digital Marketplace Platform:
 Go to the project directory
 
 ```bash
-  cd my-project 
+  cd Digital_Marketplace_App
 ```
 
 client 
