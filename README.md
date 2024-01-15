@@ -10,7 +10,7 @@ This web application serves as a versatile platform for digital products across 
 
 ## Tech Stack ⚒️
 
-**Client:** [React](https://react.dev/)([Vite.js](https://vitejs.dev/)), [Zustand](https://zustand-demo.pmnd.rs/), [Next UI](/), [TailwindCSS](https://tailwindcss.com/)
+**Client:** [React](https://react.dev/)([Vite.js](https://vitejs.dev/)), [Zustand](https://zustand-demo.pmnd.rs/), [Next UI](https://nextui.org/), [TailwindCSS](https://tailwindcss.com/)
 
 **Server:** [Node](https://nodejs.org/en/), [Express](https://expressjs.com/)
 
