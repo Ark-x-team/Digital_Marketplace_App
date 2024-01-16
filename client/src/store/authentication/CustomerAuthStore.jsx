@@ -328,6 +328,7 @@ const customerAuthStore = create((set) => ({
         headers: { "content-type": "application/json" },
         withCredentials: true,
       });
+      Cookies.remove("token");
       setLoggedIn(false);
     } catch (error) {
       return Promise.reject(error);
